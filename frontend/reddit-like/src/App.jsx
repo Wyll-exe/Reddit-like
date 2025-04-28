@@ -1,9 +1,8 @@
 import "index.css";
 
 function App() {
-
   return (
-    <div>Accueil</div>
+    <div className="bg-red-500">Accueil</div>
   )
 }
 
