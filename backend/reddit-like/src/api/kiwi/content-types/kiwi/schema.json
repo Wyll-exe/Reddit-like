@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "kiwis",
+  "info": {
+    "singularName": "kiwi",
+    "pluralName": "kiwis",
+    "displayName": "kiwi"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    }
+  }
+}
