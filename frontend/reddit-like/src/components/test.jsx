@@ -1,4 +1,4 @@
-import '../style.css';
+import '../index.css';
 import { useEffect, useState } from 'react';
 
 function AffichageCandidature() {
@@ -24,6 +24,7 @@ function AffichageCandidature() {
             }
 
             const data = await response.json();
+            console.log(data);
             setTest(data.title);
         } catch (error) {
             setError(error);
@@ -40,7 +41,7 @@ function AffichageCandidature() {
         <div>
             {loading && <p>Chargement...</p>}
             {error && <p>Erreur : {error.message}</p>}
-            <div> {test}</div>
+            <div>{test}</div>
         </div>
     );
 }
