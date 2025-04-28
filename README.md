@@ -22,7 +22,7 @@
   
 
 
-## Lancer les projets 🚀 :
+## Lancer le projets 🚀 :
 
 
 
