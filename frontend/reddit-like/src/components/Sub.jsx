@@ -10,7 +10,7 @@ function Sub() {
     async function fetchTest() {
         setLoading(true);
         try {
-            const url = "http://localhost:1337/api/subs";
+            const url = "http://localhost:1337/api/subs"; // SSDS
 
             // Ajout des en-têtes si nécessaire
             const response = await fetch(url, {
