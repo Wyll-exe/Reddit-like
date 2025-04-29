@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subs",
+  "info": {
+    "singularName": "sub",
+    "pluralName": "subs",
+    "displayName": "Sub"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "Description": {
+      "type": "text",
+      "maxLength": 25,
+      "required": true,
+      "minLength": 3
+    },
+    "Banner": {
+      "allowedTypes": [
+        "images",
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}
