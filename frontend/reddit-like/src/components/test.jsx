@@ -2,7 +2,7 @@ import '../index.css';
 import { useEffect, useState } from 'react';
 
 function AffichageCandidature() {
-    const [test, setTest] = useState(null);
+    const [test, setTest] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -15,7 +15,7 @@ function AffichageCandidature() {
             const response = await fetch(url, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer bc9195e5cdb4310863538b8b3b05e27711af143ef1e25b9f4fb7dcc689027b9059996df2303924dff882956d55c74831d9c37e153e61684978c204e2602d4d6d988b92ac66f0d8f449c1c8903a178506c90dbb58d494fb576be0dbb1e23db83d5654f4446aaa7c127f8e4158352e3e28c3072748c4c08cddaa1285a36538dc02',
+                    'Authorization': 'Bearer 725274279f9de8bd0aa8c5019788fe5a5820154f3fa6938171763d3f55822136cdc15b01d66b480579fbf14c66032f37fe8390810db07fdf469085afa2d6eb02dc1a0fe960a3b9e1eac4b8dcaa569d85f13bc63e7f7b77881d741e94e201e01a6e15af7afbe52d5c1577098e7f207b1bbef765209ce7915edf53aa6467b699cf',
                 },
             });
 
@@ -24,8 +24,8 @@ function AffichageCandidature() {
             }
 
             const data = await response.json();
-            console.log(data);
-            setTest(data.title);
+            console.log(data.data);
+            setTest(data.data);
         } catch (error) {
             setError(error);
         } finally {
@@ -41,7 +41,10 @@ function AffichageCandidature() {
         <div>
             {loading && <p>Chargement...</p>}
             {error && <p>Erreur : {error.message}</p>}
-            <div>{test}</div>
+            <div>{test.map( (el) => {
+                return el.title})}
+                
+                </div>
         </div>
     );
 }

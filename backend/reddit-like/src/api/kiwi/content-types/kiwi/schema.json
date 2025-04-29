@@ -4,7 +4,8 @@
   "info": {
     "singularName": "kiwi",
     "pluralName": "kiwis",
-    "displayName": "kiwi"
+    "displayName": "kiwi",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true

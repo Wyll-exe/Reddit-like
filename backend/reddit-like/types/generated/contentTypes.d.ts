@@ -409,6 +409,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiKiwiKiwi extends Struct.CollectionTypeSchema {
   collectionName: 'kiwis';
   info: {
+    description: '';
     displayName: 'kiwi';
     pluralName: 'kiwis';
     singularName: 'kiwi';
