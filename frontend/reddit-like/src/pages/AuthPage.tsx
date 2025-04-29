@@ -44,12 +44,14 @@ function Auth({ setUser }) {
         <input
           type="email"
           placeholder="Email"
+          className="bg-red-100"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Mot de passe"
+          className="bg-red-100"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

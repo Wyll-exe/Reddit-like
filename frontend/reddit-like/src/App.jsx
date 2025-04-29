@@ -11,7 +11,7 @@ function App() {
 
   return (
     <Router>
-      <div className="bg-red-500 h-[100%] w-[100%]">
+      <div className="bg-gray-500 h-[100%] w-[100%]">
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/register" element={<RegisterPage />} />

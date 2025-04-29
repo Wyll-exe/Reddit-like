@@ -56,8 +56,9 @@ function Homepage({ user, setUser }) {
             </div>
             {loading && <p>Chargement...</p>}
             {error && <p>Erreur : {error.message}</p>}
-            <div className="mt-4">{test.map( (el) => {
-                return el.Fruit})}    
+            <div className="mt-4">{test.map((el) => (
+                <div>{el.Fruit}</div>
+            ))}    
             </div>
             <p className="mt-4">Ceci est censé représenter la Homepage lorsque l'utilisateur s'est authentifié</p>
         </div>
