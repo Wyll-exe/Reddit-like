@@ -23,9 +23,7 @@
       "required": false,
       "allowedTypes": [
         "images",
-        "files",
-        "videos",
-        "audios"
+        "files"
       ]
     },
     "Time_posted": {
@@ -33,17 +31,66 @@
     },
     "Share": {
       "type": "media",
-      "multiple": true,
-      "required": false,
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
-        "files",
-        "videos",
-        "audios"
+        "files"
       ]
     },
     "Count": {
       "type": "biginteger"
+    },
+    "Reward": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Answer": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Up_vote": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Down_vote": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Share_text": {
+      "type": "string",
+      "default": "Share",
+      "required": true
+    },
+    "Answer_text": {
+      "type": "string",
+      "default": "Answer",
+      "required": true
+    },
+    "Reward_text": {
+      "type": "string",
+      "default": "Reward",
+      "required": true
     }
   }
 }

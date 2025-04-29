@@ -418,31 +418,44 @@ export interface ApiCommentComment extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    Answer: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
+    Answer_text: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Answer'>;
     Count: Schema.Attribute.BigInteger;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Description: Schema.Attribute.Text;
+    Down_vote: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::comment.comment'
     > &
       Schema.Attribute.Private;
-    Profile_picture: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
+    Profile_picture: Schema.Attribute.Media<'images' | 'files'>;
     publishedAt: Schema.Attribute.DateTime;
-    Share: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
+    Reward: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
+    Reward_text: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Reward'>;
+    Share: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
+    Share_text: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Share'>;
     strapi_assignee: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
     strapi_stage: Schema.Attribute.Relation<
       'oneToOne',
       'plugin::review-workflows.workflow-stage'
     >;
     Time_posted: Schema.Attribute.Date;
+    Up_vote: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
