@@ -1,8 +1,9 @@
-import "./index.css";
+import "./style.css";
+import Sub from "./components/Sub.jsx";
 
 function App() {
   return (
-    <div className="bg-red-500">Accueil</div>
+    <Sub />
   )
 }
 
