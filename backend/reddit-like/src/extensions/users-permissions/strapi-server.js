@@ -120,6 +120,62 @@ module.exports = (plugin) => {
             throw new ApplicationError(error.message);
         }
     }
+    plugin.controllers.auth['refreshToken'] = async (ctx) => {
+        const store = await strapi.store({ type: 'plugin', name: 'users-permissions' });
+        const { refreshToken } = ctx.request.body;
+        const refreshCookie = ctx.cookies.get("refreshToken")
+
+        if (!refreshCookie && !refreshToken) {
+            return ctx.badRequest("No Authorization");
+        }
+        if (!refreshCookie) {
+            if (refreshToken) {
+                refreshCookie = refreshToken
+            }
+            else {
+                return ctx.badRequest("No Authorization");
+            }
+        }
+        try {
+            const obj = await verifyRefreshToken(refreshCookie);
+            const user = await strapi.query('plugin::users-permissions.user').findOne({ where: { id: obj.id } });
+            if (!user) {
+                throw new ValidationError('Invalid identifier or password');
+            }
+            if (
+                _.get(await store.get({ key: 'advanced' }), 'email_confirmation') &&
+                user.confirmed !== true
+            ) {
+                throw new ApplicationError('Your account email is not confirmed');
+            }
+            if (user.blocked === true) {
+                throw new ApplicationError('Your account has been blocked by an administrator');
+            }
+            const refreshToken = issueRefreshToken({ id: user.id })
+            ctx.cookies.set("refreshToken", refreshToken, {
+                httpOnly: true,
+                secure: false,
+                signed: true,
+                overwrite: true,
+            });
+            ctx.send({
+                jwt: issueJWT({ id: obj.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES }),
+                refreshToken: refreshToken,
+            });
+        }
+        catch (err) {
+            return ctx.badRequest(err.toString());
+        }
+    }
+    plugin.routes['content-api'].routes.push({
+        method: 'POST',
+        path: '/token/refresh',
+        handler: 'auth.refreshToken',
+        config: {
+            policies: [],
+            prefix: '',
+        }
+    });
     return plugin
 }
 
