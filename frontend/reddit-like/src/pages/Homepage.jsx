@@ -5,7 +5,7 @@ import Logout from "../components/Auth/Logout"
 import getCookie from "../components/Auth/Cookie";
 
 function Homepage({ user, setUser }) {
-    const [test, setTest] = useState([]);
+    const [test, setTest] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -22,23 +22,25 @@ function Homepage({ user, setUser }) {
             const response = await fetch(url, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Ajout du token JWT dans l'en-tête Authorization
                 },
                 credentials: 'include',
             });
 
+            
+            
             if (!response.ok) {
                 if (response.status === 401) {
-                    navigate("/login");
-                    setUser(null);
+                    // navigate("/login");
+                    // setUser(null);
                     throw new Error("Token invalide ou expiré. Veuillez vous reconnecter.")
                 }
                 throw new Error("API introuvable ou erreur réseau");
             }
-
+            
             const data = await response.json();
             console.log(data.data)
             setTest(data.data);
+
         } catch (error) {
             setError(error);
         } finally {
@@ -58,9 +60,14 @@ function Homepage({ user, setUser }) {
             </div>
             {loading && <p>Chargement...</p>}
             {error && <p>Erreur : {error.message}</p>}
-            <div className="mt-4">{test.map((el) => (
-                <div>{el.Fruit}</div>
-            ))}    
+            <div className="mt-4">
+                {test && Array.isArray(test) ? (
+                    test.map((el, index) => (
+                        <div key={index}>{el.Fruit}</div>
+                    ))
+                ) : (
+                    <p>Aucun article trouvé.</p>
+                )}
             </div>
             <p className="mt-4">Ceci est censé représenter la Homepage lorsque l'utilisateur s'est authentifié</p>
         </div>
