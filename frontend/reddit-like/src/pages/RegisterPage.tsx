@@ -22,6 +22,7 @@ function Register() {
           email: email,
           password: password,
         }),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -29,7 +30,6 @@ function Register() {
       }
 
       const data = await response.json();
-      console.log("Utilisateur inscrit :", data);
       navigate("/login"); // Redirige vers la page de connexion après l'inscription
     } catch (err) {
       setError(err.message);

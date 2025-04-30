@@ -2,11 +2,12 @@ import '../index.css';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Logout from "../components/Auth/Logout"
+import getCookie from "../components/Auth/Cookie";
 
 function Homepage({ user, setUser }) {
     const [test, setTest] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [error, setError] = useState(null);
 
     const navigate = useNavigate();
 
@@ -15,14 +16,15 @@ function Homepage({ user, setUser }) {
         try {
             const url = "http://localhost:1337/api/articles";
 
-            const token = localStorage.getItem("token");
+            const token = getCookie("jwtToken");
 
             // Ajout des en-têtes si nécessaire
             const response = await fetch(url, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}` // Ajout du token JWT dans l'en-tête Authorization
                 },
+                credentials: 'include',
             });
 
             if (!response.ok) {

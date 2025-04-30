@@ -9,6 +9,7 @@ function Auth({ setUser }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+  
     try {
       const response = await fetch("http://localhost:1337/api/auth/local", {
         method: "POST",
@@ -19,6 +20,7 @@ function Auth({ setUser }) {
           identifier: email,
           password: password,
         }),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -28,7 +30,6 @@ function Auth({ setUser }) {
 
       const data = await response.json();
       setUser(data.user); // Stocke les informations de l'utilisateur
-      localStorage.setItem("token", data.jwt); // Stocke le token JWT
       navigate("/homepage");
     } catch (err) {
       setError(err.message); // Affiche le message d'erreur
