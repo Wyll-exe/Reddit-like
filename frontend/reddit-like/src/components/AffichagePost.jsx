@@ -1,7 +1,7 @@
 import '../index.css';
 import { useEffect, useState } from 'react';
 
-function AffichageCandidature() {
+function AffichagePost() {
     const [test, setTest] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -49,4 +49,4 @@ function AffichageCandidature() {
     );
 }
 
-export default AffichageCandidature;
+export default AffichagePost;
