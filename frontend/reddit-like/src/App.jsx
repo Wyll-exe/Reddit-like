@@ -9,7 +9,6 @@ import "./index.css";
 
 function App() {
   const [user, setUser] = useState(null); // État pour l'utilisateur connecté
-
   return (
     <Router>
       <div className="bg-[#e8f4e8] h-[100%] w-[100%]">
@@ -17,14 +16,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<AuthPage setUser={setUser} />} />
-          <Route
-            path="/homepage"
-            element={
-              <ProtectedRoute>
-                <Homepage user={user} setUser={setUser} />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/homepage" element={<Homepage user={user} setUser={setUser} />} />
           <Route path="/subreddits" element={<Subreddits />} />
         </Routes>
       </div>
