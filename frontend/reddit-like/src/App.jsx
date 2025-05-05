@@ -7,7 +7,7 @@ import Homepage from "./pages/Homepage";
 import Sub from "./components/Sub.jsx";
 import SubAdd from "./components/SubAdd.jsx";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
-import "./index.css";
+import "./style.css";
 
 function App() {
   const [user, setUser] = useState(null); // État pour l'utilisateur connecté
