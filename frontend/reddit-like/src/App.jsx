@@ -18,6 +18,7 @@ function App() {
       <div className="bg-gray-500 h-[100%] w-[100%]">
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
+          <Route path='*' element={<h1> 404 error , not found </h1>} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/subs" element={<Sub />} />
           <Route path="/add" element={<SubAdd />} />
