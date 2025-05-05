@@ -29,6 +29,7 @@ function Auth({ setUser }) {
       }
 
       const data = await response.json();
+      localStorage.setItem("token", data.jwt)
       setUser(data.user); // Stocke les informations de l'utilisateur
       navigate("/homepage");
     } catch (err) {

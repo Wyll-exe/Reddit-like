@@ -16,7 +16,7 @@ function Homepage({ user, setUser }) {
         try {
             const url = "http://localhost:1337/api/articles";
 
-            const token = getCookie("jwtToken");
+            const token = localStorage.getItem("token");
             console.log("Token envoyé :", token);
 
             // Ajout des en-têtes si nécessaire
@@ -32,8 +32,9 @@ function Homepage({ user, setUser }) {
             
             if (!response.ok) {
                 if (response.status === 401) {
-                    // navigate("/login");
-                    // setUser(null);
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                    setUser(null);
                     throw new Error("Token invalide ou expiré. Veuillez vous reconnecter.")
                 }
                 throw new Error("API introuvable ou erreur réseau");
