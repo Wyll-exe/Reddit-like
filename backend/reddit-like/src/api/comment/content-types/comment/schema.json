@@ -1,0 +1,96 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments",
+  "info": {
+    "singularName": "comment",
+    "pluralName": "comments",
+    "displayName": "Comment",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "User": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "text"
+    },
+    "Profile_picture": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Time_posted": {
+      "type": "date"
+    },
+    "Share": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Count": {
+      "type": "biginteger"
+    },
+    "Reward": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Answer": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Up_vote": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Down_vote": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Share_text": {
+      "type": "string",
+      "default": "Share",
+      "required": true
+    },
+    "Answer_text": {
+      "type": "string",
+      "default": "Answer",
+      "required": true
+    },
+    "Reward_text": {
+      "type": "string",
+      "default": "Reward",
+      "required": true
+    }
+  }
+}

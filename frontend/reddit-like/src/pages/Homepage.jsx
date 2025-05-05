@@ -1,0 +1,80 @@
+import '../index.css';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import Logout from "../components/Auth/Logout"
+import getCookie from "../components/Auth/Cookie";
+
+function Homepage({ user, setUser }) {
+    const [test, setTest] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
+
+    async function fetchTest() {
+        setLoading(true);
+        try {
+            const url = "http://localhost:1337/api/articles";
+
+            const token = localStorage.getItem("token");
+            console.log("Token envoyé :", token);
+
+            // Ajout des en-têtes si nécessaire
+            const response = await fetch(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                credentials: 'include',
+            });
+
+            
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                    setUser(null);
+                    throw new Error("Token invalide ou expiré. Veuillez vous reconnecter.")
+                }
+                throw new Error("API introuvable ou erreur réseau");
+            }
+            
+            const data = await response.json();
+            console.log(data.data)
+            setTest(data.data);
+
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchTest();
+    }, []);
+
+    return (
+        <div className="flex flex-col justify-center items-center h-screen">
+            <div className="text-center">
+                <p>Bienvenue, {user?.username}!</p>
+                <Logout setUser={setUser} />
+            </div>
+            {loading && <p>Chargement...</p>}
+            {error && <p>Erreur : {error.message}</p>}
+            <div className="mt-4">
+                {test && Array.isArray(test) ? (
+                    test.map((el, index) => (
+                        <div key={index}>{el.Fruit}</div>
+                    ))
+                ) : (
+                    <p>Aucun article trouvé.</p>
+                )}
+            </div>
+            <p className="mt-4">Ceci est censé représenter la Homepage lorsque l'utilisateur s'est authentifié</p>
+        </div>
+    );
+}
+
+export default Homepage;
