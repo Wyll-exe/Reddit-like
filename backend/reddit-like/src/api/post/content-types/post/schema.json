@@ -25,6 +25,25 @@
         "videos",
         "audios"
       ]
+    },
+    "username": {
+      "type": "string",
+      "required": true
+    },
+    "profil_pictures": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true,
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": false
     }
   }
 }

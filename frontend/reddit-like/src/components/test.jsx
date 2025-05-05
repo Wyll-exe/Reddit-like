@@ -10,7 +10,7 @@ function AffichageCandidature() {
     async function fetchTest() {
         setLoading(true);
         try {
-            const url = "http://localhost:1338/api/posts?populate=media";
+            const url = "http://localhost:1338/api/posts?populate=*";
 
             // Ajout des en-têtes si nécessaire
             const response = await fetch(url, {
@@ -43,11 +43,14 @@ function AffichageCandidature() {
             {loading && <p>Chargement...</p>}
             {error && <p>Erreur : {error.message}</p>}
             <div>{test.map( (el) => {
+                console.log(el)
                 return (
                     <div>
                         <p>{el.title}</p>
-                        
+                        <p>{el.username}</p>
+                        <p>{el.description}</p>
                         <img src={"http://localhost:1338" + el.media[0].url}></img>
+                        <img src={"http://localhost:1338" + el.profil_pictures[0].url}></img>
                     </div>)})}
                 </div>
         </div>
