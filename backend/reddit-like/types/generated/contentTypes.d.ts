@@ -409,6 +409,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiSubSub extends Struct.CollectionTypeSchema {
   collectionName: 'subs';
   info: {
+    description: '';
     displayName: 'Sub';
     pluralName: 'subs';
     singularName: 'sub';

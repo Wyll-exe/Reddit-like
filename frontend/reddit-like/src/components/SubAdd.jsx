@@ -1,5 +1,3 @@
-// src/pages/AddSubscriptionPage.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,33 +9,62 @@ function AddSubscriptionPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  const formData = new FormData();
-  formData.append('data[Name]', name);
-  formData.append('data[Description]', description);
 
-  if (banner) {
-    formData.append('files.Banner', banner);
-  }
+    const token = 'Bearer 9a6f38f14b1c58f8d9016442e89170739778e98e0907fb825b9c392513c4758e46993dfde86454b746c036aef98f983f4a63504ff945e5ef156f61ba825295df46146e1678d7fb62d70c5b4d960904fa2637110678936106b5befcef6f0ff282d5ba648a7ba9196554b6c558eb5727f9b5482fddeef02f402e563a89498c7a5b';
 
-  try {
-    const res = await fetch('http://localhost:1337/api/subs', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer 9a6f38f14b1c58f8d9016442e89170739778e98e0907fb825b9c392513c4758e46993dfde86454b746c036aef98f983f4a63504ff945e5ef156f61ba825295df46146e1678d7fb62d70c5b4d960904fa2637110678936106b5befcef6f0ff282d5ba648a7ba9196554b6c558eb5727f9b5482fddeef02f402e563a89498c7a5b',
-      },
-      body: formData,
-    });
+    try {
+      let imageId = null;
+
+      // Étape 1 : Upload du fichier
+      if (banner) {
+        const imageFormData = new FormData();
+        imageFormData.append('files', banner);
+
+        const uploadRes = await fetch('http://localhost:1337/api/upload', {
+          method: 'POST',
+          headers: {
+            Authorization: token,
+          },
+          body: imageFormData,
+        });
+
+        const uploadData = await uploadRes.json();
+        imageId = uploadData?.[0]?.id;
+
+        if (!imageId) {
+          throw new Error('Échec de l’upload de l’image');
+        }
+      }
+
+      // Étape 2 : Création de l’abonnement avec référence à l’image
+      const payload = {
+        data: {
+          Name: name,
+          Description: description,
+          Banner: imageId,
+        },
+      };
+
+      const res = await fetch('http://localhost:1337/api/subs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+        body: JSON.stringify(payload),
+      });
 
       const json = await res.json();
+
       if (json.data) {
-        alert('Abonnement ajouté avec succès!');
+        alert('Abonnement ajouté avec succès !');
         navigate('/subs');
       } else {
         alert('Erreur lors de l\'ajout de l\'abonnement');
       }
     } catch (error) {
-      console.error('Erreur lors de l\'envoi du formulaire :', error);
-      alert('Une erreur est survenue');
+      console.error('Erreur lors de la soumission du formulaire :', error);
+      alert('Une erreur est survenue lors de l’envoi du formulaire.');
     }
   };
 
