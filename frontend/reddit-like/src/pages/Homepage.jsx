@@ -17,11 +17,13 @@ function Homepage({ user, setUser }) {
             const url = "http://localhost:1337/api/articles";
 
             const token = getCookie("jwtToken");
+            console.log("Token envoyé :", token);
 
             // Ajout des en-têtes si nécessaire
             const response = await fetch(url, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 credentials: 'include',
             });
