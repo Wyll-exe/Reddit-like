@@ -3,6 +3,7 @@ import { useState } from "react";
 import RegisterPage from "./pages/RegisterPage";
 import AuthPage from "./pages/AuthPage";
 import Homepage from "./pages/Homepage";
+import Subreddits from "./pages/Subreddits";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import "./index.css";
 
@@ -11,7 +12,7 @@ function App() {
 
   return (
     <Router>
-      <div className="bg-gray-500 h-[100%] w-[100%]">
+      <div className="bg-[#e8f4e8] h-[100%] w-[100%]">
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -24,6 +25,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/subreddits" element={<Subreddits />} />
         </Routes>
       </div>
     </Router>
