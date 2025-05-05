@@ -18,6 +18,17 @@
     "media": {
       "type": "media",
       "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "profil_pictures": {
+      "type": "media",
+      "multiple": true,
       "required": true,
       "allowedTypes": [
         "images",
@@ -26,24 +37,15 @@
         "audios"
       ]
     },
-    "username": {
-      "type": "string",
-      "required": true
-    },
-    "profil_pictures": {
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ],
-      "type": "media",
-      "multiple": true,
-      "required": true
-    },
     "description": {
       "type": "text",
       "required": false
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "posts"
     }
   }
 }

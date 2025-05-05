@@ -6,6 +6,7 @@ import Homepage from "./pages/Homepage";
 import Subreddits from "./pages/Subreddits";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import "./index.css";
+// import AffichagePost from "./components/Posts/AffichagePost";
 
 function App() {
   const [user, setUser] = useState(null); // État pour l'utilisateur connecté
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<AuthPage setUser={setUser} />} />
           <Route path="/homepage" element={<Homepage user={user} setUser={setUser} />} />
           <Route path="/subreddits" element={<Subreddits />} />
+          {/* <Route path="/posts" element={<AffichagePost />} /> */}
         </Routes>
       </div>
     </Router>

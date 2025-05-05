@@ -41,7 +41,7 @@ function Homepage({ user, setUser }) {
             
             const data = await response.json();
             console.log(data.data)
-            setTest(data.data);
+            setPosts(data.data);
 
         } catch (error) {
             setError(error);
@@ -104,7 +104,7 @@ function Homepage({ user, setUser }) {
                     <div className="mb-6">
                         <div className="h-8">
                             {/* Remplacez cette div par votre logo */}
-                            <img src="../theme=Default" alt="Logo" className="h-full" />
+                            <img src="https://raw.githubusercontent.com/Cyril-Mathe/Reddit-like/refs/heads/feature/subreddits/frontend/reddit-like/src/pages/logo.png" alt="Logo" className="h-full" />
                         </div>
                     </div>
                     
