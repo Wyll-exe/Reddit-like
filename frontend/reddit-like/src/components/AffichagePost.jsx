@@ -1,12 +1,8 @@
 import '../index.css';
 import { useEffect, useState } from 'react';
 
-<<<<<<< HEAD:frontend/reddit-like/src/components/AffichagePost.jsx
 function AffichagePost() {
-=======
 
-function AffichageCandidature() {
->>>>>>> 1affb1b09a6af18f6a5fcd869b21903620684451:frontend/reddit-like/src/components/test.jsx
     const [test, setTest] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

@@ -1,4 +1,4 @@
-import AffichageCandidature from "./components/test";
+import AffichageCandidature from "./components/AffichagePost";
 import "./index.css";
 
 function App() {
