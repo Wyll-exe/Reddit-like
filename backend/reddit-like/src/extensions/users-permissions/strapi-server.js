@@ -43,6 +43,7 @@
     
         // issue a Refresh token
         const issueRefreshToken = (payload, jwtOptions = {}) => {
+            console.log("Génération du refreshToken pour l'utilisateur :", user.id);
             _.defaults(jwtOptions, strapi.config.get('plugin.users-permissions.jwt'));
             return jwt.sign(
                 _.clone(payload.toJSON ? payload.toJSON() : payload),
@@ -90,6 +91,7 @@ module.exports = (plugin) => {
                       signed: true,
                       overwrite: true,
               });
+              console.log("Cookie refreshToken défini :", ctx.cookies.get("refreshToken"));
                   ctx.send({
                     status: 'Authenticated',
                     jwt: issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES }),

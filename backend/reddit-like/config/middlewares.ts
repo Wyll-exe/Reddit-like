@@ -6,7 +6,8 @@ export default [
     name: 'strapi::cors',
     config: {
       origin: ['http://localhost:3030'], // URL de votre frontend
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      headers: ['Content-Type', 'Authorization'],
       credentials: true, // Autoriser les cookies
     },
   },

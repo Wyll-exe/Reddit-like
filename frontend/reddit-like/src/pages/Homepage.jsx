@@ -10,33 +10,48 @@ function Homepage({ user, setUser }) {
     const [postContent, setPostContent] = useState("");
     const [followedPosts, setFollowedPosts] = useState({});
 
-    // Fonction pour récupérer les articles
-    useEffect(() => {
-        async function fetchPosts() {
-            setLoading(true);
-            try {
-                const response = await fetch("http://localhost:1337/api/articles", {
-                    credentials: 'include',
-                    mode: 'cors',
-                });
-                
-                if (!response.ok) {
-                    throw new Error("Erreur lors de la récupération des articles");
+    async function fetchTest() {
+        setLoading(true);
+        try {
+            const url = "http://localhost:1337/api/articles";
+
+            const token = localStorage.getItem("token");
+            console.log("Token envoyé :", token);
+
+            // Ajout des en-têtes si nécessaire
+            const response = await fetch(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                credentials: 'include',
+            });
+
+            
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                    setUser(null);
+                    throw new Error("Token invalide ou expiré. Veuillez vous reconnecter.")
                 }
-                
-                const data = await response.json();
-                setPosts(data.data || getDemoPosts());
-                
-            } catch (error) {
-                console.error("Erreur:", error);
-                setError(error);
-                setPosts(getDemoPosts());
-            } finally {
-                setLoading(false);
+                throw new Error("API introuvable ou erreur réseau");
             }
+            
+            const data = await response.json();
+            console.log(data.data)
+            setTest(data.data);
+
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
         }
-        
-        fetchPosts();
+    }
+
+    useEffect(() => {
+        fetchTest();
     }, []);
 
     // Données de démonstration en cas d'erreur

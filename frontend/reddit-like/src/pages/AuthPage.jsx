@@ -27,7 +27,8 @@ function Auth({ setUser }) {
         throw new Error(errorData.error?.message || "Erreur lors de la connexion");
       }
       const data = await response.json();
-      setUser(data.user);
+      localStorage.setItem("token", data.jwt)
+      setUser(data.user); // Stocke les informations de l'utilisateur
       navigate("/homepage");
     } catch (err) {
       setError(err.message);
