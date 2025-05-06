@@ -28,7 +28,7 @@ function Homepage({ user, setUser }) {
 
         loadPosts();
     }, []);
-
+  
     const handlePostSubmit = async (e) => {
         e.preventDefault();
         try {

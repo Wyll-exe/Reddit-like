@@ -65,10 +65,10 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "posts": {
+    "subs": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::post.post",
+      "target": "api::sub.sub",
       "mappedBy": "author"
     }
   }
