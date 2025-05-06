@@ -4,25 +4,16 @@ export default {
             method: 'PUT',
             path: '/subs/:id',
             handler: 'api::sub.sub.modify',
-            config: {
-                auth: false,
-            }
         },
         {
             method: 'DELETE',
-            path: 'subs/:id',
+            path: '/subs/:id',
             handler: 'api::sub.sub.delete',
-            config: {
-                auth: false,
-            }
         },
         {
             method: 'POST',
-            path: 'subs',
+            path: '/subs',
             handler: 'api::sub.sub.create',
-            config: {
-                auth: false,
-            }
         }
     ]
 }

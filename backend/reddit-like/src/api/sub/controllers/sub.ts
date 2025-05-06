@@ -8,24 +8,29 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
   async modify(ctx) {
     try {
       const { id } = ctx.params;
-      const data = ctx.request.body;
-
+  
+      const sub = await strapi.entityService.findOne('api::sub.sub', id, {
+        populate: ['author'],
+      }) as any;
+      if (!sub) {
+        return ctx.notFound('Sub non trouvé');
+      }
+  
+      if (!sub.author || sub.author.id !== ctx.state.user.id) {
+        return ctx.unauthorized("Vous n’êtes pas l’auteur de ce sub");
+      }
+  
       const updated = await strapi.entityService.update(
         'api::sub.sub',
         id,
         {
-            data: {
-              ...data,
-              publishedAt: new Date().toISOString(),
-            },
-          }
+          data: {
+            ...ctx.request.body,
+            publishedAt: new Date().toISOString(),
+          },
+        }
       );
-
-
-      if (!updated) {
-        return ctx.notFound('Sub non trouvé');
-      }
-
+  
       return ctx.send({ data: updated });
     } catch (error) {
       ctx.status = 500;
@@ -34,39 +39,49 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
   },
   async delete(ctx) {
     try {
-        const { id } = ctx.params;
+      const { id } = ctx.params;
   
-        const deleted = await strapi.entityService.delete(
-          'api::sub.sub',
-          id
-        );
+      const sub = await strapi.entityService.findOne('api::sub.sub', id, {
+        populate: ['author'],
+      }) as any;
   
-  
-        if (!deleted) {
-          return ctx.notFound('Sub non trouvé');
-        }
-  
-        return ctx.send({ data: deleted });
-      } catch (error) {
-        ctx.status = 500;
-        return ctx.send({ error: error.message });
+      if (!sub) {
+        return ctx.notFound('Sub non trouvé');
       }
-  },
+  
+      if (!sub.author || sub.author.id !== ctx.state.user.id) {
+        return ctx.unauthorized("Vous n’êtes pas l’auteur de ce sub");
+      }
+  
+      const deleted = await strapi.entityService.delete('api::sub.sub', id);
+  
+      return ctx.send({ data: deleted });
+    } catch (error) {
+      ctx.status = 500;
+      return ctx.send({ error: error.message });
+    }
+  },  
   async create(ctx) {
     try {
-        const created = await strapi.entityService.create(
-          'api::sub.sub',
-        );
+      const { Name, Description } = ctx.request.body;
   
+      const created = await strapi.entityService.create('api::sub.sub', {
+        data: {
+          Name,
+          Description,
+          author: ctx.state.user.id,
+          publishedAt: new Date().toISOString(),
+        },
+        populate: ['author'],
+      });
   
-        if (!created) {
-          return ctx.notFound('Problème lors de la création du Sub');
-        }
-  
-        return ctx.send({ data: created });
-      } catch (error) {
-        ctx.status = 500;
-        return ctx.send({ error: error.message });
+      if (!created) {
+        return ctx.notFound('Problème lors de la création du sub');
       }
-  }
+      return ctx.send({ data: created });
+    } catch (error) {
+      ctx.status = 500;
+      return ctx.send({ error: error.message });
+    }
+  }  
 }));
