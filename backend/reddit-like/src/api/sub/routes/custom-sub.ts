@@ -15,6 +15,14 @@ export default {
             config: {
                 auth: false,
             }
+        },
+        {
+            method: 'POST',
+            path: 'subs',
+            handler: 'api::sub.sub.create',
+            config: {
+                auth: false,
+            }
         }
     ]
 }

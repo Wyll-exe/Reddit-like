@@ -51,5 +51,22 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
         ctx.status = 500;
         return ctx.send({ error: error.message });
       }
+  },
+  async create(ctx) {
+    try {
+        const created = await strapi.entityService.create(
+          'api::sub.sub',
+        );
+  
+  
+        if (!created) {
+          return ctx.notFound('Problème lors de la création du Sub');
+        }
+  
+        return ctx.send({ data: created });
+      } catch (error) {
+        ctx.status = 500;
+        return ctx.send({ error: error.message });
+      }
   }
 }));
