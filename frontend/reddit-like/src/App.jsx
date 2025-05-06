@@ -6,7 +6,7 @@ import AuthPage from "./pages/AuthPage";
 import Homepage from "./pages/Homepage";
 import Sub from "./components/Sub.jsx";
 import SubAdd from "./components/SubAdd.jsx";
-import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import Subreddits from "./pages/Subreddits.jsx"
 import "./style.css";
 
 function App() {
