@@ -541,6 +541,46 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiSubSub extends Struct.CollectionTypeSchema {
+  collectionName: 'subs';
+  info: {
+    description: '';
+    displayName: 'Sub';
+    pluralName: 'subs';
+    singularName: 'sub';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Banner: Schema.Attribute.Media<'images' | 'files'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Description: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 25;
+        minLength: 3;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::sub.sub'> &
+      Schema.Attribute.Private;
+    Name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    strapi_assignee: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
+    strapi_stage: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::review-workflows.workflow-stage'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1060,6 +1100,7 @@ declare module '@strapi/strapi' {
       'api::article.article': ApiArticleArticle;
       'api::comment.comment': ApiCommentComment;
       'api::post.post': ApiPostPost;
+      'api::sub.sub': ApiSubSub;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
