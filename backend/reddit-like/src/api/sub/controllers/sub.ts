@@ -35,7 +35,6 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
   async delete(ctx) {
     try {
         const { id } = ctx.params;
-        const data = ctx.request.body;
   
         const deleted = await strapi.entityService.delete(
           'api::sub.sub',
