@@ -13,7 +13,7 @@ function Homepage({ user, setUser }) {
     async function fetchTest() {
         setLoading(true);
         try {
-            const url = "http://localhost:1337/api/articles";
+            const url = "http://localhost:1337/api/posts?populate[0]=author&populate[1]=media";
 
             const token = localStorage.getItem("token");
             console.log("Token envoyé :", token);
@@ -53,32 +53,6 @@ function Homepage({ user, setUser }) {
     useEffect(() => {
         fetchTest();
     }, []);
-
-    // Données de démonstration en cas d'erreur
-    function getDemoPosts() {
-        return [
-            { 
-                id: 1, 
-                title: "Titre d'un super méga drama de fou", 
-                content: "Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit.", 
-                image: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=1000",
-                user: { 
-                    username: "Xx-Totodu91-xX",
-                    profilePic: "https://randomuser.me/api/portraits/men/1.jpg" 
-                }
-            },
-            { 
-                id: 2, 
-                title: "Un voyage incroyable en Asie", 
-                content: "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Quisque velit nisi, pretium ut lacinia in, elementum id enim.", 
-                image: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=1000",
-                user: { 
-                    username: "Xx-Totodu91-xX",
-                    profilePic: "https://randomuser.me/api/portraits/men/1.jpg" 
-                }
-            }
-        ];
-    }
 
     // Gérer la soumission d'un nouveau post
     const handlePostSubmit = (e) => {
@@ -233,7 +207,7 @@ function Homepage({ user, setUser }) {
                                             />
                                         </div>
                                         <div>
-                                            <div className="font-medium text-sm">{post.user?.username || "Xx-Totodu91-xX"}</div>
+                                            <div className="font-medium text-sm">@{post.author.username || "Anonyme"}</div>
                                         </div>
                                     </div>
                                     
@@ -256,10 +230,10 @@ function Homepage({ user, setUser }) {
                                     <h2 className="text-lg font-semibold mb-2">{post.title}</h2>
                                     <p className="text-gray-700 mb-4">{post.content}</p>
                                     
-                                    {post.image && (
+                                    {post.media && (
                                         <div className="rounded-lg overflow-hidden mb-4">
                                             <img 
-                                                src={post.image} 
+                                                src={"http://localhost:1337" + post.media[0].url}
                                                 alt="Illustration" 
                                                 className="w-full h-auto"
                                             />
@@ -289,33 +263,6 @@ function Homepage({ user, setUser }) {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
                                         </svg>
                                     </button>
-                                </div>
-                                
-                                {/* Pied du post */}
-                                <div className="p-2 border-t border-gray-100 flex justify-between items-center">
-                                    <div className="flex items-center space-x-3">
-                                        <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
-                                            <img 
-                                                src={post.user?.profilePic || "https://randomuser.me/api/portraits/men/1.jpg"} 
-                                                alt="Profil" 
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
-                                        <div className="text-sm">{post.user?.username || "Xx-Totodu91-xX"}</div>
-                                    </div>
-                                    
-                                    <div>
-                                        <button 
-                                            onClick={() => toggleFollow(post.id)} 
-                                            className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                                followedPosts[post.id] 
-                                                    ? 'bg-gray-200 text-gray-800' 
-                                                    : 'bg-[#e8f4e8] text-gray-700'
-                                            }`}
-                                        >
-                                            {followedPosts[post.id] ? 'Unfollow' : 'Follow'}
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         ))}

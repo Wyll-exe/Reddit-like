@@ -21,9 +21,10 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
 
     async delete(ctx) {
         const user = ctx.state.user;
-        const post = ctx.request.body.data.author
-
-        if (!user.id === post) {
+        const postId = ctx.params.id;
+        const postAuthor = await strapi.entityService.findOne('api::post.post', postId, { populate: 'author' });
+        
+        if (user.id !== postAuthor) {
             return ctx.unauthorized("Yo t'as pas le droit de supprimer ça, chien");
         }
 
