@@ -70,6 +70,12 @@
       "relation": "oneToMany",
       "target": "api::sub.sub",
       "mappedBy": "author"
+    },
+    "posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::post.post",
+      "mappedBy": "author"
     }
   }
 }
