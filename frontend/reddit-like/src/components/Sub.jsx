@@ -41,7 +41,7 @@ function Sub() {
   }, []);
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("Voulez-vous supprimer cet abonnement ?");
+    const confirm = window.confirm("Voulez-vous supprimer ce Thread ?");
     if (!confirm) return;
 
     try {
@@ -54,7 +54,7 @@ function Sub() {
 
       if (res.ok) {
         setSubs((prev) => prev.filter((item) => item.id !== id));
-        alert("Supprimé avec succès !");
+        alert("Supprimé à jamais !");
       } else {
         alert("Erreur lors de la suppression.");
       }
@@ -68,7 +68,8 @@ function Sub() {
     return (
       <div className="w-full h-screen bg-gray-500 fixed top-0 left-0 transition-transform duration-700">
         <div className="w-full h-full flex flex-col justify-center items-center gap-8">
-          <p className="text-4xl italic font-serif text-gray-300">{citation}</p>
+          <img src="./assets/images/threadly.png" alt="Logo" className="w-75 h-auto" />
+          <p className="text-5xl italic font-serif text-gray-300">{citation}</p>
           <SyncLoader
             loading
             color="#D1D5DC"

@@ -15,7 +15,7 @@ function AddSubscriptionPage() {
     try {
       let imageId = null;
 
-      // Étape 1 : Upload du fichier
+      // Upload du fichier
       if (banner) {
         const imageFormData = new FormData();
         imageFormData.append('files', banner);
@@ -36,7 +36,7 @@ function AddSubscriptionPage() {
         }
       }
 
-      // Étape 2 : Création de l’abonnement avec référence à l’image
+      // Sub l'image en référence à l'ID de l'image uploadée
       const payload = {
         data: {
           Name: name,
@@ -57,23 +57,23 @@ function AddSubscriptionPage() {
       const json = await res.json();
 
       if (json.data) {
-        alert('Abonnement ajouté avec succès !');
+        alert('Thread ajouté avec succès !');
         navigate('/subs');
       } else {
-        alert('Erreur lors de l\'ajout de l\'abonnement');
+        alert('Erreur lors de l\'ajout de Thread ...');
       }
     } catch (error) {
       console.error('Erreur lors de la soumission du formulaire :', error);
-      alert('Une erreur est survenue lors de l’envoi du formulaire.');
+      alert('Une erreur est survenue lors de l’envoi du formulaire ...');
     }
   };
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-xl">
-      <h2 className="text-2xl font-bold mb-6 text-center">Ajouter un abonnement</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Créer un Thread</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block font-medium mb-1">Nom de l'abonnement</label>
+          <label htmlFor="name" className="block font-medium mb-1">Nom du Thread</label>
           <input
             type="text"
             id="name"
@@ -94,7 +94,7 @@ function AddSubscriptionPage() {
           />
         </div>
         <div>
-          <label htmlFor="banner" className="block font-medium mb-1">Image de bannière</label>
+          <label htmlFor="banner" className="block font-medium mb-1">Image en bannière</label>
           <input
             type="file"
             id="banner"
@@ -112,7 +112,7 @@ function AddSubscriptionPage() {
           type="submit"
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Ajouter l'abonnement
+          Ajouter le Thread
         </button>
       </form>
     </div>
