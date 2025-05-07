@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router";
 
 function Post({ post, toggleFollow, followedPosts }) {
     return (
@@ -41,6 +42,8 @@ function Post({ post, toggleFollow, followedPosts }) {
                         />
                     </div>
                 )}
+                <Link to={`/homepage/${post.id}`}>Modifier</Link>
+                <Link to={`/homepage/supp/${post.id}`}>Supprimer</Link>
             </div>
         </div>
     );
