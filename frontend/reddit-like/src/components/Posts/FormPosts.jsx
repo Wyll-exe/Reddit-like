@@ -1,6 +1,6 @@
 import React from 'react';
 
-function FormPost({ postContent, setPostContent, postTitle, setPostTitle, handlePostSubmit }) {
+function FormPost({ postContent, setPostContent, postTitle, setPostTitle, handlePostSubmit, setPostImage }) {
     return (
         <div className="p-4 bg-white m-3 rounded-xl shadow-sm">
             <div className="flex items-center space-x-3 mb-3">
@@ -21,6 +21,11 @@ function FormPost({ postContent, setPostContent, postTitle, setPostTitle, handle
                     value={postContent}
                     onChange={(e) => setPostContent(e.target.value)}
                 ></textarea>
+                <input 
+                    type="file" 
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
+                    onChange={(e) => setPostImage(e.target.files[0])}
+                />
                 <div className="flex justify-between mt-3">
                     <button 
                         type="submit"

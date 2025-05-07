@@ -18,7 +18,7 @@ export async function fetchPosts() {
     return data.data;
 }
 
-export async function createPost(postContent, postTitle) {
+export async function createPost(postContent, postTitle, postImage) {
     const url = "http://localhost:1337/api/posts";
     const token = localStorage.getItem("token");
 
@@ -32,6 +32,9 @@ export async function createPost(postContent, postTitle) {
             data: {
                 title: postTitle,
                 description: postContent,
+                media: {
+                    url: postImage
+                }
             }
         }),
     });

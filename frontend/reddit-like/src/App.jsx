@@ -6,7 +6,6 @@ import AuthPage from "./pages/AuthPage";
 import Homepage from "./pages/Homepage";
 import Sub from "./components/Sub.jsx";
 import SubAdd from "./components/SubAdd.jsx";
-import Subreddits from "./pages/Subreddits.jsx"
 import "./style.css";
 
 function App() {
@@ -23,14 +22,7 @@ function App() {
           <Route path="/subs" element={<Sub />} />
           <Route path="/add" element={<SubAdd />} />
           <Route path="/login" element={<AuthPage setUser={setUser} />} />
-          <Route
-            path="/homepage"
-            element={
-              <ProtectedRoute>
-                <Homepage user={user} setUser={setUser} />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/homepage" element={<Homepage user={user} setUser={setUser} />} />
         </Routes>
       </div>
     </Router>

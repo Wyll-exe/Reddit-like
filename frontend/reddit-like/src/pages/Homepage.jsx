@@ -11,6 +11,7 @@ function Homepage({ user, setUser }) {
     const [error, setError] = useState(null);
     const [postTitle, setTitle] = useState("");
     const [postContent, setPostContent] = useState("");
+    const [postImage, setPostImage] = useState(null)
     const [followedPosts, setFollowedPosts] = useState({});
 
     useEffect(() => {
@@ -32,7 +33,7 @@ function Homepage({ user, setUser }) {
     const handlePostSubmit = async (e) => {
         e.preventDefault();
         try {
-            const newPost = await createPost(postContent, postTitle);
+            const newPost = await createPost(postContent, postTitle, postImage);
             setPosts([newPost, ...posts]);
             setPostContent("");
             console.log("Post créé avec succès :", newPost);
@@ -59,7 +60,9 @@ function Homepage({ user, setUser }) {
                             postContent={postContent} 
                             setPostContent={setPostContent}
                             postTitle={postTitle}
-                            setPostTitle={setTitle} 
+                            setPostTitle={setTitle}
+                            postImage={postImage}
+                            setPostImage={setPostImage}
                             handlePostSubmit={handlePostSubmit} 
                         />
                         {loading && <div>Chargement...</div>}
