@@ -8,8 +8,8 @@ import { LiveblocksProvider, RoomProvider } from '@liveblocks/react'
 
 
 const client = createClient({
-  publicApiKey: "pk_dev_QumWcWRt16kHFSnUBS1bRWrmaRXmMW0pVz3yzbxnFIt3uuegaSyQxGoMmsFTQUPM",
-})
+  publicApiKey: "",
+});
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
