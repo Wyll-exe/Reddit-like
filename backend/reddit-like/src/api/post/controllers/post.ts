@@ -65,12 +65,15 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
       },  
       async create(ctx) {
         try {
-          const { title, username } = ctx.request.body;
+          const { title, username, media, profile_pictures, description } = ctx.request.body;
       
           const created = await strapi.entityService.create('api::post.post', {
             data: {
               title,
               username,
+              media,
+              profile_pictures,
+              description,
               author: ctx.state.user.id,
               publishedAt: new Date().toISOString(),
             },
