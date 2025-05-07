@@ -28,7 +28,7 @@
     },
     "username": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "profil_pictures": {
       "type": "media",

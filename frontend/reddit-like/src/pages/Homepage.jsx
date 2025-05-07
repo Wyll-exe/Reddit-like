@@ -3,16 +3,18 @@ import Sidebar from '../components/Sidebar/Sidebar';
 import Post from '../components/Posts/ShowPosts';
 import FormPost from '../components/Posts/FormPosts';
 import MobileNavigation from '../components/Mobile/MobileNav';
-import { fetchPosts, createPost } from '../utils/api';
+import {fetchPosts} from '../utils/Fetchapi';
+import {createPost} from '../utils/Createapi'; 
 
 function Homepage({ user, setUser }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [postTitle, setTitle] = useState("");
-    const [postContent, setPostContent] = useState("");
-    const [postImage, setPostImage] = useState(null)
     const [followedPosts, setFollowedPosts] = useState({});
+
+    const addPost = (newPost) => {
+        setPosts((prevPosts) => [newPost, ...prevPosts]);
+    }
 
     useEffect(() => {
         async function loadPosts() {
@@ -29,19 +31,6 @@ function Homepage({ user, setUser }) {
 
         loadPosts();
     }, []);
-  
-    const handlePostSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const newPost = await createPost(postContent, postTitle, postImage);
-            setPosts([newPost, ...posts]);
-            setPostContent("");
-            console.log("Post créé avec succès :", newPost);
-        } catch (error) {
-            console.error("Erreur lors de la création du post :", error);
-            setError(error);
-        }
-    };
 
     const toggleFollow = (postId) => {
         setFollowedPosts({
@@ -56,15 +45,7 @@ function Homepage({ user, setUser }) {
                 <Sidebar setUser={setUser} />
                 <div className="w-full md:ml-64">
                     <div className="max-w-2xl mx-auto">
-                        <FormPost 
-                            postContent={postContent} 
-                            setPostContent={setPostContent}
-                            postTitle={postTitle}
-                            setPostTitle={setTitle}
-                            postImage={postImage}
-                            setPostImage={setPostImage}
-                            handlePostSubmit={handlePostSubmit} 
-                        />
+                        <FormPost addPost={addPost} />
                         {loading && <div>Chargement...</div>}
                         {error && <div>Erreur : {error.message}</div>}
                         {!loading && posts.map((post) => (
