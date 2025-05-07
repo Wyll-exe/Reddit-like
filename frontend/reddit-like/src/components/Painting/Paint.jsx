@@ -7,7 +7,7 @@ import {
   useStorage,
 } from "@liveblocks/react";
 import { useState } from "react";
-import "../style.css";
+import "../../style.css";
 
 const COLORS = ["#DC2626", "#D97706", "#059669", "#FFFF00", "#7C3AED", "#DB2777"];
 
@@ -29,7 +29,7 @@ function Canvas() {
   const [{ selectedShape }, setPresence] = useMyPresence();
   const others = useOthers();
   const batch = useBatch();
-  const shapes = useStorage((root) => root.shapes); // Remplacement de useMap
+  const shapes = useStorage((root) => root.shapes);
 
   const insertRectangle = () => {
     batch(() => {

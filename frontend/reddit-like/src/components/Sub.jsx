@@ -11,7 +11,7 @@ function Sub() {
   const Mearde = {
     
     "Cyril": "Cyril : ''Commit to the bitbucket'' ",
-    "Laurent": "Laurent : ''Pull request master'' ",
+    "Laurent": "Laurent : ''Pull request M.A.S.T.E.R'' ",
     "Arthur": "Arthur : ''Push it to the limit'' ",
     "Océane": "Océnae : ''Merge like a boss'' ",
     "William": "William : ''Fetch like a pro'' ",
@@ -45,10 +45,16 @@ function Sub() {
     if (!confirm) return;
 
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Vous devez être connecté pour supprimer un Thread.");
+      }
+
       const res = await fetch(`http://localhost:1337/api/subs/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: "Bearer 9a6f38f14b1c58f8d9016442e89170739778e98e0907fb825b9c392513c4758e46993dfde86454b746c036aef98f983f4a63504ff945e5ef156f61ba825295df46146e1678d7fb62d70c5b4d960904fa2637110678936106b5befcef6f0ff282d5ba648a7ba9196554b6c558eb5727f9b5482fddeef02f402e563a89498c7a5b",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       });
 

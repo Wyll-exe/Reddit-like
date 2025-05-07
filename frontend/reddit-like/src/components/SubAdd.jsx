@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 function AddSubscriptionPage() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -10,7 +11,18 @@ function AddSubscriptionPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = 'Bearer 9a6f38f14b1c58f8d9016442e89170739778e98e0907fb825b9c392513c4758e46993dfde86454b746c036aef98f983f4a63504ff945e5ef156f61ba825295df46146e1678d7fb62d70c5b4d960904fa2637110678936106b5befcef6f0ff282d5ba648a7ba9196554b6c558eb5727f9b5482fddeef02f402e563a89498c7a5b';
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+
+    if (!token) {
+      alert('Vous devez être connecté pour ajouter un Thread.');
+
+    if (!userId) {
+      alert('ID introuvable');
+    }
+      return;
+    }
 
     try {
       let imageId = null;
@@ -23,16 +35,22 @@ function AddSubscriptionPage() {
         const uploadRes = await fetch('http://localhost:1337/api/upload', {
           method: 'POST',
           headers: {
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
           },
           body: imageFormData,
         });
+
+        if (!uploadRes.ok) {
+          const errorData = await uploadRes.json();
+          console.error('Erreur d\'upload de l\'image:', errorData);
+          throw new Error('Échec de l’upload de l’image');
+        }
 
         const uploadData = await uploadRes.json();
         imageId = uploadData?.[0]?.id;
 
         if (!imageId) {
-          throw new Error('Échec de l’upload de l’image');
+          throw new Error('Échec de l’upload');
         }
       }
 
@@ -42,17 +60,26 @@ function AddSubscriptionPage() {
           Name: name,
           Description: description,
           Banner: imageId,
-        },
+          user: parseInt(userId, 10),
+        }
       };
+
+      console.log('Payload:', payload);
 
       const res = await fetch('http://localhost:1337/api/subs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("Erreur API :", errorData);
+        throw new Error(errorData.error?.message || "Erreur lors de la création");
+      }
 
       const json = await res.json();
 
@@ -60,11 +87,11 @@ function AddSubscriptionPage() {
         alert('Thread ajouté avec succès !');
         navigate('/subs');
       } else {
-        alert('Erreur lors de l\'ajout de Thread ...');
+        alert('Erreur lors de l\'ajout de Thread ');
       }
     } catch (error) {
-      console.error('Erreur lors de la soumission du formulaire :', error);
-      alert('Une erreur est survenue lors de l’envoi du formulaire ...');
+      console.error('Erreur lors de la soumission :', error);
+      alert('Une erreur lors de l’envoi');
     }
   };
 
@@ -110,7 +137,7 @@ function AddSubscriptionPage() {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+          className="w-full bg-green-400 text-white py-2 px-4 rounded-lg hover:bg-green-300 transition-colors"
         >
           Ajouter le Thread
         </button>

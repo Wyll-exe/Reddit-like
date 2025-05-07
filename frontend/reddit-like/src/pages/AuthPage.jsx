@@ -30,8 +30,9 @@ function Auth({ setUser }) {
 
       const data = await response.json();
       localStorage.setItem("token", data.jwt)
+      localStorage.setItem("userId", data.user.id);
       setUser(data.user); // Stocke les informations de l'utilisateur
-      navigate("/homepage");
+      navigate("/subs");
     } catch (err) {
       setError(err.message); // Affiche le message d'erreur
     }
