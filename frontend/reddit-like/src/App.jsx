@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage";
 import AuthPage from "./pages/AuthPage";
 import Homepage from "./pages/Homepage";
 import Sub from "./components/Sub.jsx";
+import Paint from "./components/Paint.jsx";
 import SubAdd from "./components/SubAdd.jsx";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import "./style.css";
@@ -22,6 +23,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/subs" element={<Sub />} />
           <Route path="/add" element={<SubAdd />} />
+          <Route path="/paint" element={<Paint />} />
           <Route path="/login" element={<AuthPage setUser={setUser} />} />
           <Route
             path="/homepage"
