@@ -8,30 +8,50 @@ function AddSubscriptionPage() {
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState(null);
 
+  const checkNameExists = async (name) => {
+    const response = await fetch(
+      `http://localhost:1337/api/subs?filters[Name][$eq]=${name}`
+    );
+    const data = await response.json();
+    return data.data.length > 0; 
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
-
-
+  
     if (!token) {
       alert('Vous devez être connecté pour ajouter un Thread.');
-
-    if (!userId) {
-      alert('ID introuvable');
-    }
       return;
     }
-
+  
+    if (!userId) {
+      alert('ID introuvable.');
+      return;
+    }
+  
+    
+    if (description.length < 3) {
+      alert('La description doit contenir au moins 3 caractères.');
+      return;
+    }
+  
     try {
+      const nameExists = await checkNameExists(name);
+      if (nameExists) {
+        alert('Ce nom existe déjà. Veuillez en choisir un autre.');
+        return;
+      }
+  
       let imageId = null;
-
+  
       // Upload du fichier
       if (banner) {
         const imageFormData = new FormData();
         imageFormData.append('files', banner);
-
+  
         const uploadRes = await fetch('http://localhost:1337/api/upload', {
           method: 'POST',
           headers: {

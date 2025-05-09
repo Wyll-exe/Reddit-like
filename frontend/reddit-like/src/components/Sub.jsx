@@ -17,12 +17,12 @@ function Sub() {
     "William": "William : ''Fetch like a pro'' ",
   }
   
-
+  // Thread informations
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/subs?fields=Name,Description,createdAt&populate=Banner"
+          "http://localhost:1337/api/subs?populate=*"
         );
         const json = await response.json();
         setSubs(json.data);
@@ -102,6 +102,10 @@ function Sub() {
               alt="banner"
               className="w-72 h-auto mt-2"
             />
+          )}
+
+          {item.user && (
+            <p className="text-sm text-gray-500">Créé par : {item.user.username}</p>
           )}
 
           <button
