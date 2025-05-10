@@ -9,7 +9,7 @@ import { factories } from '@strapi/strapi'
 export default factories.createCoreController('api::post.post', ({ strapi }) => ({
     async modify(ctx) {
         try {
-          const { id: documentId } = ctx.params;
+          const { documentId } = ctx.params;
       
           const post = await strapi.db.query('api::post.post').findOne({ where: { documentId }, populate: ['author'] });
           if (!post) {
@@ -39,10 +39,11 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
       },
     async delete(ctx) {
       try {
-        const { id: documentId } = ctx.params;
+        console.log("ici", ctx.params);
+        const { documentId } = ctx.params;
     
         const post = await strapi.db.query('api::post.post').findOne({ where: { documentId }, populate: ['author'] });
-    
+        
         if (!post) {
           return ctx.notFound('Post non trouvé');
         }
@@ -87,21 +88,25 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
     },
     async findone(ctx) {
       try {
-        const { id: documentId } = ctx.params;
+        const { documentId } = ctx.params;
     
-          const post = await strapi.db
-    .query('api::post.post')
-    .findOne({
-      where: { documentId },
-      populate: ['author'],
-    })
+        if (!documentId) {
+          return ctx.badRequest('Le paramètre documentId est requis');
+        }
+    
+        const post = await strapi.db.query('api::post.post').findOne({
+          where: { documentId },
+          populate: ['author'],
+        });
+    
         if (!post) {
           return ctx.notFound('Post non trouvé');
         }
-        return ctx.send(post)
+    
+        return ctx.send({ data: post });
       } catch (error) {
         ctx.status = 500;
         return ctx.send({ error: error.message });
       }
-    },
+    }
 }));

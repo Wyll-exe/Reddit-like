@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 export default function PostDetails() {
-  const { documentId } = useParams(); // Récupère le documentId depuis l'URL
+  const { documentId } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -11,7 +11,6 @@ export default function PostDetails() {
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
 
-  // Fonction pour récupérer les détails du post via documentId
   async function fetchPostDetails() {
     setLoading(true);
     try {
@@ -24,10 +23,8 @@ export default function PostDetails() {
         }
       );
 
-      if (res.status === 200 && res.data.data.length > 0) {
-        setPost(res); // Récupère le premier post correspondant
-        console.log("Post récupéré :", res.data.data[0]);
-        setComments(res.data.data[0].attributes.comments || []);
+      if (res.status === 200) {
+        setPost(res.data.data);
       } else {
         throw new Error("Post introuvable");
       }
@@ -49,7 +46,7 @@ export default function PostDetails() {
         {
           data: {
             Description: newComment,
-            post: post.id, // Associe le commentaire au post
+            post: post.id,
           },
         },
         {
@@ -62,14 +59,14 @@ export default function PostDetails() {
 
       if (res.status === 200) {
         setComments((prevComments) => [...prevComments, res.data.data]);
-        setNewComment(""); // Réinitialise le champ de commentaire
+        setNewComment("");
       }
     } catch (err) {
       console.error("Erreur lors de l'ajout du commentaire :", err);
     }
   }
 
-  // Charge les détails du post au montage du composant
+
   useEffect(() => {
     fetchPostDetails();
   }, [documentId]);

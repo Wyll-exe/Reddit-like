@@ -9,7 +9,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
         try {
           const { id: documentId } = ctx.params;
       
-          const comment = await strapi.db.query('api::comment.comment').findOne({ where: { documentId }, populate: ['author'] });
+          const comment = await strapi.db.query('api::comment.comment').findOne({ where: { documentId }, populate: ['author', 'comments'] });
           if (!comment) {
             return ctx.notFound("Comment non trouvé");
           }
@@ -39,7 +39,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
       try {
         const { id: documentId } = ctx.params;
     
-        const comment = await strapi.db.query('api::comment.comment').findOne({ where: { documentId }, populate: ['author'] });
+        const comment = await strapi.db.query('api::comment.comment').findOne({ where: { documentId }, populate: ['author', 'comments'] });
     
         if (!comment) {
           return ctx.notFound("Comment non trouvé");
@@ -77,7 +77,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
             author: ctx.state.user.id,
             publishedAt: new Date().toISOString(),
           },
-          populate: ['author'],
+          populate: ['author', 'comments'],
         });
     
         if (!created) {
@@ -97,7 +97,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
     .query('api::comment.comment')
     .findOne({
       where: { documentId },
-      populate: ['author'],
+      populate: ['author', 'comments'],
     })
         if (!post) {
           return ctx.notFound('Comment non trouvé');

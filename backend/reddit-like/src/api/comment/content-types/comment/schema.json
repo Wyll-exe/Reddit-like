@@ -90,7 +90,7 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "comments"
     },
-    "post": {
+    "comments": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::post.post",

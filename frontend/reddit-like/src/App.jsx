@@ -27,7 +27,7 @@ function App() {
           <Route path="/login" element={<AuthPage setUser={setUser} />} />
           <Route path="/homepage" element={<Homepage user={user} setUser={setUser} />} />
           <Route path="/homepage/:id" element={<ModifierPost />} />
-          <Route path="/homepage/supp/:id" element={<DeletePost />} />
+          <Route path="/homepage/supp/:documentId" element={<DeletePost />} />
           <Route path="/post/:documentId" element={<PostDetails />} />
         </Routes>
       </div>

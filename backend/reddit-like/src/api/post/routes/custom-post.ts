@@ -1,13 +1,18 @@
 export default {
-    routes : [
+    routes: [
+        {
+            method: 'GET',
+            path: '/posts/:documentId',
+            handler: 'api::post.post.findone',
+        },
         {
             method: 'PUT',
-            path: '/posts/:id',
+            path: '/posts/:documentId',
             handler: 'api::post.post.modify',
         },
         {
             method: 'DELETE',
-            path: '/posts/:id',
+            path: '/posts/:documentId',
             handler: 'api::post.post.delete',
         },
         {
@@ -15,10 +20,5 @@ export default {
             path: '/posts',
             handler: 'api::post.post.create',
         },
-        {
-            method: 'GET',
-            path: '/posts/:documentId',
-            handler: 'api::post.post.findone',
-        }
     ],
 };

@@ -457,6 +457,7 @@ export interface ApiCommentComment extends Struct.CollectionTypeSchema {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    comments: Schema.Attribute.Relation<'manyToOne', 'api::post.post'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -468,7 +469,6 @@ export interface ApiCommentComment extends Struct.CollectionTypeSchema {
       'api::comment.comment'
     > &
       Schema.Attribute.Private;
-    post: Schema.Attribute.Relation<'manyToOne', 'api::post.post'>;
     Profile_picture: Schema.Attribute.Media<'images' | 'files'>;
     publishedAt: Schema.Attribute.DateTime;
     Reward: Schema.Attribute.Media<'images' | 'files'>;

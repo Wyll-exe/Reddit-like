@@ -1,91 +1,94 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
 
-export default function DeletePost() {
-  const { id } = useParams();
-  const [post, setPost] = useState({ id: '', title: '', description: '' });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+export default function ModifierPost () {
+    const { documentId } = useParams();
+    const [supprimer, setSupprimer] = useState('')
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    let navigate = useNavigate();
+    const token = localStorage.getItem('token');
+    
 
-  if (!token) {
-    alert('Vous devez être connecté pour supprimer votre post');
-    navigate('/login');
-  }
+    async function fetchSupprimer() {
+        setLoading(true)
+        try {
+            console.log(documentId)
+            const url = `http://localhost:1337/api/posts/${documentId}`
 
-  async function fetchPost() {
-    setLoading(true);
-    try {
-      console.log("ID récupéré depuis useParams :", id);
-      const res = await fetch(`http://localhost:1337/api/posts/${id - 1}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
 
-      if (!res.ok) throw new Error('Post introuvable');
-      const json = await res.json();
-      console.log("Réponse de l'API :", json);
+            const response = await fetch(url, {
+            headers: {
+                  "Authorization": `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+            });
+            
+            console.log(response)
 
-      setPost({
-        id: json.data.id,
-        ...json.data.attributes,
-      });
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  }
+            const data = await response.json()
+            setSupprimer(data)
+        } catch (error) {
+            setError(error)
+            return
+        } finally {
+            setLoading(false)
+        }}
+      
+    useEffect(() => {
+      fetchSupprimer()
+    }, []);
 
-  useEffect(() => {
-    fetchPost();
-  }, []);
-
-  const deletePost = async () => {
-    if (!window.confirm('Voulez-vous vraiment supprimer ce post ?')) return;
-    try {
-      console.log("ID du post à supprimer :", post.id);
-      const res = await axios.delete(
-        `http://localhost:1337/api/posts/${post.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const deletePost = async () => {
+      if (!window.confirm('Voulez-vous vraiment supprimer ce post ?')) return;
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.delete(
+          `http://localhost:1337/api/posts/${documentId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+          }
+        );
+        if (res.status === 200) {
+          alert('Post supprimé avec succès !');
+          navigate('/homepage');
+        } else {
+          throw new Error(`Statut inattendu : ${res.status}`);
         }
-      );
-      if (res.status === 200) {
-        alert('Post supprimé avec succès !');
-        navigate('/homepage');
-      } else {
-        throw new Error(`Statut inattendu : ${res.status}`);
+      } catch (err) {
+        console.error(err);
+        alert("Erreur lors de la suppression : " + err.message);
       }
-    } catch (err) {
-      console.error(err);
-      alert("Erreur lors de la suppression : " + err.message);
-    }
-  };
-
-  if (loading) return <p>Loading…</p>;
-  if (error) return <p className="text-red-600">{error.message}</p>;
+      }
+      console.log(supprimer)
 
   return (
     <div>
-      <h1>Supprimer le post</h1>
-      <div className="mb-4 p-4 border rounded">
-        <h2 className="font-bold">{post.title}</h2>
-        <p>{post.description}</p>
-      </div>
-      <button
-        onClick={deletePost}
-        className="px-4 py-2 bg-red-600 text-white rounded"
-      >
-        Supprimer
-      </button>
-    </div>
-  );
+            <div>Page pour supprimer</div>
+             {loading && <p>Loading...</p>}
+            {error && <p>{error.message}</p>}
+            {supprimer && (
+                <div>
+                    <div>
+                    <p>{supprimer.title}</p>
+                    <p>{supprimer.description}</p>
+                    {supprimer.media && (
+                    <div className="rounded-lg overflow-hidden mb-4">
+                        <img 
+                            src={"http://localhost:1337" + post.media[0].url}
+                            alt="Illustration" 
+                            className="w-full h-auto"
+                        />
+                    </div>
+                  )}
+                    </div>
+                <button onClick={deletePost}>Supprimer</button>
+                </div>
+            )}
+        </div>
+    )
 }
