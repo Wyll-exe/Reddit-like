@@ -59,7 +59,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
     },  
     async create(ctx) {
       try {
-        const { Description, User, Profile_picture, Share, Reward, Answer, Up_vote, Down_vote, Share_text, Answer_text, Reward_text } = ctx.request.body;
+        const { Description, User, Profile_picture, Share, Reward, Answer, Up_vote, Down_vote, Share_text, Answer_text, Reward_text, post } = ctx.request.body.data;
     
         const created = await strapi.entityService.create('api::comment.comment', {
           data: {
@@ -75,6 +75,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
             Answer_text,
             Reward_text,
             author: ctx.state.user.id,
+            post: post.documentId,
             publishedAt: new Date().toISOString(),
           },
           populate: ['author', 'comments'],

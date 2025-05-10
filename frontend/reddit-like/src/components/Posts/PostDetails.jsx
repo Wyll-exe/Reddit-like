@@ -25,6 +25,20 @@ export default function PostDetails() {
 
       if (res.status === 200) {
         setPost(res.data.data);
+        const commentsRes = await axios.get(
+          `http://localhost:1337/api/comments?populate=author`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (commentsRes.status === 200) {
+          setComments(commentsRes.data.data);
+          console.log(commentsRes.data.data);
+        } else {
+          throw new Error("Erreur lors de la récupération des commentaires");
+        }
       } else {
         throw new Error("Post introuvable");
       }
@@ -38,7 +52,6 @@ export default function PostDetails() {
   // Fonction pour ajouter un commentaire
   async function handleAddComment(e) {
     e.preventDefault();
-    if (!newComment.trim()) return;
 
     try {
       const res = await axios.post(
@@ -75,20 +88,29 @@ export default function PostDetails() {
   if (error) return <p className="text-red-600">{error.message}</p>;
 
   return (
-    <div className="p-4">
+    <div className="p-4 flex flex-col items-center">
       {post && (
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">{post.title}</h1>
-          <p className="text-gray-700">{post.description}</p>
+        <div className="mb-6 text-center">
+          <h3 className="text-sm mb-2">
+            @{post.author?.username || "Anonyme"}
+          </h3>
+          <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
+          <p className="text-violet-700">{post.description}</p>
         </div>
       )}
 
-      <div className="mb-6">
-        <h2 className="text-xl font-bold">Commentaires</h2>
+      <div className="mb-6 w-full max-w-2xl">
+        <h2 className="text-xl font-bold mb-4">Commentaires</h2>
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <div key={comment.id} className="p-3 border-b border-gray-200">
-              <p>{comment.attributes.Description}</p>
+            <div
+              key={comment.id}
+              className="p-3 border-b border-violet-200 flex flex-col"
+            >
+              <h3 className="text-sm font-semibold text-violet-600">
+                @{comment.author?.username || "Anonyme"}
+              </h3>
+              <p>{comment.Description}</p>
             </div>
           ))
         ) : (
