@@ -42,8 +42,8 @@ function Post({ post, toggleFollow, followedPosts }) {
                         />
                     </div>
                 )}
-                <Link to={`/homepage/${post.id}`}>Modifier</Link>
-                <Link to={`/homepage/supp/${post.id}`}>Supprimer</Link>
+                <Link to={`/homepage/${post.documentId}`}>Modifier</Link>
+                <Link to={`/homepage/supp/${post.documentId}`}>Supprimer</Link>
             </div>
         </div>
     );
