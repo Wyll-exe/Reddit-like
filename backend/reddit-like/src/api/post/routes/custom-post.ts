@@ -17,8 +17,8 @@ export default {
         },
         {
             method: 'GET',
-            path : '/posts/:id',
-            handler: 'api::post.post.findOne',
-        },
+            path: '/posts/:documentId',
+            handler: 'api::post.post.findone',
+        }
     ],
 };

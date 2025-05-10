@@ -89,19 +89,20 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
           return ctx.send({ error: error.message });
         }
       },
-      async findOne(ctx) {
+      async findone(ctx) {
         try {
-          const { id } = ctx.params;
+          const { documentId } = ctx.params;
       
-          const post = await strapi.entityService.findOne('api::post.post', id, {
-            populate: ['author', 'media'],
-          }) as any;
-      
+           const post = await strapi.db
+      .query('api::post.post')
+      .findOne({
+        where: { documentId },
+        populate: ['author', 'comments'],
+      })
           if (!post) {
             return ctx.notFound('Post non trouvé');
           }
-      
-          return ctx.send({ data: post });
+          return ctx.send({ data: post})
         } catch (error) {
           ctx.status = 500;
           return ctx.send({ error: error.message });
