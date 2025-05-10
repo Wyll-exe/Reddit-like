@@ -8,12 +8,19 @@ export default function DeletePost() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  const token = localStorage.getItem('token');
     async function fetchPost() {
       setLoading(true);
       try {
         console.log(id)
-        const res = await fetch(`http://localhost:1337/api/posts/${id}`);
+        const res = await fetch(`http://localhost:1338/api/posts/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (!res.ok) throw new Error('Post introuvable');
         const json = await res.json();
         setPost(json.data.attributes || json);
@@ -32,7 +39,7 @@ export default function DeletePost() {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.delete(
-        `http://localhost:1337/api/posts/${id}`,
+        `http://localhost:1338/api/posts/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

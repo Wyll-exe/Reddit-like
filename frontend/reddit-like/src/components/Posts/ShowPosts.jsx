@@ -36,7 +36,7 @@ function Post({ post, toggleFollow, followedPosts }) {
                 {post.media && (
                     <div className="rounded-lg overflow-hidden mb-4">
                         <img 
-                            src={"http://localhost:1337" + post.media[0].url}
+                            src={"http://localhost:1338" + post.media[0].url}
                             alt="Illustration" 
                             className="w-full h-auto"
                         />
