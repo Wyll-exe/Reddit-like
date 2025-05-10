@@ -548,7 +548,7 @@ export interface ApiSubSub extends Struct.CollectionTypeSchema {
     singularName: 'sub';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     Banner: Schema.Attribute.Media<'images' | 'files'>;
