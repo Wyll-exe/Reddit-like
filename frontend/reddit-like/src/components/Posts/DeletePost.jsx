@@ -1,79 +1,79 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
 
-export default function DeletePost() {
-  const { id } = useParams();
-  const [post, setPost] = useState({ title: '', description: '' });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-    async function fetchPost() {
-      setLoading(true);
+export default function ModifierPost () {
+    const { id } = useParams();
+    const [supprimer, setSupprimer] = useState('')
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    let navigate = useNavigate();
+    
+
+    async function fetchSupprimer() {
+        setLoading(true)
+        try {
+            const url = `http://localhost:1337/api/posts/${id}`
+
+
+            const response = await fetch(url)
+            if (!response.ok) {
+                throw new Error("pas de post trouvé")
+            }
+
+
+            const data = await response.json()
+            setSupprimer(data)
+        } catch (error) {
+            setError(error)
+            return
+        } finally {
+            setLoading(false)
+        }}
+      
+    useEffect(() => {
+      fetchSupprimer()
+    }, []);
+
+    const deletePost = async () => {
+      if (!window.confirm('Voulez-vous vraiment supprimer ce post ?')) return;
       try {
-        console.log(id)
-        const res = await fetch(`http://localhost:1338/api/posts/${id}`,
+        const token = localStorage.getItem('token');
+        const res = await axios.delete(
+          `http://localhost:1337/api/posts/${id}`,
           {
             headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
             },
           }
         );
-        if (!res.ok) throw new Error('Post introuvable');
-        const json = await res.json();
-        setPost(json.data.attributes || json);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    useEffect(() => {
-    if (id) fetchPost();
-  }, [id]);
-
-  const deletePost = async () => {
-    if (!window.confirm('Voulez-vous vraiment supprimer ce post ?')) return;
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.delete(
-        `http://localhost:1338/api/posts/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        if (res.status === 200) {
+          alert('Post supprimé avec succès !');
+          navigate('/homepage');
+        } else {
+          throw new Error(`Statut inattendu : ${res.status}`);
         }
-      );
-      if (res.status === 200) {
-        alert('Post supprimé avec succès !');
-        navigate('/homepage');
-      } else {
-        throw new Error(`Statut inattendu : ${res.status}`);
+      } catch (err) {
+        console.error(err);
+        alert("Erreur lors de la suppression : " + err.message);
       }
-    } catch (err) {
-      console.error(err);
-      alert("Erreur lors de la suppression : " + err.message);
-    }
-  };
-
-  if (loading) return <p>Loading…</p>;
-  if (error)   return <p className="text-red-600">{error.message}</p>;
+      }
 
   return (
     <div>
-      <h1>Supprimer le post</h1>
-      <div className="mb-4 p-4 border rounded">
-        <h2 className="font-bold">{post.title}</h2>
-        <p>{post.description}</p>
-      </div>
-      <button
-        onClick={deletePost}
-        className="px-4 py-2 bg-red-600 text-white rounded"
-      >
-        Supprimer
-      </button>
-    </div>
-  );
+            <div>Page pour modifier</div>
+             {loading && <p>Loading...</p>}
+            {error && <p>{error.message}</p>}
+            {supprimer && (
+                <div>
+                    <div>
+                    <p>{supprimer.title}</p>
+                    <p>{supprimer.description}</p>
+                    </div>
+                <button onClick={deletePost}>Supprimer</button>
+                </div>
+            )}
+        </div>
+    )
 }

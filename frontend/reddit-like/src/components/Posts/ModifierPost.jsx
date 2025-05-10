@@ -14,19 +14,10 @@ export default function ModifierPost () {
     async function fetchModifier() {
         setLoading(true)
         try {
-            const url = `http://localhost:1338/api/posts/${id}`
-            const user = {
-                title: modifier.title,
-                description: modifier.description
-            }
-            const token = localStorage.getItem('token');
-            const {response} = await fetch(url, user, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-            });
+            const url = `http://localhost:1337/api/posts/${id}`
 
+
+            const response = await fetch(url)
             if (!response.ok) {
                 throw new Error("pas de post trouvé")
             }
@@ -41,10 +32,6 @@ export default function ModifierPost () {
             setLoading(false)
         }
     }
-
-    useEffect(() => {
-        fetchModifier()
-    }, [])
 
     const [post, setPost] = useState({
         title: '',
@@ -69,10 +56,9 @@ export default function ModifierPost () {
         if (Object.keys(formError).length > 0) {
             setError2(formError);
             return;
-        }}
+        }
 
 
-    async function fetchModifier2() {
         try {
             const user = {
                 title: post.title,
@@ -94,7 +80,7 @@ export default function ModifierPost () {
     };
 
     useEffect(() => {
-        fetchModifier2()
+        fetchModifier()
         
     }, [updated])
 
