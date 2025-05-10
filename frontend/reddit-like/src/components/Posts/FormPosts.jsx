@@ -7,6 +7,11 @@ export default function FormPost({ addPost }) {
         description: ""
     })
     const[error, setError] = useState({})
+    const [image, setImage] = useState([])
+
+    const handleImage = event => {
+        setImage(Array.from(event.target.files))
+    }
 
     const handleChangePost = async (event) => {
         const { name, value } = event.target;
@@ -22,13 +27,29 @@ export default function FormPost({ addPost }) {
         if (!Form.description) formError.description = "Champs requis"
     
     
-        const user = {
-                title: Form.title,
-                description: Form.description
-        };
+        const formData = new FormData();
+        image.forEach(file => formData.append('files', file))
+
 
                 try {
             const token = localStorage.getItem('token');
+            const img = await axios.post('http://localhost:1337/api/upload',
+                formData,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    }
+                }
+            )
+            const uploaded = img.data
+            const fileIds = uploaded.map(f => f.id)
+
+            const user = {
+                title: Form.title,
+                description: Form.description,
+                media: fileIds
+            };
+
             const { data, status } = await axios.post(
                 'http://localhost:1337/api/posts',
                 user,
@@ -76,8 +97,9 @@ export default function FormPost({ addPost }) {
                 ></textarea>
                 <input 
                     type="file" 
+                    name="files"
                     className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
-                    onChange={(e) => setPostImage(e.target.files[0])}
+                    onChange={handleImage}
                 />
                 <div className="flex justify-between mt-3">
                     <button 
