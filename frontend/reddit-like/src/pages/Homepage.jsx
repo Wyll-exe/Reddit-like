@@ -40,7 +40,7 @@ function Homepage({ user, setUser }) {
     };
 
     return (
-        <div className="min-h-screen bg-[#e8f4e8]">
+        <div className="min-h-screen bg-[#e8f4e8] dark:bg-[#2b322c]">
             <div className="flex">
                 <Sidebar setUser={setUser} />
                 <div className="w-full md:ml-64">
