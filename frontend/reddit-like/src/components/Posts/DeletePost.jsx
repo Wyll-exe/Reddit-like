@@ -4,35 +4,54 @@ import axios from 'axios';
 
 export default function DeletePost() {
   const { id } = useParams();
-  const [post, setPost] = useState({ title: '', description: '' });
+  const [post, setPost] = useState({ id: '', title: '', description: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
-    async function fetchPost() {
-      setLoading(true);
-      try {
-        console.log(id)
-        const res = await fetch(`http://localhost:1337/api/posts/${id}`);
-        if (!res.ok) throw new Error('Post introuvable');
-        const json = await res.json();
-        setPost(json.data.attributes || json);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
+  if (!token) {
+    alert('Vous devez être connecté pour supprimer votre post');
+    navigate('/login');
+  }
+
+  async function fetchPost() {
+    setLoading(true);
+    try {
+      console.log("ID récupéré depuis useParams :", id);
+      const res = await fetch(`http://localhost:1337/api/posts/${id - 1}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!res.ok) throw new Error('Post introuvable');
+      const json = await res.json();
+      console.log("Réponse de l'API :", json);
+
+      setPost({
+        id: json.data.id,
+        ...json.data.attributes,
+      });
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
     }
-    useEffect(() => {
-    if (id) fetchPost();
-  }, [id]);
+  }
+
+  useEffect(() => {
+    fetchPost();
+  }, []);
 
   const deletePost = async () => {
     if (!window.confirm('Voulez-vous vraiment supprimer ce post ?')) return;
     try {
-      const token = localStorage.getItem('token');
+      console.log("ID du post à supprimer :", post.id);
       const res = await axios.delete(
-        `http://localhost:1337/api/posts/${id}`,
+        `http://localhost:1337/api/posts/${post.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +71,7 @@ export default function DeletePost() {
   };
 
   if (loading) return <p>Loading…</p>;
-  if (error)   return <p className="text-red-600">{error.message}</p>;
+  if (error) return <p className="text-red-600">{error.message}</p>;
 
   return (
     <div>
