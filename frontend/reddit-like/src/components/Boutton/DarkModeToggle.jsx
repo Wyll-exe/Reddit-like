@@ -21,7 +21,7 @@ function DarkModeToggle() {
             <div className="flex items-center justify-center ">
                 <button
                     onClick={toggleDarkMode}
-                    className={`p-2 rounded ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}
+                    className={`p-2 rounded ${darkMode ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}
                 >
                     {darkMode ? 'Light Mode' : 'Dark Mode'}
                 </button>
