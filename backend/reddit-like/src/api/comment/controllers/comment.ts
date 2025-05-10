@@ -92,5 +92,24 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
           ctx.status = 500;
           return ctx.send({ error: error.message });
         }
-      }  
+      },
+      async findone(ctx) {
+        try {
+          const { id: documentId } = ctx.params;
+      
+           const post = await strapi.db
+      .query('api::comment.comment')
+      .findOne({
+        where: { documentId },
+        populate: ['author'],
+      })
+          if (!post) {
+            return ctx.notFound('Comment non trouvé');
+          }
+          return ctx.send(post)
+        } catch (error) {
+          ctx.status = 500;
+          return ctx.send({ error: error.message });
+        }
+      }
 }));

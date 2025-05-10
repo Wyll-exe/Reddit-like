@@ -14,6 +14,11 @@ export default {
             method: 'POST',
             path: '/comments',
             handler: 'api::comment.comment.create',
+        },
+        {
+            method: 'GET',
+            path: '/comments/:id',
+            handler: 'api::comment.comment.findone',
         }
     ]
 }
