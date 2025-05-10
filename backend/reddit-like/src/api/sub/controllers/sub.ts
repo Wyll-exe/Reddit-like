@@ -7,11 +7,9 @@ import { factories } from '@strapi/strapi'
 export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
   async modify(ctx) {
     try {
-      const { id } = ctx.params;
+      const { id: documentId } = ctx.params;
   
-      const sub = await strapi.entityService.findOne('api::sub.sub', id, {
-        populate: ['author'],
-      }) as any;
+      const sub = await strapi.db.query('api::sub.sub').findOne({ where: { documentId }, populate: ['author'] });
       if (!sub) {
         return ctx.notFound('Sub non trouvé');
       }
@@ -22,7 +20,7 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
   
       const updated = await strapi.entityService.update(
         'api::sub.sub',
-        id,
+        sub.id,
         {
           data: {
             ...ctx.request.body,
@@ -39,11 +37,9 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
   },
   async delete(ctx) {
     try {
-      const { id } = ctx.params;
+      const { id: documentId } = ctx.params;
   
-      const sub = await strapi.entityService.findOne('api::sub.sub', id, {
-        populate: ['author'],
-      }) as any;
+      const sub = await strapi.db.query('api::sub.sub').findOne({ where: { documentId }, populate: ['author'] });
   
       if (!sub) {
         return ctx.notFound('Sub non trouvé');
@@ -53,7 +49,7 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
         return ctx.unauthorized("Vous n’êtes pas l’auteur de ce sub");
       }
   
-      const deleted = await strapi.entityService.delete('api::sub.sub', id);
+      const deleted = await strapi.entityService.delete('api::sub.sub', sub.id);
   
       return ctx.send({ data: deleted });
     } catch (error) {
