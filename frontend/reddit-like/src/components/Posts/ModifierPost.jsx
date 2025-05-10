@@ -65,7 +65,7 @@ export default function ModifierPost () {
                 description: post.description
             }
             const token = localStorage.getItem('token');
-            const {status} = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
+            const {status} = await axios.put(`http://localhost:1338/api/posts/${id}`, user, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,

@@ -7,7 +7,7 @@ function Sub() {
     async function fetchSubs() {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/subs?fields=Name,Description,createdAt&populate=Banner"
+          "http://localhost:1338/api/subs?fields=Name,Description,createdAt&populate=Banner"
         );
         const json = await response.json();
 
@@ -29,7 +29,7 @@ function Sub() {
           <p>{new Date(item.createdAt).toLocaleString()}</p>
           {item.Banner && item.Banner.url && (
             <img
-              src={`http://localhost:1337${item.Banner.url}`}
+              src={`http://localhost:1338${item.Banner.url}`}
               alt="banner"
               style={{ width: "300px", height: "auto" }}
             />

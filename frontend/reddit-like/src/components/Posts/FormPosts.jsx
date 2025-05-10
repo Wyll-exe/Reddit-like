@@ -30,7 +30,7 @@ export default function FormPost({ addPost }) {
                 try {
             const token = localStorage.getItem('token');
             const { data, status } = await axios.post(
-                'http://localhost:1337/api/posts',
+                'http://localhost:1338/api/posts',
                 user,
                 {
                     headers: {
