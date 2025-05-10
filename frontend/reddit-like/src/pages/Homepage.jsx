@@ -13,7 +13,7 @@ function Homepage({ user, setUser }) {
     async function fetchTest() {
         setLoading(true);
         try {
-            const url = "http://localhost:1337/api/articles";
+            const url = "http://localhost:1338/api/articles";
 
             const token = localStorage.getItem("token");
             console.log("Token envoyé :", token);
@@ -65,7 +65,7 @@ function Homepage({ user, setUser }) {
             <div className="mt-4">
                 {test && Array.isArray(test) ? (
                     test.map((el, index) => (
-                        <div key={index}>{el.Fruit}</div>
+                        <div key={index}>{el.attributes.Fruit}</div>
                     ))
                 ) : (
                     <p>Aucun article trouvé.</p>
