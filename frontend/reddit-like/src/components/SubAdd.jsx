@@ -20,7 +20,7 @@ function AddSubscriptionPage() {
         const imageFormData = new FormData();
         imageFormData.append('files', banner);
 
-        const uploadRes = await fetch('http://localhost:1338/api/upload', {
+        const uploadRes = await fetch('http://localhost:1337/api/upload', {
           method: 'POST',
           headers: {
             Authorization: token,
@@ -45,7 +45,7 @@ function AddSubscriptionPage() {
         },
       };
 
-      const res = await fetch('http://localhost:1338/api/subs', {
+      const res = await fetch('http://localhost:1337/api/subs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
