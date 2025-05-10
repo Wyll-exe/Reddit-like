@@ -25,29 +25,36 @@ export default function FormPost({ addPost }) {
         let formError = {};
         if (!Form.title) formError.title = "Champs requis"
         if (!Form.description) formError.description = "Champs requis"
-    
-    
-        const formData = new FormData();
-        image.forEach(file => formData.append('files', file))
+        if (Object.keys(formError).length) {
+            setError(formError);
+            return;
+        }
 
 
-                try {
+        try {
+            let fileIds = [];
             const token = localStorage.getItem('token');
-            const img = await axios.post('http://localhost:1337/api/upload',
-                formData,
-                {
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
+
+            if (image.length > 0) {
+                const formData = new FormData();
+                image.forEach(file => formData.append('files', file))
+
+                const img = await axios.post('http://localhost:1337/api/upload',
+                    formData,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                        }
                     }
-                }
-            )
-            const uploaded = img.data
-            const fileIds = uploaded.map(f => f.id)
+                )
+                const uploaded = img.data
+                fileIds = uploaded.map(f => f.id)
+            }
 
             const user = {
                 title: Form.title,
                 description: Form.description,
-                media: fileIds
+                ...(fileIds.length > 0 && { media: fileIds })
             };
 
             const { data, status } = await axios.post(
