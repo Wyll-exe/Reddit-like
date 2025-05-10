@@ -84,6 +84,23 @@ export default function PostDetails() {
     fetchPostDetails();
   }, [documentId]);
 
+  async function handleDeleteComment(commentId) {
+    try {
+      const res = await axios.delete(`http://localhost:1337/api/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (res.status === 200) {
+        // Supprime le commentaire de la liste
+        setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
+      }
+    } catch (err) {
+      console.error("Erreur lors de la suppression du commentaire :", err);
+    }
+  }
+
   if (loading) return <p>Chargement...</p>;
   if (error) return <p className="text-red-600">{error.message}</p>;
 
@@ -111,6 +128,12 @@ export default function PostDetails() {
                 @{comment.author?.username || "Anonyme"}
               </h3>
               <p>{comment.Description}</p>
+              <button
+              onClick={() => handleDeleteComment(comment.id)}
+              className="text-red-500 text-sm"
+            >
+              Supprimer
+            </button>
             </div>
           ))
         ) : (
