@@ -5,7 +5,6 @@ function Sub() {
   const [subs, setSubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [citation, setCitation] = useState('');
-  const token = localStorage.getItem("token");
 
 
   // Choisir une citation
@@ -20,21 +19,19 @@ function Sub() {
   
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:1338/api/subs?fields=Name,Description,createdAt&populate=Banner", {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-      const json = await response.json();
-      setSubs(json.data);
-    } catch (error) {
-      console.error("Erreur de chargement :", error);
-    } finally {
-      setTimeout(() => setLoading(false), 3574); // Timer
-    }
-  };
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:1338/api/subs?fields=Name,Description,createdAt&populate=Banner"
+        );
+        const json = await response.json();
+        setSubs(json.data);
+      } catch (error) {
+        console.error("Erreur de chargement :", error);
+      } finally {
+        setTimeout(() => setLoading(false), 3574); // Timer
+      }
+    };
 
     // 
     const randomPhrase = Object.values(Mearde)[Math.floor(Math.random() * Object.values(Mearde).length)];
@@ -51,8 +48,8 @@ function Sub() {
       const res = await fetch(`http://localhost:1338/api/subs/${id}`, {
         method: "DELETE",
         headers: {
-        'Authorization': `Bearer ${token}`,
-      },
+          Authorization: "Bearer 9a6f38f14b1c58f8d9016442e89170739778e98e0907fb825b9c392513c4758e46993dfde86454b746c036aef98f983f4a63504ff945e5ef156f61ba825295df46146e1678d7fb62d70c5b4d960904fa2637110678936106b5befcef6f0ff282d5ba648a7ba9196554b6c558eb5727f9b5482fddeef02f402e563a89498c7a5b",
+        },
       });
 
       if (res.ok) {
@@ -93,9 +90,9 @@ function Sub() {
           <p>{item.Description}</p>
           <p>{new Date(item.createdAt).toLocaleString()}</p>
 
-          {item.attributes?.Banner?.data?.attributes?.url && (
+          {item.Banner?.url && (
             <img
-              src={`http://localhost:1338${item.attributes.Banner.data.attributes.url}`}
+              src={`http://localhost:1338${item.Banner.url}`}
               alt="banner"
               className="w-72 h-auto mt-2"
             />
