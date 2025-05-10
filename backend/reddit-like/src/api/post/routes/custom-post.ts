@@ -14,6 +14,11 @@ export default {
             method: 'POST',
             path: '/posts',
             handler: 'api::post.post.create',
+        },
+        {
+            method: 'GET',
+            path: '/posts/:id',
+            handler: 'api::post.post.findone',
         }
     ]
 }

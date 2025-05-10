@@ -25,7 +25,6 @@ function AffichagePost() {
             }
 
             const data = await response.json();
-            console.log(data.data);
             setTest(data.data);
         } catch (error) {
             setError(error);
@@ -43,7 +42,6 @@ function AffichagePost() {
             {loading && <p>Chargement...</p>}
             {error && <p>Erreur : {error.message}</p>}
             <div>{test.map( (el) => {
-                console.log(el)
                 return (
                     <div>
                         <p>{el.title}</p>
