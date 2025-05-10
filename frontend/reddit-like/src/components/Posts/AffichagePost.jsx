@@ -36,12 +36,14 @@ function AffichagePost() {
     useEffect(() => {
         fetchTest();
     }, []);
+    console.log(test);
 
     return (
         <div>
             {loading && <p>Chargement...</p>}
             {error && <p>Erreur : {error.message}</p>}
-            <div>{test.map( (el) => {
+            <div>
+                {test.map( (el) => {
                 return (
                     <div>
                         <p>{el.title}</p>

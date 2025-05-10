@@ -8,18 +8,20 @@ export default function ModifierPost () {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     let navigate = useNavigate();
+    const token = localStorage.getItem('token');
     
 
     async function fetchSupprimer() {
         setLoading(true)
         try {
-            const url = `http://localhost:1337/api/posts/${id}`
+            const url = `http://localhost:1338/api/posts/${id}?populate=*`
 
 
-            const response = await fetch(url)
-            if (!response.ok) {
-                throw new Error("pas de post trouvé")
-            }
+            const response = await fetch(url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+                },
+            });
 
 
             const data = await response.json()
@@ -40,7 +42,7 @@ export default function ModifierPost () {
       try {
         const token = localStorage.getItem('token');
         const res = await axios.delete(
-          `http://localhost:1337/api/posts/${id}`,
+          `http://localhost:1338/api/posts/${id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -59,10 +61,11 @@ export default function ModifierPost () {
         alert("Erreur lors de la suppression : " + err.message);
       }
       }
+      console.log(supprimer)
 
   return (
     <div>
-            <div>Page pour modifier</div>
+            <div>Page pour supprimer</div>
              {loading && <p>Loading...</p>}
             {error && <p>{error.message}</p>}
             {supprimer && (
@@ -70,6 +73,15 @@ export default function ModifierPost () {
                     <div>
                     <p>{supprimer.title}</p>
                     <p>{supprimer.description}</p>
+                    {supprimer.media && (
+                    <div className="rounded-lg overflow-hidden mb-4">
+                        <img 
+                            src={"http://localhost:1338" + post.media[0].url}
+                            alt="Illustration" 
+                            className="w-full h-auto"
+                        />
+                    </div>
+                  )}
                     </div>
                 <button onClick={deletePost}>Supprimer</button>
                 </div>
