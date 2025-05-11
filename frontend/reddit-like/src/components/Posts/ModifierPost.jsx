@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
 
-
-export default function ModifierPost ( user, setUser) {
+export default function ModifierPost () {
     const { id } = useParams();
     const [modifier, setModifier] = useState('')
     const [image, setImage] = useState([])
@@ -12,7 +11,7 @@ export default function ModifierPost ( user, setUser) {
     const [error, setError] = useState(null)
     const [updated, setUpdated] = useState(false)
     let navigate = useNavigate();
-    
+
 
     async function fetchModifier() {
         setLoading(true)
@@ -109,29 +108,26 @@ export default function ModifierPost ( user, setUser) {
             console.error("Erreur", error2);
         }
     };
+    
 
     useEffect(() => {
         fetchModifier()
-        
+
     }, [updated])
 
     return(
-        <div className="min-h-screen bg-[#e8f4e8]">
+         <div className="min-h-screen bg-[#e8f4e8]">
             <div className ="flex">
                 <Sidebar />
                 <div className="flex-1 ml-64 min-h-screen">
                     <div className="max-w-xl mx-auto mt-10 p-8 bg-[#778379] shadow-lg rounded-2xl">
-        
-        
-        
-
         <div>
             <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center">Modifications :</h2>
              
              {loading && <p>Loading...</p>}
             {error && <p>{error.message}</p>}
-
             {modifier && (
+                <div>
                 <div className="space-y-6">
                     <div className="bg-[#919fd4f5] p-4 rounded-lg border border-gray-200 text-center">
                         <p className="text-lg font-semibold text-[#4a4a4a]">
@@ -148,9 +144,6 @@ export default function ModifierPost ( user, setUser) {
                         />
                     )}
                 </div>
-              
-
-
                     <form onSubmit={handleSubmit}>
                         <input 
                         className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mb-3 mt-3"
@@ -166,7 +159,12 @@ export default function ModifierPost ( user, setUser) {
                         placeholder="Décris moi ton aventure ?"
                         value={post.description}
                         onChange={handleChange} />
-
+                        <input 
+                    type="file" 
+                    name="files"
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
+                    onChange={handleImage}
+                />
                     <button 
                     type='submit' 
                     className=" bg-[#86C7C3] hover:bg-[#A8DBD9] text-[#242424] font-semibold py-3 mt-4 px-4 rounded-lg transition-colors"
@@ -174,11 +172,11 @@ export default function ModifierPost ( user, setUser) {
                         Modifier</button>
                     </form>
                 </div>
-            )}
-
-                    </div>
                 </div>
+            )}
             </div>
+            </div>
+        </div>
         </div>
         </div>
     )
