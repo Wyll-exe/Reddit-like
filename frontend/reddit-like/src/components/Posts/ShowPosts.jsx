@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 function Post({ post, toggleFollow, followedPosts }) {
     return (
-        <div className="bg-white m-3 rounded-xl shadow-sm overflow-hidden">
+        <div className="bg-white m-3 rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
@@ -20,7 +20,7 @@ function Post({ post, toggleFollow, followedPosts }) {
                 <div>
                     <button 
                         onClick={() => toggleFollow(post.id)} 
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        className={`px-3 py-1 rounded-full text-sm font-medium dark:bg-[#10B981]	 ${
                             followedPosts[post.id] 
                                 ? 'bg-gray-200 text-gray-800' 
                                 : 'bg-[#e8f4e8] text-gray-700'
@@ -32,7 +32,7 @@ function Post({ post, toggleFollow, followedPosts }) {
             </div>
             <div className="p-4">
                 <h2 className="text-lg font-semibold mb-2">{post.title}</h2>
-                <p className="text-gray-700 mb-4">{post.description}</p>
+                <p className="text-gray-700 mb-4 dark:text-white">{post.description}</p>
                 {post.media && (
                     <div className="rounded-lg overflow-hidden mb-4">
                         <img 

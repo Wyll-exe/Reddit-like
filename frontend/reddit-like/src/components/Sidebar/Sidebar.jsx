@@ -16,7 +16,7 @@ function Sidebar({ setUser }) {
     };
 
     return (
-        <div className="hidden md:block w-64 bg-white h-screen fixed left-0 top-0 p-5 border-r border-gray-200 dark:bg-[#282828] dark:border-gray-700">
+        <div className="hidden md:block w-64 bg-white h-screen fixed left-0 top-0 p-5 border-r border-[#374151] dark:bg-[#1A1C23] dark:border-gray-700">
             <div className="mb-6">
                 <div className="h-8">
                     <img src="https://raw.githubusercontent.com/Cyril-Mathe/Reddit-like/refs/heads/feature/subreddits/frontend/reddit-like/src/pages/logo.png" alt="Logo" className="h-full dark:text-white" />
@@ -39,7 +39,7 @@ function Sidebar({ setUser }) {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
-                    <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-lg">
+                    <button onClick={handleLogout} className="">
                         Déconnexion
                     </button>
                 </div>

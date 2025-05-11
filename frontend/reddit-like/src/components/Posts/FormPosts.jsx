@@ -53,21 +53,21 @@ export default function FormPost({ addPost }) {
 
 
     return (
-        <div className="p-4 bg-white m-3 rounded-xl shadow-sm">
+        <div className="p-4 bg-white m-3 rounded-xl shadow-sm dark:bg-[#334155]">
             <div className="flex items-center space-x-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-gray-200"></div>
                 <div className="text-gray-500">Qu'avez-vous en tête ?</div>
             </div>
             <form onSubmit={handlePostSubmit}>
                 <input 
-                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none"
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white  dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                     rows="2"
                     name="title"
                     placeholder="Un titre ?"
                     value={Form.title}
                     onChange={handleChangePost} />
                 <textarea 
-                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none"
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                     rows="2"
                     name="description"
                     placeholder="Partagez vos pensées..."
@@ -76,13 +76,13 @@ export default function FormPost({ addPost }) {
                 ></textarea>
                 <input 
                     type="file" 
-                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                     onChange={(e) => setPostImage(e.target.files[0])}
                 />
                 <div className="flex justify-between mt-3">
                     <button 
                         type="submit"
-                        className="px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium"
+                        className="px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium dark:bg-[#4F46E5]"
                     >
                         Publier
                     </button>
