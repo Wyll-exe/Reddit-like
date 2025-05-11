@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function ModifierPost () {
     const { id } = useParams();
     const [supprimer, setSupprimer] = useState('')
+    const [image, setImage] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     let navigate = useNavigate();
@@ -24,6 +25,8 @@ export default function ModifierPost () {
 
             const data = await response.json()
             setSupprimer(data)
+            setImage(data.media[0].url)
+            console.log(data.media[0].url)
         } catch (error) {
             setError(error)
             return
@@ -70,6 +73,13 @@ export default function ModifierPost () {
                     <div>
                     <p>{supprimer.title}</p>
                     <p>{supprimer.description}</p>
+                    {image.length > 0 && (
+        <img
+          src={`http://localhost:1337${image}`}
+          alt="Illustration"
+          className="w-full h-auto"
+        />
+      )}
                     </div>
                 <button onClick={deletePost}>Supprimer</button>
                 </div>
