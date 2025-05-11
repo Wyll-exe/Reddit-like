@@ -93,7 +93,7 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
     .query('api::post.post')
     .findOne({
       where: { documentId },
-      populate: ['author'],
+      populate: ['author', 'media'],
     })
         if (!post) {
           return ctx.notFound('Post non trouvé');
