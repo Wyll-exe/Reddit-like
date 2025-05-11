@@ -92,7 +92,6 @@ function AddSubscriptionPage() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload),
       });
       
       const responseData = await res.json(); 

@@ -91,44 +91,59 @@ function Sub( user, setUser) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-500">
-      <div className="flex">
-        <Sidebar setUser={setUser} /> 
-        <div className="w-full md:ml-64">
-          <main className="w-full h-screen bg-gray-500 overflow-y-auto p-4">
-            <Link to="/add" className="flex items-center space-x-3">
-            <span>Add sub</span>
-            </Link>
-            {subs.map((item) => (
-              <div key={item.id} className="bg-white p-4 mb-4 rounded-[120px] shadow">
-                <h2 className="text-xl font-bold">{item.Name}</h2>
-                <p>{item.Description}</p>
-                <p>{new Date(item.createdAt).toLocaleString()}</p>
+    <div className="min-h-screen bg-gray-100">
+  <div className="flex">
+    <Sidebar setUser={setUser} />
+    <div className="w-full md:ml-64">
+      <main className="w-full h-screen overflow-y-auto p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Threads'</h1>
+          <Link to="/add" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            ➕ Ajouter un Sub
+          </Link>
+        </div>
 
-                {item.Banner?.url && (
-                  <img
-                    src={`http://localhost:1337${item.Banner.url}`}
-                    alt="banner"
-                    className="w-300 h-20 mt-2"
-                  />
-                )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {subs.map((item) => (
+            <div key={item.id} className="bg-white rounded-2xl shadow hover:shadow-lg transition p-4">
+              {item.Banner?.url && (
+                <img
+                  src={`http://localhost:1337${item.Banner.url}`}
+                  alt="banner"
+                  className="w-full h-40 object-cover rounded-xl mb-4"
+                />
+              )}
+              <h2 className="text-xl font-semibold text-gray-900 mb-2 truncate ">{item.Name}</h2>
+              <p className="text-gray-700 mb-2 line-clamp-2">{item.Description}</p>
+              {item.author && (
+              <p className="text-sm text-gray-500 mb-2">
+                Fondateur : <span className="font-semibold underline text-blue-400 cursor-pointer hover:text-blue-500">@{item.author.username}</span>
+              </p>
+              )}
+              <p className="text-sm text-gray-500 mb-4">Créé depuis le : {new Date(item.createdAt).toLocaleDateString()}</p>
 
-                {item.author && (
-                  <p className="text-sm text-gray-500">Créé par : {item.author.username}</p>
-                )}
-
+              <div className="flex gap-2">
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+                  className="flex-1 bg-amber-200 text-white px-4 py-2 rounded hover:bg-red-600 transition"
                 >
                   Supprimer
                 </button>
+                <button
+                  onClick={() => console.log('Rejoindre', item.id)}
+                  className="flex-1 bg-green-200 text-white px-4 py-2 rounded hover:bg-green-500 transition"
+                >
+                  Rejoindre
+                </button>
               </div>
-            ))}
-          </main>
+            </div>
+          ))}
         </div>
-      </div>
+      </main>
     </div>
+  </div>
+</div>
+
   );
 }
 
