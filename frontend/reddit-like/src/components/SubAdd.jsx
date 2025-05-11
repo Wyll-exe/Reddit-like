@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 
 
 function AddSubscriptionPage() {
@@ -80,7 +80,7 @@ function AddSubscriptionPage() {
           Name: name,
           Description: description,
           Banner: imageId,
-          user: parseInt(userId, 10),
+          author: parseInt(userId, 10),
         }
       };
 
@@ -94,20 +94,20 @@ function AddSubscriptionPage() {
         },
         body: JSON.stringify(payload),
       });
-
+      
+      const responseData = await res.json(); 
+      console.log("Réponse de l'API :", responseData);
+      
       if (!res.ok) {
-        const errorData = await res.json();
-        console.error("Erreur API :", errorData);
-        throw new Error(errorData.error?.message || "Erreur lors de la création");
+        console.error("Erreur API :", responseData);
+        throw new Error(responseData.error?.message || "Erreur lors de la création");
       }
-
-      const json = await res.json();
-
-      if (json.data) {
+      
+      if (responseData.data) {
         alert('Thread ajouté avec succès !');
         navigate('/subs');
       } else {
-        alert('Erreur lors de l\'ajout de Thread ');
+        alert('Erreur lors de l\'ajout de Thread');
       }
     } catch (error) {
       console.error('Erreur lors de la soumission :', error);
@@ -161,6 +161,9 @@ function AddSubscriptionPage() {
         >
           Ajouter le Thread
         </button>
+        <Link to="/subs" className="flex items-center space-x-3">
+            <span>Subs</span>
+        </Link>
       </form>
     </div>
   );

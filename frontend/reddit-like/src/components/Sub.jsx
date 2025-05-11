@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { SyncLoader } from "react-spinners";
+import Sidebar from "./Sidebar/Sidebar";
+import { Link } from "react-router-dom";
 
-function Sub() {
+function Sub( user, setUser) {
   const [subs, setSubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [citation, setCitation] = useState('');
@@ -29,7 +31,7 @@ function Sub() {
       } catch (error) {
         console.error("Erreur de chargement :", error);
       } finally {
-        setTimeout(() => setLoading(false), 3574); // Timer
+        setTimeout(() => setLoading(false), 574); // Timer
       }
     };
 
@@ -89,35 +91,46 @@ function Sub() {
   }
 
   return (
-    <main className="w-full h-screen bg-gray-500 overflow-y-auto p-4">
-      {subs.map((item) => (
-        <div key={item.id} className="bg-white p-4 mb-4 rounded shadow">
-          <h2 className="text-xl font-bold">{item.Name}</h2>
-          <p>{item.Description}</p>
-          <p>{new Date(item.createdAt).toLocaleString()}</p>
+    <div className="min-h-screen bg-gray-500">
+      <div className="flex">
+        <Sidebar setUser={setUser} /> 
+        <div className="w-full md:ml-64">
+          <main className="w-full h-screen bg-gray-500 overflow-y-auto p-4">
+            <Link to="/add" className="flex items-center space-x-3">
+            <span>Add sub</span>
+            </Link>
+            {subs.map((item) => (
+              <div key={item.id} className="bg-white p-4 mb-4 rounded-[120px] shadow">
+                <h2 className="text-xl font-bold">{item.Name}</h2>
+                <p>{item.Description}</p>
+                <p>{new Date(item.createdAt).toLocaleString()}</p>
 
-          {item.Banner?.url && (
-            <img
-              src={`http://localhost:1337${item.Banner.url}`}
-              alt="banner"
-              className="w-72 h-auto mt-2"
-            />
-          )}
+                {item.Banner?.url && (
+                  <img
+                    src={`http://localhost:1337${item.Banner.url}`}
+                    alt="banner"
+                    className="w-300 h-20 mt-2"
+                  />
+                )}
 
-          {item.user && (
-            <p className="text-sm text-gray-500">Créé par : {item.user.username}</p>
-          )}
+                {item.author && (
+                  <p className="text-sm text-gray-500">Créé par : {item.author.username}</p>
+                )}
 
-          <button
-            onClick={() => handleDelete(item.id)}
-            className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Supprimer
-          </button>
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Supprimer
+                </button>
+              </div>
+            ))}
+          </main>
         </div>
-      ))}
-    </main>
+      </div>
+    </div>
   );
 }
+
 
 export default Sub;

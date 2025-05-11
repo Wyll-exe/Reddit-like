@@ -451,18 +451,17 @@ export interface ApiCommentComment extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    Answer: Schema.Attribute.Media<'images' | 'files'> &
-      Schema.Attribute.Required;
-    Answer_text: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'Answer'>;
-    Count: Schema.Attribute.BigInteger;
+    Answer: Schema.Attribute.Media<'images' | 'files'>;
+    Answer_text: Schema.Attribute.String & Schema.Attribute.DefaultTo<'Answer'>;
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Description: Schema.Attribute.Text;
-    Down_vote: Schema.Attribute.Media<'images' | 'files'> &
-      Schema.Attribute.Required;
+    Description: Schema.Attribute.Text & Schema.Attribute.Required;
+    Down_vote: Schema.Attribute.Media<'images' | 'files'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -471,24 +470,16 @@ export interface ApiCommentComment extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     Profile_picture: Schema.Attribute.Media<'images' | 'files'>;
     publishedAt: Schema.Attribute.DateTime;
-    Reward: Schema.Attribute.Media<'images' | 'files'> &
-      Schema.Attribute.Required;
-    Reward_text: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'Reward'>;
-    Share: Schema.Attribute.Media<'images' | 'files'> &
-      Schema.Attribute.Required;
-    Share_text: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'Share'>;
+    Reward: Schema.Attribute.Media<'images' | 'files'>;
+    Reward_text: Schema.Attribute.String & Schema.Attribute.DefaultTo<'Reward'>;
+    Share: Schema.Attribute.Media<'images' | 'files'>;
+    Share_text: Schema.Attribute.String & Schema.Attribute.DefaultTo<'Share'>;
     strapi_assignee: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
     strapi_stage: Schema.Attribute.Relation<
       'oneToOne',
       'plugin::review-workflows.workflow-stage'
     >;
-    Time_posted: Schema.Attribute.Date;
-    Up_vote: Schema.Attribute.Media<'images' | 'files'> &
-      Schema.Attribute.Required;
+    Up_vote: Schema.Attribute.Media<'images' | 'files'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -508,6 +499,10 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -518,13 +513,11 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
     media: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
-    > &
-      Schema.Attribute.Required;
+    >;
     profil_pictures: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
-    > &
-      Schema.Attribute.Required;
+    >;
     publishedAt: Schema.Attribute.DateTime;
     strapi_assignee: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
     strapi_stage: Schema.Attribute.Relation<
@@ -535,7 +528,7 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    username: Schema.Attribute.String & Schema.Attribute.Required;
+    username: Schema.Attribute.String;
   };
 }
 
@@ -548,9 +541,13 @@ export interface ApiSubSub extends Struct.CollectionTypeSchema {
     singularName: 'sub';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   attributes: {
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     Banner: Schema.Attribute.Media<'images' | 'files'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -576,10 +573,6 @@ export interface ApiSubSub extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
   };
 }
 
@@ -1042,6 +1035,7 @@ export interface PluginUsersPermissionsUser
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    comments: Schema.Attribute.Relation<'oneToMany', 'api::comment.comment'>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -1063,6 +1057,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    posts: Schema.Attribute.Relation<'oneToMany', 'api::post.post'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;

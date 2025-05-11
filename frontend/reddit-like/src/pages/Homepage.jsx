@@ -1,77 +1,107 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import Logout from "../components/Auth/Logout"
-import getCookie from "../components/Auth/Cookie";
+import Sidebar from '../components/Sidebar/Sidebar';
+import Post from '../components/Posts/ShowPosts';
+import FormPost from '../components/Posts/FormPosts';
+import MobileNavigation from '../components/Mobile/MobileNav';
+import { fetchPosts } from '../utils/Fetchapi';
+import { createPost } from '../utils/Createapi';
+import SyncLoader from 'react-spinners/SyncLoader';
 
 function Homepage({ user, setUser }) {
-    const [test, setTest] = useState(null);
+    const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [followedPosts, setFollowedPosts] = useState({});
 
-    const navigate = useNavigate();
+    const [loadingScreen, setLoadingScreen] = useState(true);
+    const [citation, setCitation] = useState('');
 
-    async function fetchTest() {
-        setLoading(true);
-        try {
-            const url = "http://localhost:1337/api/articles";
+    // Citations
+    const Mearde = {
+        "Cyril": "Cyril : ''Commit to the bitbucket'' ",
+        "Laurent": "Laurent : ''Pull request M.A.S.T.E.R'' ",
+        "Arthur": "Arthur : ''Push it to the limit'' ",
+        "Océane": "Océnae : ''Merge like a boss'' ",
+        "William": "William : ''Fetch like a pro'' ",
+    };
 
-            const token = localStorage.getItem("token");
-            console.log("Token envoyé :", token);
-
-            // Ajout des en-têtes si nécessaire
-            const response = await fetch(url, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                credentials: 'include',
-            });
-
-            
-            
-            if (!response.ok) {
-                if (response.status === 401) {
-                    localStorage.removeItem("token");
-                    navigate("/login");
-                    setUser(null);
-                    throw new Error("Token invalide ou expiré. Veuillez vous reconnecter.")
-                }
-                throw new Error("API introuvable ou erreur réseau");
-            }
-            
-            const data = await response.json();
-            console.log(data.data)
-            setTest(data.data);
-
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
-        }
-    }
-
+    
     useEffect(() => {
-        fetchTest();
+        const randomPhrase = Object.values(Mearde)[Math.floor(Math.random() * Object.values(Mearde).length)];
+        setCitation(randomPhrase);
+
+        
+        const timer = setTimeout(() => setLoadingScreen(false), 1574);
+
+        return () => clearTimeout(timer); 
     }, []);
 
+    const addPost = (newPost) => {
+        setPosts((prevPosts) => [newPost, ...prevPosts]);
+    };
+
+    useEffect(() => {
+        async function loadPosts() {
+            setLoading(true);
+            try {
+                const data = await fetchPosts();
+                setPosts(data);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadPosts();
+    }, []);
+
+    const toggleFollow = (postId) => {
+        setFollowedPosts({
+            ...followedPosts,
+            [postId]: !followedPosts[postId],
+        });
+    };
+
+    if (loadingScreen) {
+        return (
+            <div className="w-full h-screen bg-gray-500 fixed top-0 left-0 transition-transform duration-700">
+                <div className="w-full h-full flex flex-col justify-center items-center gap-8">
+                    <img src="./assets/images/threadly.png" alt="Logo" className="w-75 h-auto" />
+                    <p className="text-5xl italic font-serif text-gray-300">{citation}</p>
+                    <SyncLoader
+                        loading
+                        color="#D1D5DC"
+                        margin={5}
+                        size={30}
+                        speedMultiplier={1}
+                    />
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="flex flex-col justify-center items-center h-screen">
-            <div className="text-center">
-                <p>Bienvenue, {user?.username}!</p>
-                <Logout setUser={setUser} />
+        <div className="min-h-screen bg-[#e8f4e8]">
+            <div className="flex">
+                <Sidebar setUser={setUser} />
+                <div className="w-full md:ml-64">
+                    <div className="max-w-2xl mx-auto">
+                        <FormPost addPost={addPost} />
+                        {loading && <div>Chargement...</div>}
+                        {error && <div>Erreur : {error.message}</div>}
+                        {!loading && posts.map((post) => (
+                            <Post
+                                key={post.id}
+                                post={post}
+                                toggleFollow={toggleFollow}
+                                followedPosts={followedPosts}
+                            />
+                        ))}
+                    </div>
+                </div>
             </div>
-            {loading && <p>Chargement...</p>}
-            {error && <p>Erreur : {error.message}</p>}
-            <div className="mt-4">
-                {test && Array.isArray(test) ? (
-                    test.map((el, index) => (
-                        <div key={index}>{el.Fruit}</div>
-                    ))
-                ) : (
-                    <p>Aucun article trouvé.</p>
-                )}
-            </div>
-            <p className="mt-4">Ceci est censé représenter la Homepage lorsque l'utilisateur s'est authentifié</p>
+            <MobileNavigation />
         </div>
     );
 }
