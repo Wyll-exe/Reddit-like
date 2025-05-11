@@ -3,12 +3,14 @@ import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
 
-export default function SupprimerPost() {
-  const { id } = useParams();
-  const [supprimer, setSupprimer] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+export default function ModifierPost () {
+    const { id } = useParams();
+    const [supprimer, setSupprimer] = useState('')
+    const [image, setImage] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    let navigate = useNavigate();
+    
 
   async function fetchSupprimer() {
     setLoading(true);
@@ -29,17 +31,48 @@ export default function SupprimerPost() {
     fetchSupprimer();
   }, []);
 
-  const deletePost = async () => {
-    if (!window.confirm('Voulez-vous vraiment supprimer ce post ?')) return;
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.delete(
-        `http://localhost:1337/api/posts/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
+            const response = await fetch(url)
+            if (!response.ok) {
+                throw new Error("pas de post trouvé")
+            }
+
+
+            const data = await response.json()
+            setSupprimer(data)
+            if (data.media == null) {
+              setImage(null)
+            } else {
+              setImage(data.media[0].url)
+            }
+        } catch (error) {
+            setError(error)
+            return
+        } finally {
+            setLoading(false)
+        }}
+      
+    useEffect(() => {
+      fetchSupprimer()
+    }, []);
+
+    const deletePost = async () => {
+      if (!window.confirm('Voulez-vous vraiment supprimer ce post ?')) return;
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.delete(
+          `http://localhost:1337/api/posts/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+          }
+        );
+        if (res.status === 200) {
+          alert('Post supprimé avec succès !');
+          navigate('/homepage');
+        } else {
+          throw new Error(`Statut inattendu : ${res.status}`);
         }
       );
       if (res.status === 200) {
@@ -74,6 +107,15 @@ export default function SupprimerPost() {
                   <p className="text-lg font-semibold text-[#4a4a4a]">
                     Description  <span className="block font-normal">{supprimer.description}</span>
                   </p>
+                <div>
+                    {image && (
+                      <img
+                      src={`http://localhost:1337${image}`}
+                      alt="Illustration"
+                      className="w-full h-auto"
+                      />
+                    )}
+                    </div>
                 </div>
                 <button
                   onClick={deletePost}

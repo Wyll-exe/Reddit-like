@@ -7,6 +7,7 @@ import Sidebar from '../Sidebar/Sidebar';
 export default function ModifierPost ( user, setUser) {
     const { id } = useParams();
     const [modifier, setModifier] = useState('')
+    const [image, setImage] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [updated, setUpdated] = useState(false)
@@ -27,6 +28,11 @@ export default function ModifierPost ( user, setUser) {
 
             const data = await response.json()
             setModifier(data)
+            if (data.media == null) {
+              setImage(null)
+            } else {
+              setImage(data.media[0].url)
+            }
         } catch (error) {
             setError(error)
             return
@@ -48,6 +54,10 @@ export default function ModifierPost ( user, setUser) {
         setPost(prevPost => ({ ...prevPost, [name]: value }));
     };
 
+    const handleImage = event => {
+        setImage(Array.from(event.target.files))
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -62,11 +72,30 @@ export default function ModifierPost ( user, setUser) {
 
 
         try {
+            let fileIds = [];
+            const token = localStorage.getItem('token');
+
+            if (image.length > 0) {
+                const formData = new FormData();
+                image.forEach(file => formData.append('files', file))
+
+                const img = await axios.post('http://localhost:1337/api/upload',
+                    formData,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                        }
+                    }
+                )
+                const uploaded = img.data
+                fileIds = uploaded.map(f => f.id)
+            }
+
             const user = {
                 title: post.title,
-                description: post.description
+                description: post.description,
+                ...(fileIds.length > 0 && { media: fileIds })
             }
-            const token = localStorage.getItem('token');
             const {status} = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
                 headers: {
                     "Content-Type": "application/json",
@@ -111,6 +140,13 @@ export default function ModifierPost ( user, setUser) {
                         <p className="text-lg font-semibold text-[#4a4a4a]">
                             Description  <span className="block font-normal">{modifier.description}</span>
                         </p>
+                        {image && (
+                        <img
+                        src={`http://localhost:1337${image}`}
+                        alt="Illustration"
+                        className="w-full h-auto"
+                        />
+                    )}
                 </div>
               
 
