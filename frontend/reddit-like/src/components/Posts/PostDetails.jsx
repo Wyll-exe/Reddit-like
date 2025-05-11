@@ -84,20 +84,21 @@ export default function PostDetails() {
     fetchPostDetails();
   }, [documentId]);
 
-  async function handleDeleteComment(commentId) {
+  async function handleDeleteComment(documentId) {
     try {
-      const res = await axios.delete(`http://localhost:1337/api/comments/${commentId}`, {
+      const res = await axios.delete(`http://localhost:1337/api/comments/${documentId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
   
       if (res.status === 200) {
-        // Supprime le commentaire de la liste
-        setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
-      }
+        setComments((prevComments) => prevComments.filter((comment) => comment.documentId !== documentId));
+        alert("Commentaire supprimé avec succès !");
+        setNewComment("");
+      } 
     } catch (err) {
-      console.error("Erreur lors de la suppression du commentaire :", err);
+      alert("Vous ne pouvez pas supprimer ce commentaire !");
     }
   }
 
@@ -129,7 +130,7 @@ export default function PostDetails() {
               </h3>
               <p>{comment.Description}</p>
               <button
-              onClick={() => handleDeleteComment(comment.id)}
+              onClick={() => handleDeleteComment(comment.documentId)}
               className="text-red-500 text-sm"
             >
               Supprimer
