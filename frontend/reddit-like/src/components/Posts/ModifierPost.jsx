@@ -52,6 +52,10 @@ export default function ModifierPost () {
         setPost(prevPost => ({ ...prevPost, [name]: value }));
     };
 
+    const handleImage = event => {
+        setImage(Array.from(event.target.files))
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -66,11 +70,30 @@ export default function ModifierPost () {
 
 
         try {
+            let fileIds = [];
+            const token = localStorage.getItem('token');
+
+            if (image.length > 0) {
+                const formData = new FormData();
+                image.forEach(file => formData.append('files', file))
+
+                const img = await axios.post('http://localhost:1337/api/upload',
+                    formData,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                        }
+                    }
+                )
+                const uploaded = img.data
+                fileIds = uploaded.map(f => f.id)
+            }
+
             const user = {
                 title: post.title,
-                description: post.description
+                description: post.description,
+                ...(fileIds.length > 0 && { media: fileIds })
             }
-            const token = localStorage.getItem('token');
             const {status} = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
                 headers: {
                     "Content-Type": "application/json",
@@ -124,6 +147,12 @@ export default function ModifierPost () {
                     value={post.description}
                     onChange={handleChange}
                 ></textarea>
+                <input 
+                    type="file" 
+                    name="files"
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
+                    onChange={handleImage}
+                />
                 <button type='submit'>Modifier</button>
                     </form>
                 </div>
