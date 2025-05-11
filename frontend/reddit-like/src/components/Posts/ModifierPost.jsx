@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function ModifierPost () {
     const { id } = useParams();
     const [modifier, setModifier] = useState('')
+    const [image, setImage] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [updated, setUpdated] = useState(false)
@@ -25,6 +26,11 @@ export default function ModifierPost () {
 
             const data = await response.json()
             setModifier(data)
+            if (data.media == null) {
+              setImage(null)
+            } else {
+              setImage(data.media[0].url)
+            }
         } catch (error) {
             setError(error)
             return
@@ -94,6 +100,13 @@ export default function ModifierPost () {
                     <div>
                     <p>{modifier.title}</p>
                     <p>{modifier.description}</p>
+                    {image && (
+                        <img
+                        src={`http://localhost:1337${image}`}
+                        alt="Illustration"
+                        className="w-full h-auto"
+                        />
+                    )}
                     </div>
                     <form onSubmit={handleSubmit}>
                     <input 
