@@ -7,6 +7,8 @@ export default function PostDetails() {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [editCommentId, setEditCommentId] = useState(null);
+  const [editCommentText, setEditCommentText] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
@@ -102,6 +104,37 @@ export default function PostDetails() {
     }
   }
 
+    async function handleUpdateComment(commentId, updatedText) {
+    try {
+      const res = await axios.put(
+        `http://localhost:1337/api/comments/${commentId}`,
+        {
+          "data": {
+            "Description": updatedText,
+          },
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      if (res.status === 200) {
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment.documentId === commentId ? res.data.data : comment
+          )
+        );
+        alert("Commentaire modifié avec succès !");
+        setEditCommentId(null); // Quitte le mode d'édition
+      }
+    } catch (err) {
+      alert("Vous ne pouvez pas modifier ce commentaire !");
+    }
+  }
+
   if (loading) return <p>Chargement...</p>;
   if (error) return <p className="text-red-600">{error.message}</p>;
 
@@ -128,13 +161,53 @@ export default function PostDetails() {
               <h3 className="text-sm font-semibold text-violet-600">
                 @{comment.author?.username || "Anonyme"}
               </h3>
-              <p>{comment.Description}</p>
-              <button
-              onClick={() => handleDeleteComment(comment.documentId)}
-              className="text-red-500 text-sm"
-            >
-              Supprimer
-            </button>
+              <div>
+                {editCommentId === comment.documentId ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleUpdateComment(comment.documentId, editCommentText);
+                    }}
+                  >
+                    <textarea
+                      value={editCommentText}
+                      onChange={(e) => setEditCommentText(e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg"
+                    ></textarea>
+                    <button
+                      type="submit"
+                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                      Enregistrer
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteComment(comment.documentId)}
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                    >
+                      Supprimer
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditCommentId(null)}
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                    >
+                      Annuler
+                    </button>
+                  </form>
+                ) : (
+                  <p className="text-gray-700">{comment.Description}</p>
+                )}
+                <button
+                  onClick={() => {
+                    setEditCommentId(comment.documentId);
+                    setEditCommentText(comment.Description);
+                  }}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                >
+                  Modifier
+                </button>
+              </div>
             </div>
           ))
         ) : (
