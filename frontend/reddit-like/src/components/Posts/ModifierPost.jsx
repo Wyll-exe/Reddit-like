@@ -7,6 +7,7 @@ export default function ModifierPost () {
     const { id } = useParams();
     const [modifier, setModifier] = useState('')
     const [image, setImage] = useState([])
+    const [newimage, setNewImage] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [updated, setUpdated] = useState(false)
@@ -40,29 +41,24 @@ export default function ModifierPost () {
         }
     }
 
-    const [post, setPost] = useState({
-        title: '',
-        description: ''
-    });
-
     const [error2, setError2] = useState({}); 
 
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setPost(prevPost => ({ ...prevPost, [name]: value }));
+        setModifier(prevModifier => ({ ...prevModifier, [name]: value }));
     };
 
     const handleImage = event => {
-        setImage(Array.from(event.target.files))
+        setNewImage(Array.from(event.target.files))
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         let formError = {};
-        if (!post.title) formError.society = 'Title est requi';
-        if (!post.description) formError.job = 'Description est requise';
+        if (!modifier.title) formError.title = 'Title est requi';
+        if (!modifier.description) formError.description = 'Description est requise';
 
         if (Object.keys(formError).length > 0) {
             setError2(formError);
@@ -74,9 +70,9 @@ export default function ModifierPost () {
             let fileIds = [];
             const token = localStorage.getItem('token');
 
-            if (image.length > 0) {
+            if (newimage.length > 0) {
                 const formData = new FormData();
-                image.forEach(file => formData.append('files', file))
+                newimage.forEach(file => formData.append('files', file))
 
                 const img = await axios.post('http://localhost:1337/api/upload',
                     formData,
@@ -91,8 +87,8 @@ export default function ModifierPost () {
             }
 
             const user = {
-                title: post.title,
-                description: post.description,
+                title: modifier.title,
+                description: modifier.description,
                 ...(fileIds.length > 0 && { media: fileIds })
             }
             const {status} = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
@@ -149,15 +145,13 @@ export default function ModifierPost () {
                         className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mb-3 mt-3"
                         rows="2"
                         name="title"
-                        placeholder="Tous les livres ont besoin d'un titre ! "
-                        value={post.title}
+                        value={modifier.title}
                         onChange={handleChange} />
                     <textarea 
                         className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none"
                         rows="2"
                         name="description"
-                        placeholder="Décris moi ton aventure ?"
-                        value={post.description}
+                        value={modifier.description}
                         onChange={handleChange} />
                         <input 
                     type="file" 
