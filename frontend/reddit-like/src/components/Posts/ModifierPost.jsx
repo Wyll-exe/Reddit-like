@@ -12,6 +12,7 @@ export default function ModifierPost () {
     const [error, setError] = useState(null)
     const [updated, setUpdated] = useState(false)
     let navigate = useNavigate();
+    const token = localStorage.getItem('token');
 
     async function fetchModifier() {
         setLoading(true)
@@ -68,13 +69,12 @@ export default function ModifierPost () {
 
         try {
             let fileIds = [];
-            const token = localStorage.getItem('token');
 
             if (newimage.length > 0) {
                 const formData = new FormData();
                 newimage.forEach(file => formData.append('files', file))
 
-                const img = await axios.post('http://localhost:1337/api/upload',
+                const img = await axios.post('http://localhost:1338/api/upload',
                     formData,
                     {
                         headers: {
@@ -91,7 +91,7 @@ export default function ModifierPost () {
                 description: modifier.description,
                 ...(fileIds.length > 0 && { media: fileIds })
             }
-            const {status} = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
+            const {status} = await axios.put(`http://localhost:1338/api/posts/${id}`, user, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
@@ -134,7 +134,7 @@ export default function ModifierPost () {
                         </p>
                         {image && (
                         <img
-                        src={`http://localhost:1337${image}`}
+                        src={`http://localhost:1338${image}`}
                         alt="Illustration"
                         className="w-full h-auto"
                         />

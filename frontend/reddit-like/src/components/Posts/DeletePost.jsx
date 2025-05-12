@@ -111,7 +111,7 @@ export default function ModifierPost () {
                   </p>
                       {image && (
                       <img
-                      src={`http://localhost:1337${image}`}
+                      src={`http://localhost:1338${image}`}
                       alt="Illustration"
                       className="w-full h-auto"
                       />

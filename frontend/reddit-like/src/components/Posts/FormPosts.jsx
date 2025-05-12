@@ -39,7 +39,7 @@ export default function FormPost({ addPost }) {
                 const formData = new FormData();
                 image.forEach(file => formData.append('files', file))
 
-                const img = await axios.post('http://localhost:1337/api/upload',
+                const img = await axios.post('http://localhost:1338/api/upload',
                     formData,
                     {
                         headers: {
@@ -58,7 +58,7 @@ export default function FormPost({ addPost }) {
             };
 
             const { data, status } = await axios.post(
-                'http://localhost:1337/api/posts',
+                'http://localhost:1338/api/posts',
                 user,
                 {
                     headers: {
