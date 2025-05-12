@@ -19,7 +19,7 @@ const UserId = token ? jwtDecode(token).id : null;
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:1337/api/posts/${documentId}?populate=author`,
+        `http://localhost:1337/api/posts/${documentId}?populate=author,media`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -29,6 +29,7 @@ const UserId = token ? jwtDecode(token).id : null;
 
       if (res.status === 200) {
         setPost(res.data.data);
+        console.log(res.data.data);
         const commentsRes = await axios.get(
           `http://localhost:1337/api/comments?filters[comments][documentId][$eq]=${documentId}&populate=author`,
           {
@@ -148,6 +149,15 @@ const UserId = token ? jwtDecode(token).id : null;
           </h3>
           <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
           <p className="text-violet-700">{post.description}</p>
+          {post.media && (
+            <div className="rounded-lg overflow-hidden mb-4">
+              <img
+                src={"http://localhost:1337" + post.media[0].url}
+                alt="Illustration"
+                className="w-full h-auto"
+              />
+            </div>
+          )}
         </div>
       )}
 

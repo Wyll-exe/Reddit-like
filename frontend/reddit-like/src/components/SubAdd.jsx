@@ -3,27 +3,37 @@ import { useNavigate, Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from './Sidebar/Sidebar';
+import {jwtDecode} from 'jwt-decode';
 
 function AddSubscriptionPage() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState(null);
+  const token = localStorage.getItem('token');
+  const userId = token ? jwtDecode(token).id : null;
+
 
   const checkNameExists = async (name) => {
     const response = await fetch(
-      `http://localhost:1337/api/subs?filters[Name][$eqi]=${name}`
+      `http://localhost:1337/api/subs?filters[Name][$eq]=${name}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     const data = await response.json();
+    console.log(data)
     return data.data.length > 0;
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    console.log('userId', userId);
+
+
 
     if (!token) {
       toast.error('Vous devez être connecté pour ajouter un Thread.');
@@ -75,30 +85,30 @@ function AddSubscriptionPage() {
       }
 
       const payload = {
-        data: {
-          Name: name,
-          Description: description,
-          Banner: imageId ? [imageId] : [],
-          author: { id: parseInt(userId, 10) },
+        "data": {
+          "Name": name,
+          "Description": description,
+          "Banner": imageId ? [imageId] : [],
+          "author": userId,
         },
       };
 
       const res = await fetch('http://localhost:1337/api/subs', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload),
+        body: payload,  
       });
 
       const responseData = await res.json();
+      console.log(responseData);
 
       if (!res.ok) {
         throw new Error(responseData?.error?.message || 'Erreur inconnue');
       }
 
-      if (responseData.data) {
+      if (responseData == 200) {
         toast.success('Thread ajouté avec succès !');
         setTimeout(() => navigate('/subs'), 1500);
       } else {
