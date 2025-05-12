@@ -5,13 +5,14 @@ import '../../style.css';
 import DarkModeToggle from '../Boutton/DarkModeToggle';
 import axios from 'axios';
 
-function Sidebar({ setUser }) {
+function Sidebar() {
 
     return (
         <div className="hidden md:block w-64 bg-white h-screen fixed left-0 top-0 p-5 border-r border-[#374151] dark:bg-[#1A1C23] dark:border-gray-700">
             <div className="mb-6">
                 <div className="h-8">
-                    <img src="https://raw.githubusercontent.com/Cyril-Mathe/Reddit-like/refs/heads/feature/subreddits/frontend/reddit-like/src/pages/logo.png" alt="Logo" className="h-full dark:text-white" />
+                    
+                    <img src='/assets/images/threadly.png' alt="Logo" className="h-full dark:text-white" />
                 </div>
             </div>
             <div className="space-y-6 mt-8">
@@ -29,11 +30,11 @@ function Sidebar({ setUser }) {
                     </svg>
                     <span>Communautés</span>
                 </Link>
-                <div className="flex items-center space-x-3 text-gray-600 cursor-pointer">
+                <div className="flex items-center space-x-3 text-gray-600 cursor-pointer dark:text-white">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
-                    <div><Logout setUser={setUser} /></div>
+                    <div><Logout /></div>
                 </div>
             </div>
             <DarkModeToggle />

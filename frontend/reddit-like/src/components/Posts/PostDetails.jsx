@@ -4,7 +4,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import Sidebar from '../Sidebar/Sidebar';
 
-export default function PostDetails({ user, setUser }) {
+export default function PostDetails() {
   const { documentId } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -141,32 +141,44 @@ const UserId = token ? jwtDecode(token).id : null;
   if (error) return <p className="text-red-600">{error.message}</p>;
 
   return (
-    <div className="bg-[#e8f4e8] dark:bg-[#111827] h-screen ">
-      <Sidebar setUser={setUser} />
-      <div className="pl-64 flex items-center justify-center h-screen">
-        <div className=" w-[800px] p-3 flex flex-col items-center bg-white rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
+    <div className="bg-[#e8f4e8] dark:bg-[#111827] h-auto min-h-screen">
+      <Sidebar />
+      <div className="pl-64 flex items-center justify-center h-auto">
+        <div className=" w-[800px] my-10 p-3 flex flex-col items-center bg-white rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
           {post && (
-            <div className="mb-6 text-center">
-              <h3 className="text-sm mb-2">
-                @{post.author?.username || "Anonyme"}
-              </h3>
+            <div className="mb-6 flex flex-col justify-start px-5">
+              <div className="flex items-center justify-start gap-2 h-auto mb-2">
+                <img 
+                              src={post.user?.profilePic || "https://randomuser.me/api/portraits/men/1.jpg"} 
+                              alt="Profil" 
+                              className="w-[20px] h-full object-cover rounded-full"
+                          />
+                <h3 className="text-base">
+                  @{post.author?.username || "Anonyme"}
+                </h3>
+              </div>
               <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
               <p className="text-violet-700">{post.description}</p>
+              <img 
+                            src={"http://localhost:1338" + post.media[0].url}
+                            alt="Illustration" 
+                            className="w-full h-auto mt-5 rounded-[20px]"
+                        />
             </div>
           )}
 
-          <div className="mb-6 w-full max-w-2xl bg-white">
-            <h2 className="text-xl font-bold mb-4">Commentaires</h2>
+          <div className="mb-6 w-full px-5 bg-white dark:bg-[#334155] dark:text-white">
+            <h2 className="text-xl font-bold">Commentaires</h2>
             {comments.length > 0 ? (
               comments.map((comment) => (
                 <div
                   key={comment.id}
-                  className="p-3 border-b border-violet-200 flex flex-col"
+                  className="p-3 flex flex-col"
                 >
                   <h3 className="text-sm font-semibold text-violet-600">
                     @{comment.author?.username || "Anonyme"}
                   </h3>
-                  <div>
+                  <div className="dark:text-white">
                     {editCommentId === comment.documentId ? (
                       <form
                         onSubmit={(e) => {
@@ -201,7 +213,7 @@ const UserId = token ? jwtDecode(token).id : null;
                         </button>
                       </form>
                     ) : (
-                      <p className="text-gray-700">{comment.Description}</p>
+                      <p className="text-gray-700 dark:text-white">{comment.Description}</p>
                     )}
                     {UserId === post.author?.id && (
                       <button
@@ -230,12 +242,12 @@ const UserId = token ? jwtDecode(token).id : null;
             )}
           </div>
 
-          <form onSubmit={handleAddComment} className="space-y-4">
+          <form onSubmit={handleAddComment} className="space-y-4 w-[100%] flex flex-col justify-center items-center">
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Ajouter un commentaire..."
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
+              className="w-[80%] p-3 border border-gray-300 rounded-lg focus:outline-none"
               rows="4"
             ></textarea>
             <button

@@ -7,7 +7,7 @@ import { fetchPosts } from '../utils/Fetchapi';
 import { createPost } from '../utils/Createapi';
 import SyncLoader from 'react-spinners/SyncLoader';
 
-function Homepage({ user, setUser }) {
+function Homepage() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -84,7 +84,7 @@ function Homepage({ user, setUser }) {
     return (
         <div className="min-h-screen bg-[#e8f4e8] dark:bg-[#111827]">
             <div className="flex">
-                <Sidebar setUser={setUser} />
+                <Sidebar />
                 <div className="w-full md:ml-64">
                     <div className="max-w-2xl mx-auto">
                         <FormPost addPost={addPost} />
