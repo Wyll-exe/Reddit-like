@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import Sidebar from '../Sidebar/Sidebar';
 
-export default function PostDetails() {
+export default function PostDetails({ user, setUser }) {
   const { documentId } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -87,7 +88,7 @@ const UserId = token ? jwtDecode(token).id : null;
     fetchPostDetails();
   }, [documentId]);
 
-  async function handleDeleteComment(documentId) {
+  async function handleDeleteComment( documentId ) {
     try {
       const res = await axios.delete(`http://localhost:1338/api/comments/${documentId}`, {
         headers: {
@@ -105,7 +106,7 @@ const UserId = token ? jwtDecode(token).id : null;
     }
   }
 
-    async function handleUpdateComment(commentId, updatedText) {
+    async function handleUpdateComment(commentId, updatedText ) {
     try {
       const res = await axios.put(
         `http://localhost:1338/api/comments/${commentId}`,
@@ -140,107 +141,112 @@ const UserId = token ? jwtDecode(token).id : null;
   if (error) return <p className="text-red-600">{error.message}</p>;
 
   return (
-    <div className="p-4 flex flex-col items-center">
-      {post && (
-        <div className="mb-6 text-center">
-          <h3 className="text-sm mb-2">
-            @{post.author?.username || "Anonyme"}
-          </h3>
-          <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
-          <p className="text-violet-700">{post.description}</p>
-        </div>
-      )}
-
-      <div className="mb-6 w-full max-w-2xl">
-        <h2 className="text-xl font-bold mb-4">Commentaires</h2>
-        {comments.length > 0 ? (
-          comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="p-3 border-b border-violet-200 flex flex-col"
-            >
-              <h3 className="text-sm font-semibold text-violet-600">
-                @{comment.author?.username || "Anonyme"}
+    <div className="bg-[#e8f4e8] dark:bg-[#111827] h-screen ">
+      <Sidebar setUser={setUser} />
+      <div className="pl-64 flex items-center justify-center h-screen">
+        <div className=" w-[800px] p-3 flex flex-col items-center bg-white rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
+          {post && (
+            <div className="mb-6 text-center">
+              <h3 className="text-sm mb-2">
+                @{post.author?.username || "Anonyme"}
               </h3>
-              <div>
-                {editCommentId === comment.documentId ? (
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      handleUpdateComment(comment.documentId, editCommentText);
-                    }}
-                  >
-                    <textarea
-                      value={editCommentText}
-                      onChange={(e) => setEditCommentText(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-lg"
-                    ></textarea>
-                    <button
-                      type="submit"
-                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                    >
-                      Enregistrer
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteComment(comment.documentId)}
-                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
-                    >
-                      Supprimer
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setEditCommentId(null)}
-                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
-                    >
-                      Annuler
-                    </button>
-                  </form>
-                ) : (
-                  <p className="text-gray-700">{comment.Description}</p>
-                )}
-                {UserId === post.author?.id && (
-                  <button
-                    onClick={() => handleDeleteComment(comment.documentId)}
-                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
-                  >
-                    Supprimer
-                  </button>
-                )}
-                {comment.author?.id === UserId && (
-                  <button
-                    onClick={() => {
-                      setEditCommentId(comment.documentId);
-                      setEditCommentText(comment.Description);
-                    }}
-                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                  >
-                    Modifier
-                  </button>
-                )}
-              </div>
+              <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
+              <p className="text-violet-700">{post.description}</p>
             </div>
-          ))
-        ) : (
-          <p>Aucun commentaire pour le moment.</p>
-        )}
-      </div>
+          )}
 
-      <form onSubmit={handleAddComment} className="space-y-4">
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Ajouter un commentaire..."
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
-          rows="4"
-        ></textarea>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-        >
-          Ajouter un commentaire
-        </button>
-      </form>
+          <div className="mb-6 w-full max-w-2xl bg-white">
+            <h2 className="text-xl font-bold mb-4">Commentaires</h2>
+            {comments.length > 0 ? (
+              comments.map((comment) => (
+                <div
+                  key={comment.id}
+                  className="p-3 border-b border-violet-200 flex flex-col"
+                >
+                  <h3 className="text-sm font-semibold text-violet-600">
+                    @{comment.author?.username || "Anonyme"}
+                  </h3>
+                  <div>
+                    {editCommentId === comment.documentId ? (
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          handleUpdateComment(comment.documentId, editCommentText);
+                        }}
+                      >
+                        <textarea
+                          value={editCommentText}
+                          onChange={(e) => setEditCommentText(e.target.value)}
+                          className="w-full p-2 border border-gray-300 rounded-lg"
+                        ></textarea>
+                        <button
+                          type="submit"
+                          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                        >
+                          Enregistrer
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteComment(comment.documentId)}
+                          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                        >
+                          Supprimer
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditCommentId(null)}
+                          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                        >
+                          Annuler
+                        </button>
+                      </form>
+                    ) : (
+                      <p className="text-gray-700">{comment.Description}</p>
+                    )}
+                    {UserId === post.author?.id && (
+                      <button
+                        onClick={() => handleDeleteComment(comment.documentId)}
+                        className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                      >
+                        Supprimer
+                      </button>
+                    )}
+                    {comment.author?.id === UserId && (
+                      <button
+                        onClick={() => {
+                          setEditCommentId(comment.documentId);
+                          setEditCommentText(comment.Description);
+                        }}
+                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                      >
+                        Modifier
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Aucun commentaire pour le moment.</p>
+            )}
+          </div>
+
+          <form onSubmit={handleAddComment} className="space-y-4">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Ajouter un commentaire..."
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
+              rows="4"
+            ></textarea>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+            >
+              Ajouter un commentaire
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
