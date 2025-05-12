@@ -95,35 +95,43 @@ export default function ModifierPost () {
      <div className="min-h-screen bg-[#e8f4e8]">
       <div className="flex">
         <Sidebar />
-        <div className="flex-1 ml-64 min-h-screen">
-          <div className="max-w-xl mx-auto mt-10 p-8 bg-[#7c8b7f] shadow-lg rounded-2xl">
-            <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center">Suppression du post</h2>
+        <div className="w-full md:ml-64 py-6 px-4">
+          <div className="max-w-xl mx-auto bg-white rounded-xl shadow-sm p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center">Suppression du post</h2>
 
-            {loading && <p className="text-center text-gray-700">Chargement...</p>}
+            {loading && <p className="text-center text-gray-500">Chargement...</p>}
             {error && <p className="text-center text-red-500">{error.message}</p>}
             {supprimer && (
-                <div className="space-y-6 text-center">
-                <div className="bg-[#919fd4f5] p-4 rounded-lg border border-gray-200">
-                  <p className="text-lg font-semibold text-[#4a4a4a]">
-                    Titre  <span className="block font-normal">{supprimer.title}</span>
+                <div className="space-y-4">
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <p className="text-lg font-medium text-gray-700 mb-1">
+                    {supprimer.title}
                   </p>
-                  <p className="text-lg font-semibold text-[#4a4a4a]">
-                    Description  <span className="block font-normal">{supprimer.description}</span>
+                  <p className="text-gray-600 mb-3">
+                    {supprimer.description}
                   </p>
-                      {image && (
-                      <img
+                  {image && (
+                    <img
                       src={`http://localhost:1337${image}`}
                       alt="Illustration"
-                      className="w-full h-auto"
-                      />
-                    )}
+                      className="w-full h-auto rounded-lg mb-2"
+                    />
+                  )}
                 </div>
-                <button
-                  onClick={deletePost}
-                  className="bg-orange-400 hover:bg-red-500 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
-                >
-                  Supprimer définitivement
-                </button>
+                <div className="flex space-x-3 mt-4">
+                  <button
+                    onClick={() => navigate('/homepage')}
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-3 rounded-lg transition-colors"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    onClick={deletePost}
+                    className="flex-1 bg-red-400 hover:bg-red-600 text-white font-medium py-2 px-3 rounded-lg transition-colors"
+                  >
+                    Supprimer
+                  </button>
+                </div>
                 </div>
             )}
             
@@ -136,6 +144,6 @@ export default function ModifierPost () {
             </div>
           </div>
         </div>
-        </div>
+      </div>
     )
   }
