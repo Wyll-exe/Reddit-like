@@ -43,9 +43,11 @@ export default function ModifierPost () {
 
             const response = await fetch(url, {
             headers: {
-              Authorization: `Bearer ${token}`,
+                  "Authorization": `Bearer ${token}`,
+                  "Content-Type": "application/json",
                 },
             });
+            
 
             const data = await response.json()
             setSupprimer(data)

@@ -14,11 +14,6 @@ export default {
             method: 'POST',
             path: '/subs',
             handler: 'api::sub.sub.create',
-        },
-        {
-            method: 'GET',
-            path: '/subs/:id',
-            handler: 'api::sub.sub.findone',
         }
     ]
 }
