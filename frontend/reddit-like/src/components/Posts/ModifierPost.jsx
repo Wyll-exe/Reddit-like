@@ -18,7 +18,7 @@ export default function ModifierPost () {
     async function fetchModifier() {
         setLoading(true)
         try {
-            const url = `http://localhost:1337/api/posts/${id}?populate=*`;
+            const url = `http://localhost:1337/api/posts/${id}`;
 
 
             const response = await fetch(url, {
@@ -29,11 +29,12 @@ export default function ModifierPost () {
 
 
             const data = await response.json()
-            setModifier(data)
-            if (data.media == null) {
+            setModifier(data.data)
+            console.log(data.data.media[0].url)
+            if (data.data.media == null) {
               setImage(null)
             } else {
-              setImage(data.media[0].url)
+              setImage(data.data.media[0].url)
             }
         } catch (error) {
             setError(error)
@@ -94,7 +95,6 @@ export default function ModifierPost () {
             }
             const {status} = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
                 headers: {
-                    "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
                 },
             });
