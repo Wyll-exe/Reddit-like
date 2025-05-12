@@ -191,7 +191,7 @@ export default function PostDetails() {
                           onChange={(e) => setEditCommentText(e.target.value)}
                           className="w-full p-2 border border-gray-300 rounded-lg"
                         ></textarea>
-                        <div className="flex gap-2">
+                        <div className="flex justify-between gap-2">
                           <button
                             type="submit"
                             className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg"
