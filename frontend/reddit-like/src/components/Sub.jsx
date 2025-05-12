@@ -13,6 +13,18 @@ function Sub( user, setUser) {
   const Mearde = {
     
     "Cyril": "Cyril : ''Commit to the bitbucket'' ",
+    "Laurent": "Laurent : ''Pull request master'' ",
+    "Arthur": "Arthur : ''Push it to the limit'' ",
+    "Océane": "Océnae : ''Merge like a boss'' ",
+    "William": "William : ''Fetch like a pro'' ",
+  }
+  
+
+
+  // Choisir une citation
+  const Mearde = {
+    
+    "Cyril": "Cyril : ''Commit to the bitbucket'' ",
     "Laurent": "Laurent : ''Pull request M.A.S.T.E.R'' ",
     "Arthur": "Arthur : ''Push it to the limit'' ",
     "Océane": "Océnae : ''Merge like a boss'' ",
@@ -141,7 +153,6 @@ function Sub( user, setUser) {
     </div>
   </div>
 </div>
-
   );
 }
 
