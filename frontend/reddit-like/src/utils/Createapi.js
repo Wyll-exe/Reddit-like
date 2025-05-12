@@ -1,5 +1,5 @@
 export async function createPost(postContent, postTitle) {
-    const url = "http://localhost:1338/api/posts";
+    const url = "http://localhost:1337/api/posts";
     const token = localStorage.getItem("token");
 
     const response = await fetch(url, {
