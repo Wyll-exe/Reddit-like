@@ -6,7 +6,7 @@ import '../../style.css';
 import Sidebar from '../Sidebar/Sidebar';
 
 export default function ModifierPost () {
-    const { id } = useParams();
+    const { documentId } = useParams();
     const [supprimer, setSupprimer] = useState('')
     const [image, setImage] = useState([])
     const [loading, setLoading] = useState(true)
@@ -39,23 +39,22 @@ export default function ModifierPost () {
     async function fetchSupprimer() {
         setLoading(true)
         try {
-            const url = `http://localhost:1337/api/posts/${documentId}`
-
+            const url = `http://localhost:1337/api/posts/${documentId}?populate=author,media`;
 
             const response = await fetch(url, {
             headers: {
                   "Authorization": `Bearer ${token}`,
-                  "Content-Type": "application/json",
                 },
             });
             
 
             const data = await response.json()
-            setSupprimer(data)
-            if (data.media == null) {
+            setSupprimer(data.data)
+            console.log(data.data)
+            if (data.data.media == null) {
               setImage(null)
             } else {
-              setImage(data.media[0].url)
+              setImage(data.data.media[0].url)
             }
         } catch (error) {
             setError(error)
@@ -73,7 +72,7 @@ export default function ModifierPost () {
       try {
         const token = localStorage.getItem('token');
         const res = await axios.delete(
-          `http://localhost:1338/api/posts/${id}`,          {
+          `http://localhost:1337/api/posts/${documentId}`,          {
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${token}`,
@@ -113,7 +112,7 @@ export default function ModifierPost () {
                   </p>
                       {image && (
                       <img
-                      src={`http://localhost:1338${image}`}
+                      src={`http://localhost:1337${image}`}
                       alt="Illustration"
                       className="w-full h-auto"
                       />

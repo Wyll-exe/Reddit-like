@@ -18,7 +18,7 @@ export default function ModifierPost () {
     async function fetchModifier() {
         setLoading(true)
         try {
-            const url = `http://localhost:1338/api/posts/${id}?populate=*`;
+            const url = `http://localhost:1337/api/posts/${id}`;
 
 
             const response = await fetch(url, {
@@ -29,11 +29,12 @@ export default function ModifierPost () {
 
 
             const data = await response.json()
-            setModifier(data)
-            if (data.media == null) {
+            setModifier(data.data)
+            console.log(data.data.media[0].url)
+            if (data.data.media == null) {
               setImage(null)
             } else {
-              setImage(data.media[0].url)
+              setImage(data.data.media[0].url)
             }
         } catch (error) {
             setError(error)
@@ -75,7 +76,7 @@ export default function ModifierPost () {
                 const formData = new FormData();
                 newimage.forEach(file => formData.append('files', file))
 
-                const img = await axios.post('http://localhost:1338/api/upload',
+                const img = await axios.post('http://localhost:1337/api/upload',
                     formData,
                     {
                         headers: {
@@ -92,9 +93,8 @@ export default function ModifierPost () {
                 description: modifier.description,
                 ...(fileIds.length > 0 && { media: fileIds })
             }
-            const {status} = await axios.put(`http://localhost:1338/api/posts/${id}`, user, {
+            const {status} = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
                 headers: {
-                    "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
                 },
             });
@@ -135,7 +135,7 @@ export default function ModifierPost () {
                         </p>
                         {image && (
                         <img
-                        src={`http://localhost:1338${image}`}
+                        src={`http://localhost:1337${image}`}
                         alt="Illustration"
                         className="w-full h-auto"
                         />
