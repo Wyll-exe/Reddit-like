@@ -5,9 +5,9 @@ function Logout({ setUser }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Supprime le token JWT
-    setUser(null); // Réinitialise l'utilisateur
-    navigate("/login"); // Redirige vers la page de connexion
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
   };
 
   return (

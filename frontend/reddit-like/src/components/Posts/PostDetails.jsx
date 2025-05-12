@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 export default function PostDetails() {
   const { documentId } = useParams();
@@ -12,12 +13,13 @@ export default function PostDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
+const UserId = token ? jwtDecode(token).id : null;
 
   async function fetchPostDetails() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:1337/api/posts/${documentId}`,
+        `http://localhost:1337/api/posts/${documentId}?populate=author`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -28,7 +30,7 @@ export default function PostDetails() {
       if (res.status === 200) {
         setPost(res.data.data);
         const commentsRes = await axios.get(
-          `http://localhost:1337/api/comments?populate=author`,
+          `http://localhost:1337/api/comments?filters[comments][documentId][$eq]=${documentId}&populate=author`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -51,7 +53,6 @@ export default function PostDetails() {
     }
   }
 
-  // Fonction pour ajouter un commentaire
   async function handleAddComment(e) {
     e.preventDefault();
 
@@ -128,7 +129,7 @@ export default function PostDetails() {
           )
         );
         alert("Commentaire modifié avec succès !");
-        setEditCommentId(null); // Quitte le mode d'édition
+        setEditCommentId(null);
       }
     } catch (err) {
       alert("Vous ne pouvez pas modifier ce commentaire !");
@@ -198,15 +199,25 @@ export default function PostDetails() {
                 ) : (
                   <p className="text-gray-700">{comment.Description}</p>
                 )}
-                <button
-                  onClick={() => {
-                    setEditCommentId(comment.documentId);
-                    setEditCommentText(comment.Description);
-                  }}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-                >
-                  Modifier
-                </button>
+                {UserId === post.author?.id && (
+                  <button
+                    onClick={() => handleDeleteComment(comment.documentId)}
+                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                  >
+                    Supprimer
+                  </button>
+                )}
+                {comment.author?.id === UserId && (
+                  <button
+                    onClick={() => {
+                      setEditCommentId(comment.documentId);
+                      setEditCommentText(comment.Description);
+                    }}
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                  >
+                    Modifier
+                  </button>
+                )}
               </div>
             </div>
           ))

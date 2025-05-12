@@ -11,7 +11,7 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
         try {
           const { documentId } = ctx.params;
       
-          const post = await strapi.db.query('api::post.post').findOne({ where: { documentId }, populate: ['author'] });
+          const post = await strapi.db.query('api::post.post').findOne({ where: { documentId }, populate: ['author', 'comments'] });
           if (!post) {
             return ctx.notFound('Post non trouvé');
           }
@@ -42,7 +42,7 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
         console.log("ici", ctx.params);
         const { documentId } = ctx.params;
     
-        const post = await strapi.db.query('api::post.post').findOne({ where: { documentId }, populate: ['author'] });
+        const post = await strapi.db.query('api::post.post').findOne({ where: { documentId }, populate: ['author', 'comments', ] });
         
         if (!post) {
           return ctx.notFound('Post non trouvé');

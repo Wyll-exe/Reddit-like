@@ -45,10 +45,6 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
           return ctx.notFound("Comment non trouvé");
         }
     
-        if (!comment.author || comment.author.id !== ctx.state.user.id) {
-          return ctx.unauthorized("Vous n’êtes pas l’auteur de ce comment");
-        }
-    
         const deleted = await strapi.entityService.delete('api::comment.comment', comment.id);
     
         return ctx.send({ data: deleted });
@@ -75,7 +71,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
             Answer_text,
             Reward_text,
             author: ctx.state.user.id,
-            post: post.documentId,
+            comments: post,
             publishedAt: new Date().toISOString(),
           },
           populate: ['author', 'comments'],
