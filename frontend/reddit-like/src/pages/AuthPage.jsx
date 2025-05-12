@@ -28,8 +28,10 @@ function Auth({ setUser }) {
       }
       const data = await response.json();
       localStorage.setItem("token", data.jwt)
+      localStorage.setItem("userId", data.user.id);
       setUser(data.user);
       navigate("/homepage");
+    
     } catch (err) {
       setError(err.message);
     }

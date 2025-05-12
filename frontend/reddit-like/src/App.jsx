@@ -5,7 +5,12 @@ import RegisterPage from "./pages/RegisterPage";
 import AuthPage from "./pages/AuthPage";
 import Homepage from "./pages/Homepage";
 import Sub from "./components/Sub.jsx";
+import Paint from "./components/Painting/Paint.jsx";
 import SubAdd from "./components/SubAdd.jsx";
+
+import Place from "./components/Painting/Place.jsx";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
+
 import "./style.css";
 import ModifierPost from "./components/Posts/ModifierPost.jsx";
 import DeletePost from "./components/Posts/DeletePost.jsx";
@@ -23,6 +28,8 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/subs" element={<Sub />} />
           <Route path="/add" element={<SubAdd />} />
+          <Route path="/paint" element={<Paint />} />
+          <Route path="/place" element={<Place />} />
           <Route path="/login" element={<AuthPage setUser={setUser} />} />
           <Route path="/homepage" element={<Homepage user={user} setUser={setUser} />} />
           <Route path="/homepage/:id" element={<ModifierPost />} />
