@@ -23,6 +23,7 @@ function AddSubscriptionPage() {
 
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
+    console.log('userId', userId);
 
     if (!token) {
       toast.error('Vous devez être connecté pour ajouter un Thread.');

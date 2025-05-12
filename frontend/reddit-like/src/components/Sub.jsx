@@ -15,7 +15,7 @@ function Sub( user, setUser) {
     "Cyril": "Cyril : ''Commit to the bitbucket'' ",
     "Laurent": "Laurent : ''Pull request master'' ",
     "Arthur": "Arthur : ''Push it to the limit'' ",
-    "Océane": "Océnae : ''Merge like a boss'' ",
+    "Océane": "Océnane : ''Merge like a boss'' ",
     "William": "William : ''Fetch like a pro'' ",
   }
   
@@ -104,7 +104,7 @@ function Sub( user, setUser) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subs.map((item) => (
+          {subs?.map((item) => (
             <div key={item.id} className="bg-white rounded-2xl shadow hover:shadow-lg transition p-4">
               {item.Banner?.url && (
                 <img
