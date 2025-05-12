@@ -14,7 +14,7 @@ export default function PostDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
-const UserId = token ? jwtDecode(token).id : null;
+  const UserId = token ? jwtDecode(token).id : null;
 
   async function fetchPostDetails() {
     setLoading(true);
@@ -88,25 +88,25 @@ const UserId = token ? jwtDecode(token).id : null;
     fetchPostDetails();
   }, [documentId]);
 
-  async function handleDeleteComment( documentId ) {
+  async function handleDeleteComment(documentId) {
     try {
       const res = await axios.delete(`http://localhost:1338/api/comments/${documentId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (res.status === 200) {
         setComments((prevComments) => prevComments.filter((comment) => comment.documentId !== documentId));
         alert("Commentaire supprimé avec succès !");
         setNewComment("");
-      } 
+      }
     } catch (err) {
       alert("Vous ne pouvez pas supprimer ce commentaire !");
     }
   }
 
-    async function handleUpdateComment(commentId, updatedText ) {
+  async function handleUpdateComment(commentId, updatedText) {
     try {
       const res = await axios.put(
         `http://localhost:1338/api/comments/${commentId}`,
@@ -122,7 +122,7 @@ const UserId = token ? jwtDecode(token).id : null;
           },
         }
       );
-  
+
       if (res.status === 200) {
         setComments((prevComments) =>
           prevComments.map((comment) =>
@@ -148,22 +148,22 @@ const UserId = token ? jwtDecode(token).id : null;
           {post && (
             <div className="mb-6 flex flex-col justify-start px-5">
               <div className="flex items-center justify-start gap-2 h-auto mb-2">
-                <img 
-                              src={post.user?.profilePic || "https://randomuser.me/api/portraits/men/1.jpg"} 
-                              alt="Profil" 
-                              className="w-[20px] h-full object-cover rounded-full"
-                          />
+                <img
+                  src={post.user?.profilePic || "https://randomuser.me/api/portraits/men/1.jpg"}
+                  alt="Profil"
+                  className="w-[20px] h-full object-cover rounded-full"
+                />
                 <h3 className="text-base">
                   @{post.author?.username || "Anonyme"}
                 </h3>
               </div>
               <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
               <p className="text-violet-700">{post.description}</p>
-              <img 
-                            src={"http://localhost:1338" + post.media[0].url}
-                            alt="Illustration" 
-                            className="w-full h-auto mt-5 rounded-[20px]"
-                        />
+              <img
+                src={"http://localhost:1338" + post.media[0].url}
+                alt="Illustration"
+                className="w-full h-auto mt-5 rounded-[20px]"
+              />
             </div>
           )}
 
@@ -191,49 +191,48 @@ const UserId = token ? jwtDecode(token).id : null;
                           onChange={(e) => setEditCommentText(e.target.value)}
                           className="w-full p-2 border border-gray-300 rounded-lg"
                         ></textarea>
+                        <div className="flex gap-2">
+                          <button
+                            type="submit"
+                            className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg"
+                          >
+                            Enregistrer
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setEditCommentId(null)}
+                            className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                          >
+                            Annuler
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      <p className="text-gray-700 dark:text-white">{comment.Description}</p>
+                    )}
+                    <div className="flex gap-2">
+                    {editCommentId != comment.documentId && <>
+                      {(UserId === post.author?.id || comment.author?.id === UserId) && (
                         <button
-                          type="submit"
-                          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                        >
-                          Enregistrer
-                        </button>
-                        <button
-                          type="button"
                           onClick={() => handleDeleteComment(comment.documentId)}
                           className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
                         >
                           Supprimer
                         </button>
+                      )}
+                      {comment.author?.id === UserId && (
                         <button
-                          type="button"
-                          onClick={() => setEditCommentId(null)}
-                          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                          onClick={() => {
+                            setEditCommentId(comment.documentId);
+                            setEditCommentText(comment.Description);
+                          }}
+                          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
                         >
-                          Annuler
+                          Modifier
                         </button>
-                      </form>
-                    ) : (
-                      <p className="text-gray-700 dark:text-white">{comment.Description}</p>
-                    )}
-                    {UserId === post.author?.id && (
-                      <button
-                        onClick={() => handleDeleteComment(comment.documentId)}
-                        className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
-                      >
-                        Supprimer
-                      </button>
-                    )}
-                    {comment.author?.id === UserId && (
-                      <button
-                        onClick={() => {
-                          setEditCommentId(comment.documentId);
-                          setEditCommentText(comment.Description);
-                        }}
-                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                      >
-                        Modifier
-                      </button>
-                    )}
+                      )}
+                    </>}
+                  </div>
                   </div>
                 </div>
               ))
