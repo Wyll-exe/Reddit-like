@@ -17,4 +17,10 @@ export default [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+  {
+    name: 'strapi::errors',
+    config: {
+      showDetails: true, 
+    },
+  },
 ];

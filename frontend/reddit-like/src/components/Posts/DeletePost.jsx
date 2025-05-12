@@ -3,10 +3,12 @@ import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
 import Notification from '../Notification/NotificationComponent';
 import '../../style.css';
+import Sidebar from '../Sidebar/Sidebar';
 
 export default function ModifierPost () {
     const { id } = useParams();
     const [supprimer, setSupprimer] = useState('')
+    const [image, setImage] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [notification, setNotification] = useState({
@@ -33,6 +35,7 @@ export default function ModifierPost () {
         }));
     };
 
+
     async function fetchSupprimer() {
         setLoading(true)
         try {
@@ -46,13 +49,18 @@ export default function ModifierPost () {
 
             const data = await response.json()
             setSupprimer(data)
+            if (data.media == null) {
+              setImage(null)
+            } else {
+              setImage(data.media[0].url)
+            }
         } catch (error) {
             setError(error)
             return
         } finally {
             setLoading(false)
         }}
-      
+
     useEffect(() => {
       fetchSupprimer()
     }, []);
@@ -83,30 +91,37 @@ export default function ModifierPost () {
     }
 
   return (
-    <div className='pl-[2rem] pt-[1rem]'>
-            <h1>Page pour supprimer</h1>
-             {loading && <p>Loading...</p>}
-            {error && <p>{error.message}</p>}
+     <div className="min-h-screen bg-[#e8f4e8]">
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1 ml-64 min-h-screen">
+          <div className="max-w-xl mx-auto mt-10 p-8 bg-[#7c8b7f] shadow-lg rounded-2xl">
+            <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center">Suppression du post</h2>
+
+            {loading && <p className="text-center text-gray-700">Chargement...</p>}
+            {error && <p className="text-center text-red-500">{error.message}</p>}
             {supprimer && (
-                <div>
-                    <div>
-                    <p>{supprimer.title}</p>
-                    <p>{supprimer.description}</p>
-                    {supprimer.media && (
-                    <div>
-                        <img 
-                            src={"http://localhost:1338" + supprimer.media[0].url}
-                            alt="Illustration" 
-                            className="w-full h-auto"
-                        />
-                    </div>
-                  )}
-                    </div>
-                <button 
+                <div className="space-y-6 text-center">
+                <div className="bg-[#919fd4f5] p-4 rounded-lg border border-gray-200">
+                  <p className="text-lg font-semibold text-[#4a4a4a]">
+                    Titre  <span className="block font-normal">{supprimer.title}</span>
+                  </p>
+                  <p className="text-lg font-semibold text-[#4a4a4a]">
+                    Description  <span className="block font-normal">{supprimer.description}</span>
+                  </p>
+                      {image && (
+                      <img
+                      src={`http://localhost:1337${image}`}
+                      alt="Illustration"
+                      className="w-full h-auto"
+                      />
+                    )}
+                </div>
+                <button
                   onClick={deletePost}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-colors"
+                  className="bg-orange-400 hover:bg-red-500 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
                 >
-                  Supprimer
+                  Supprimer définitivement
                 </button>
                 </div>
             )}
@@ -117,6 +132,9 @@ export default function ModifierPost () {
                 isVisible={notification.isVisible}
                 onClose={closeNotification}
             />
+            </div>
+          </div>
+        </div>
         </div>
     )
-}
+  }
