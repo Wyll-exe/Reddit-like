@@ -19,7 +19,7 @@ const UserId = token ? jwtDecode(token).id : null;
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:1337/api/posts/${documentId}?populate=author`,
+        `http://localhost:1338/api/posts/${documentId}?populate=author`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -30,7 +30,7 @@ const UserId = token ? jwtDecode(token).id : null;
       if (res.status === 200) {
         setPost(res.data.data);
         const commentsRes = await axios.get(
-          `http://localhost:1337/api/comments?filters[comments][documentId][$eq]=${documentId}&populate=author`,
+          `http://localhost:1338/api/comments?filters[comments][documentId][$eq]=${documentId}&populate=author`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -58,7 +58,7 @@ const UserId = token ? jwtDecode(token).id : null;
 
     try {
       const res = await axios.post(
-        `http://localhost:1337/api/comments`,
+        `http://localhost:1338/api/comments`,
         {
           data: {
             Description: newComment,
@@ -89,7 +89,7 @@ const UserId = token ? jwtDecode(token).id : null;
 
   async function handleDeleteComment(documentId) {
     try {
-      const res = await axios.delete(`http://localhost:1337/api/comments/${documentId}`, {
+      const res = await axios.delete(`http://localhost:1338/api/comments/${documentId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -108,7 +108,7 @@ const UserId = token ? jwtDecode(token).id : null;
     async function handleUpdateComment(commentId, updatedText) {
     try {
       const res = await axios.put(
-        `http://localhost:1337/api/comments/${commentId}`,
+        `http://localhost:1338/api/comments/${commentId}`,
         {
           "data": {
             "Description": updatedText,

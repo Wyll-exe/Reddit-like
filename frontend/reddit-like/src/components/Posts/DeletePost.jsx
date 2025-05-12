@@ -39,7 +39,7 @@ export default function ModifierPost () {
     async function fetchSupprimer() {
         setLoading(true)
         try {
-            const url = `http://localhost:1337/api/posts/${documentId}`
+            const url = `http://localhost:1338/api/posts/${documentId}`
 
 
             const response = await fetch(url, {
