@@ -43,6 +43,9 @@ function Post({ post, toggleFollow, followedPosts }) {
                     </div>
                 )}
                 <div className='flex gap-[1rem]'>
+                <Link to={`/post/${post.documentId}`} className="text-blue-500">
+                    Voir les détails
+                </Link>
                     <Link to={`/homepage/${post.documentId}`}>Modifier</Link>
                     <Link to={`/homepage/supp/${post.documentId}`}>Supprimer</Link>
                 </div>

@@ -14,6 +14,7 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import "./style.css";
 import ModifierPost from "./components/Posts/ModifierPost.jsx";
 import DeletePost from "./components/Posts/DeletePost.jsx";
+import PostDetails from "./components/Posts/PostDetails.jsx";
 
 function App() {
   const [user, setUser] = useState(null); // État pour l'utilisateur connecté
@@ -33,7 +34,8 @@ function App() {
           <Route path="/login" element={<AuthPage setUser={setUser} />} />
           <Route path="/homepage" element={<Homepage user={user} setUser={setUser} />} />
           <Route path="/homepage/:id" element={<ModifierPost />} />
-          <Route path="/homepage/supp/:id" element={<DeletePost />} />
+          <Route path="/homepage/supp/:documentId" element={<DeletePost />} />
+          <Route path="/post/:documentId" element={<PostDetails />} />
         </Routes>
       </div>
     </Router>

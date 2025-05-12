@@ -14,6 +14,7 @@ export default function ModifierPost () {
     let navigate = useNavigate();
     const token = localStorage.getItem('token');
 
+
     async function fetchModifier() {
         setLoading(true)
         try {

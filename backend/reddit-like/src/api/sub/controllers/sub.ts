@@ -81,24 +81,5 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
       ctx.status = 500;
       return ctx.send({ error: error.message });
     }
-  },
-  async findone(ctx) {
-        try {
-          const { id: documentId } = ctx.params;
-      
-           const post = await strapi.db
-      .query('api::sub.sub')
-      .findOne({
-        where: { documentId },
-        populate: ['author'],
-      })
-          if (!post) {
-            return ctx.notFound('Sub non trouvé');
-          }
-          return ctx.send(post)
-        } catch (error) {
-          ctx.status = 500;
-          return ctx.send({ error: error.message });
-        }
-      },
+  }  
 }));

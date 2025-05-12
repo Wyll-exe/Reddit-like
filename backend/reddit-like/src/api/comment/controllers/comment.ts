@@ -9,7 +9,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
         try {
           const { id: documentId } = ctx.params;
       
-          const comment = await strapi.db.query('api::comment.comment').findOne({ where: { documentId }, populate: ['author'] });
+          const comment = await strapi.db.query('api::comment.comment').findOne({ where: { documentId }, populate: ['author', 'comments'] });
           if (!comment) {
             return ctx.notFound("Comment non trouvé");
           }
@@ -39,14 +39,10 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
       try {
         const { id: documentId } = ctx.params;
     
-        const comment = await strapi.db.query('api::comment.comment').findOne({ where: { documentId }, populate: ['author'] });
+        const comment = await strapi.db.query('api::comment.comment').findOne({ where: { documentId }, populate: ['author', 'comments'] });
     
         if (!comment) {
           return ctx.notFound("Comment non trouvé");
-        }
-    
-        if (!comment.author || comment.author.id !== ctx.state.user.id) {
-          return ctx.unauthorized("Vous n’êtes pas l’auteur de ce comment");
         }
     
         const deleted = await strapi.entityService.delete('api::comment.comment', comment.id);
@@ -59,7 +55,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
     },  
     async create(ctx) {
       try {
-        const { Description, User, Profile_picture, Share, Reward, Answer, Up_vote, Down_vote, Share_text, Answer_text, Reward_text } = ctx.request.body;
+        const { Description, User, Profile_picture, Share, Reward, Answer, Up_vote, Down_vote, Share_text, Answer_text, Reward_text, post } = ctx.request.body.data;
     
         const created = await strapi.entityService.create('api::comment.comment', {
           data: {
@@ -75,9 +71,10 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
             Answer_text,
             Reward_text,
             author: ctx.state.user.id,
+            comments: post,
             publishedAt: new Date().toISOString(),
           },
-          populate: ['author'],
+          populate: ['author', 'comments'],
         });
     
         if (!created) {
@@ -97,7 +94,7 @@ export default factories.createCoreController('api::comment.comment', ({ strapi 
     .query('api::comment.comment')
     .findOne({
       where: { documentId },
-      populate: ['author'],
+      populate: ['author', 'comments'],
     })
         if (!post) {
           return ctx.notFound('Comment non trouvé');
