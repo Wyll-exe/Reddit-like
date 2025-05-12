@@ -94,11 +94,12 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
           return ctx.badRequest('Le paramètre documentId est requis');
         }
     
-        const post = await strapi.db.query('api::post.post').findOne({
-          where: { documentId },
-          populate: ['author'],
-        });
-    
+          const post = await strapi.db
+    .query('api::post.post')
+    .findOne({
+      where: { documentId },
+      populate: ['author', 'media'],
+    })
         if (!post) {
           return ctx.notFound('Post non trouvé');
         }

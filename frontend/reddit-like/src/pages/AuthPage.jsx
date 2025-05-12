@@ -11,7 +11,7 @@ function Auth({ setUser }) {
     e.preventDefault();
  
     try {
-      const response = await fetch("http://localhost:1337/api/auth/local", {
+      const response = await fetch("http://localhost:1338/api/auth/local", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,8 +28,10 @@ function Auth({ setUser }) {
       }
       const data = await response.json();
       localStorage.setItem("token", data.jwt)
+      localStorage.setItem("userId", data.user.id);
       setUser(data.user);
       navigate("/homepage");
+    
     } catch (err) {
       setError(err.message);
     }

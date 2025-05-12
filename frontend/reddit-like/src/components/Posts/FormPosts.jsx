@@ -7,6 +7,11 @@ export default function FormPost({ addPost }) {
         description: ""
     })
     const[error, setError] = useState({})
+    const [image, setImage] = useState([])
+
+    const handleImage = event => {
+        setImage(Array.from(event.target.files))
+    }
 
     const handleChangePost = async (event) => {
         const { name, value } = event.target;
@@ -20,17 +25,40 @@ export default function FormPost({ addPost }) {
         let formError = {};
         if (!Form.title) formError.title = "Champs requis"
         if (!Form.description) formError.description = "Champs requis"
-    
-    
-        const user = {
-                title: Form.title,
-                description: Form.description
-        };
+        if (Object.keys(formError).length) {
+            setError(formError);
+            return;
+        }
 
-                try {
+
+        try {
+            let fileIds = [];
             const token = localStorage.getItem('token');
+
+            if (image.length > 0) {
+                const formData = new FormData();
+                image.forEach(file => formData.append('files', file))
+
+                const img = await axios.post('http://localhost:1338/api/upload',
+                    formData,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                        }
+                    }
+                )
+                const uploaded = img.data
+                fileIds = uploaded.map(f => f.id)
+            }
+
+            const user = {
+                title: Form.title,
+                description: Form.description,
+                ...(fileIds.length > 0 && { media: fileIds })
+            };
+
             const { data, status } = await axios.post(
-                'http://localhost:1337/api/posts',
+                'http://localhost:1338/api/posts',
                 user,
                 {
                     headers: {
@@ -53,21 +81,21 @@ export default function FormPost({ addPost }) {
 
 
     return (
-        <div className="p-4 bg-white m-3 rounded-xl shadow-sm">
+        <div className="p-4 bg-white m-3 rounded-xl shadow-sm dark:bg-[#334155]">
             <div className="flex items-center space-x-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-gray-200"></div>
                 <div className="text-gray-500">Qu'avez-vous en tête ?</div>
             </div>
             <form onSubmit={handlePostSubmit}>
                 <input 
-                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none"
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white  dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                     rows="2"
                     name="title"
                     placeholder="Un titre ?"
                     value={Form.title}
                     onChange={handleChangePost} />
                 <textarea 
-                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none"
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                     rows="2"
                     name="description"
                     placeholder="Partagez vos pensées..."
@@ -76,13 +104,14 @@ export default function FormPost({ addPost }) {
                 ></textarea>
                 <input 
                     type="file" 
+                    name="files"
                     className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
-                    onChange={(e) => setPostImage(e.target.files[0])}
+                    onChange={handleImage}
                 />
                 <div className="flex justify-between mt-3">
                     <button 
                         type="submit"
-                        className="px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium"
+                        className="px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium dark:bg-[#4F46E5]"
                     >
                         Publier
                     </button>

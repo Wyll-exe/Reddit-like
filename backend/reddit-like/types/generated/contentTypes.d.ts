@@ -556,7 +556,6 @@ export interface ApiSubSub extends Struct.CollectionTypeSchema {
     Description: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 25;
         minLength: 3;
       }>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

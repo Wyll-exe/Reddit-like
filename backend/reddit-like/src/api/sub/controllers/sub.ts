@@ -59,6 +59,7 @@ export default factories.createCoreController('api::sub.sub', ({ strapi }) => ({
   },  
   async create(ctx) {
     try {
+   
       const { Name, Description, Banner } = ctx.request.body;
   
       const created = await strapi.entityService.create('api::sub.sub', {
