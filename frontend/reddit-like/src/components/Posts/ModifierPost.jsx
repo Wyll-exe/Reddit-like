@@ -13,17 +13,17 @@ export default function ModifierPost () {
     const [updated, setUpdated] = useState(false)
     let navigate = useNavigate();
 
-
     async function fetchModifier() {
         setLoading(true)
         try {
-            const url = `http://localhost:1337/api/posts/${id}`
+            const url = `http://localhost:1338/api/posts/${id}?populate=*`;
 
 
-            const response = await fetch(url)
-            if (!response.ok) {
-                throw new Error("pas de post trouvé")
-            }
+            const response = await fetch(url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+                },
+            });
 
 
             const data = await response.json()

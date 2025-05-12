@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
+import Notification from '../Notification/NotificationComponent';
+import '../../style.css';
 import Sidebar from '../Sidebar/Sidebar';
 
 export default function ModifierPost () {
@@ -9,20 +11,41 @@ export default function ModifierPost () {
     const [image, setImage] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [notification, setNotification] = useState({
+        message: '',
+        type: '',
+        isVisible: false
+    });
+    
     let navigate = useNavigate();
+    const token = localStorage.getItem('token');
+    
+    const showNotification = (type, message) => {
+        setNotification({
+            message,
+            type,
+            isVisible: true
+        });
+    };
+    
+    const closeNotification = () => {
+        setNotification(prev => ({
+            ...prev,
+            isVisible: false
+        }));
+    };
 
 
     async function fetchSupprimer() {
         setLoading(true)
         try {
-            const url = `http://localhost:1337/api/posts/${id}`
+            const url = `http://localhost:1338/api/posts/${id}?populate=*`
 
-
-            const response = await fetch(url)
-            if (!response.ok) {
-                throw new Error("pas de post trouvé")
-            }
-
+            const response = await fetch(url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+                },
+            });
 
             const data = await response.json()
             setSupprimer(data)
@@ -47,7 +70,7 @@ export default function ModifierPost () {
       try {
         const token = localStorage.getItem('token');
         const res = await axios.delete(
-          `http://localhost:1337/api/posts/${id}`,
+          `http://localhost:1338/api/posts/${id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -56,16 +79,16 @@ export default function ModifierPost () {
           }
         );
         if (res.status === 200) {
-          alert('Post supprimé avec succès !');
-          navigate('/homepage');
+          showNotification('success', 'Post supprimé avec succès !');
+          setTimeout(() => navigate('/homepage'), 2500);
         } else {
           throw new Error(`Statut inattendu : ${res.status}`);
         }
       } catch (err) {
         console.error(err);
-        alert("Erreur lors de la suppression : " + err.message);
+        showNotification('error', "Erreur lors de la suppression : " + err.message);
       }
-      }
+    }
 
   return (
      <div className="min-h-screen bg-[#e8f4e8]">
@@ -102,6 +125,13 @@ export default function ModifierPost () {
                 </button>
                 </div>
             )}
+            
+            <Notification
+                type={notification.type}
+                message={notification.message}
+                isVisible={notification.isVisible}
+                onClose={closeNotification}
+            />
             </div>
           </div>
         </div>
