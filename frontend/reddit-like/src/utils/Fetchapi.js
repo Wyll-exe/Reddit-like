@@ -42,7 +42,6 @@ export async function fetchSubsPosts(documentId) {
     }
 
     const data = await response.json();
-    
     const postsWithCommentCount = data.data.map(post => ({
         ...post,
         commentCount: post.comments ? post.comments.length: 0,

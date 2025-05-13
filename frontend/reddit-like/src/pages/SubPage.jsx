@@ -31,7 +31,6 @@ function SubPage ({ user, setUser }) {
             try {
                 const data = await fetchSubsPosts(documentId);
                 setPosts(data);
-                console.log(data);
             } catch (error) {
                 setError(error);
             } finally {
@@ -56,7 +55,7 @@ function SubPage ({ user, setUser }) {
                 <Sidebar setUser={setUser} />
                 <div className="w-full md:ml-64">
                     <div className="max-w-2xl mx-auto">
-                        <FormPost addPost={addPost} />
+                        <FormPost addPost={addPost} documentId={documentId} />
                         {loading && <div>Chargement...</div>}
                         {error && <div>Erreur : {error.message}</div>}
                         {!loading && posts.map((post) => (

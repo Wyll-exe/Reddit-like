@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-export default function FormPost({ addPost }) {
+export default function FormPost({ addPost, documentId }) {
     const [Form, setForm] = useState({
         title: "",
-        description: ""
+        description: "",
+        sub: {},
     })
     const[error, setError] = useState({})
     const [image, setImage] = useState([])
@@ -54,15 +56,16 @@ export default function FormPost({ addPost }) {
             const user = {
                 title: Form.title,
                 description: Form.description,
+                sub: documentId,
                 ...(fileIds.length > 0 && { media: fileIds })
             };
 
+
             const { data, status } = await axios.post(
-                'http://localhost:1337/api/posts',
+                'http://localhost:1337/api/posts?populate[0]=author&populate[1]=media&populate[2]=comments&populate[3]=sub',
                 user,
                 {
                     headers: {
-                        "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`,
                     },
                 }
@@ -71,7 +74,7 @@ export default function FormPost({ addPost }) {
                 addPost(data.data);
                 setForm({
                     title: "",
-                    description: ""
+                    description: "",
                 });
             }
         } catch (error) {

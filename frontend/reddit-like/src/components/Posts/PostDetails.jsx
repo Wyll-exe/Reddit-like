@@ -29,7 +29,6 @@ const UserId = token ? jwtDecode(token).id : null;
 
       if (res.status === 200) {
         setPost(res.data.data);
-        console.log(res.data.data);
         const commentsRes = await axios.get(
           `http://localhost:1337/api/comments?filters[comments][documentId][$eq]=${documentId}&populate=author`,
           {
@@ -40,7 +39,6 @@ const UserId = token ? jwtDecode(token).id : null;
         );
         if (commentsRes.status === 200) {
           setComments(commentsRes.data.data);
-          console.log(commentsRes.data.data);
         } else {
           throw new Error("Erreur lors de la récupération des commentaires");
         }

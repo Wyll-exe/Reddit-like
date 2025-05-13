@@ -35,10 +35,6 @@ function Homepage({ user, setUser }) {
         return () => clearTimeout(timer); 
     }, []);
 
-    const addPost = (newPost) => {
-        setPosts((prevPosts) => [newPost, ...prevPosts]);
-    };
-
     useEffect(() => {
         async function loadPosts() {
             setLoading(true);

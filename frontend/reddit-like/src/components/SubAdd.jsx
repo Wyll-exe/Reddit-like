@@ -94,16 +94,7 @@ function AddSubscriptionPage() {
         }),
       });
 
-      console.log({
-        Name: name,
-        Description: description,
-        Banner: imageId,
-        author: userId,
-        posts: [],
-      });
-
       const responseData = await res.json();
-      console.log('Response:', responseData);
 
       if (res.status == 200) {
         toast.success('Thread ajouté avec succès !');

@@ -23,7 +23,6 @@ function Sub( user, setUser) {
         );
         const json = await response.json();
         setSubs(json.data);
-        console.log(json.data);
       } catch (error) {
         console.error("Erreur de chargement :", error);
       }
