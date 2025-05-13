@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Post from '../components/Posts/ShowPosts';
 import FormPost from '../components/Posts/FormPosts';
 import MobileNavigation from '../components/Mobile/MobileNav';
 import { fetchPosts } from '../utils/Fetchapi';
-import { createPost } from '../utils/Createapi';
 import SyncLoader from 'react-spinners/SyncLoader';
 
 function Homepage({ user, setUser }) {
@@ -87,7 +86,6 @@ function Homepage({ user, setUser }) {
                 <Sidebar setUser={setUser} />
                 <div className="w-full md:ml-64">
                     <div className="max-w-2xl mx-auto">
-                        <FormPost addPost={addPost} />
                         {loading && <div>Chargement...</div>}
                         {error && <div>Erreur : {error.message}</div>}
                         {!loading && posts.map((post) => (

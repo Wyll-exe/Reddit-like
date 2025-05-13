@@ -7,6 +7,7 @@ import Homepage from "./pages/Homepage";
 import Sub from "./components/Sub.jsx";
 import Paint from "./components/Painting/Paint.jsx";
 import SubAdd from "./components/SubAdd.jsx";
+import SubPage from "./pages/SubPage";
 
 import Place from "./components/Painting/Place.jsx";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
@@ -28,6 +29,7 @@ function App() {
           <Route path='*' element={<h1> 404 error , not found </h1>} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/subs" element={<Sub />} />
+          <Route path="/subsPage/:documentId" element={<SubPage />} />
           <Route path="/add" element={<SubAdd />} />
           <Route path="/paint" element={<Paint />} />
           <Route path="/place" element={<Place />} />

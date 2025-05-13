@@ -30,7 +30,6 @@ export default function ModifierPost () {
 
             const data = await response.json()
             setModifier(data.data)
-            console.log(data.data.media[0].url)
             if (data.data.media == null) {
               setImage(null)
             } else {
