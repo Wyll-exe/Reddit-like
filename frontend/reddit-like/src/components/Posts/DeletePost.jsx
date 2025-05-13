@@ -50,20 +50,19 @@ export default function ModifierPost() {
       });
 
 
-      const data = await response.json()
-      setSupprimer(data)
-      if (data.media == null) {
-        setImage(null)
-      } else {
-        setImage(data.media[0].url)
-      }
-    } catch (error) {
-      setError(error)
-      return
-    } finally {
-      setLoading(false)
-    }
-  }
+            const data = await response.json()
+            setSupprimer(data.data)
+            if (data.data.media == null) {
+              setImage(null)
+            } else {
+              setImage(data.data.media[0].url)
+            }
+        } catch (error) {
+            setError(error)
+            return
+        } finally {
+            setLoading(false)
+        }}
 
   useEffect(() => {
     fetchSupprimer()

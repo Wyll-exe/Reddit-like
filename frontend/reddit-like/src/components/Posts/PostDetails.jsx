@@ -41,6 +41,8 @@ export default function PostDetails() {
         );
         if (commentsRes.status === 200) {
           setComments(commentsRes.data.data);
+        } else {
+          throw new Error("Erreur lors de la récupération des commentaires");
         }
       }
     } catch (err) {
@@ -84,14 +86,19 @@ export default function PostDetails() {
 
   async function handleDeleteComment(documentId) {
     try {
-      const res = await axios.delete(`http://localhost:1338/api/comments/${documentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.delete(
+        `http://localhost:1337/api/comments/${documentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (res.status === 200) {
-        setComments((prevComments) => prevComments.filter((comment) => comment.documentId !== documentId));
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.documentId !== documentId)
+        );
         alert("Commentaire supprimé avec succès !");
         setNewComment("");
       }
@@ -105,13 +112,13 @@ export default function PostDetails() {
       const res = await axios.put(
         `http://localhost:1338/api/comments/${commentId}`,
         {
-          "data": {
-            "Description": updatedText,
+          data: {
+            Description: updatedText,
           },
         },
         {
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -134,21 +141,93 @@ export default function PostDetails() {
   if (error) return <div className="min-h-screen bg-[#e8f4e8] dark:bg-[#111827] flex justify-center items-center"><p className="text-red-600">{error.message}</p></div>;
 
   return (
-    <div className="bg-[#e8f4e8] dark:bg-[#111827] h-auto min-h-screen">
-      <Sidebar />
-      <div className="pl-64 flex items-center justify-center h-auto">
-        <div className=" w-[800px] my-10 p-3 flex flex-col items-center bg-white rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
-          {post && (
-            <div className="mb-6 flex flex-col justify-start px-5">
-              <div className="flex items-center justify-start gap-2 h-auto mb-2">
-                <img
-                  src={post.user?.profilePic || "https://randomuser.me/api/portraits/men/1.jpg"}
-                  alt="Profil"
-                  className="w-[20px] h-full object-cover rounded-full"
-                />
-                <h3 className="text-base">
-                  @{post.author?.username || "Anonyme"}
-                </h3>
+    <div className="p-4 flex flex-col items-center">
+      {post && (
+        <div className="mb-6 text-center">
+          <h3 className="text-sm mb-2">
+            @{post.author?.username || "Anonyme"}
+          </h3>
+          <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
+          <p className="text-violet-700">{post.description}</p>
+          {post.media && (
+            <div className="rounded-lg overflow-hidden mb-4">
+              <img
+                src={"http://localhost:1337" + post.media[0].url}
+                alt="Illustration"
+                className="w-full h-auto"
+              />
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="mb-6 w-full max-w-2xl">
+        <h2 className="text-xl font-bold mb-4">Commentaires</h2>
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="p-3 border-b border-violet-200 flex flex-col"
+            >
+              <h3 className="text-sm font-semibold text-violet-600">
+                @{comment.author?.username || "Anonyme"}
+              </h3>
+              <div>
+                {editCommentId === comment.documentId ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleUpdateComment(comment.documentId, editCommentText);
+                    }}
+                  >
+                    <textarea
+                      value={editCommentText}
+                      onChange={(e) => setEditCommentText(e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg"
+                    ></textarea>
+                    <button
+                      type="submit"
+                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                      Enregistrer
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteComment(comment.documentId)}
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                    >
+                      Supprimer
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditCommentId(null)}
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                    >
+                      Annuler
+                    </button>
+                  </form>
+                ) : (
+                  <p className="text-gray-700">{comment.Description}</p>
+                )}
+                {UserId === post.author?.id && (
+                  <button
+                    onClick={() => handleDeleteComment(comment.documentId)}
+                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                  >
+                    Supprimer
+                  </button>
+                )}
+                {comment.author?.id === UserId && (
+                  <button
+                    onClick={() => {
+                      setEditCommentId(comment.documentId);
+                      setEditCommentText(comment.Description);
+                    }}
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                  >
+                    Modifier
+                  </button>
+                )}
               </div>
               <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
               <p className="text-violet-700">{post.description}</p>
