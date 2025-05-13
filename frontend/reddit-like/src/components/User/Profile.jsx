@@ -112,7 +112,6 @@ export default function Profile() {
             }
 
             const userimage = {
-                username: user.username,
                 ...(fileIds.length > 0 && { avatar: fileIds })
             }
             const {status} = await axios.put(url, userimage, {
