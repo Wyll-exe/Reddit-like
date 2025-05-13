@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -69,14 +69,14 @@ function AddSubscriptionPage() {
 
         if (!uploadRes.ok) {
           const errorData = await uploadRes.json();
-          throw new Error(errorData?.error?.message || 'Échec de l’upload de l’image');
+          throw new Error(errorData?.error?.message || 'Échec de l\'upload de l\'image');
         }
 
         const uploadData = await uploadRes.json();
         imageId = uploadData?.[0]?.id;
 
         if (!imageId) {
-          throw new Error('Échec de l’upload');
+          throw new Error('Échec de l\'upload');
         }
       }
 
@@ -108,35 +108,62 @@ function AddSubscriptionPage() {
     }
   };
 
-  return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1 ml-64 min-h-screen bg-[#F8F9FA]">
-        <div className="max-w-xl mx-auto mt-10 p-8 bg-[#cceed3] shadow-lg rounded-2xl">
-          <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center">Créer un Thread</h2>
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label htmlFor="name" className="block font-medium text-[#242424] mb-1">Nom du Thread *</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full px-4 py-2 border border-[#B0B0B0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#86C7C3]"
-              />
-            </div>
+  if (loadingScreen) {
+    return (
+      <div className="w-full h-screen bg-gray-500 fixed top-0 left-0 transition-transform duration-700">
+        <div className="w-full h-full flex flex-col justify-center items-center gap-8">
+          <img src="./assets/images/threadly.png" alt="Logo" className="w-75 h-auto" />
+          <p className="text-5xl italic font-serif text-gray-300">{citation}</p>
+          <SyncLoader
+            loading
+            color="#D1D5DC"
+            margin={5}
+            size={30}
+            speedMultiplier={1}
+          />
+        </div>
+      </div>
+    );
+  }
 
-            <div>
-              <label htmlFor="description" className="block font-medium text-[#242424] mb-1">Description (3 min) *</label>
-              <textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-                className="w-full px-4 py-2 h-32 resize-none border border-[#B0B0B0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#86C7C3]"
-              />
-            </div>
+  return (
+    <div className="min-h-screen bg-[#e8f4e8] dark:bg-[#111827]">
+      <div className="flex">
+        <Sidebar />
+        <div className="w-full md:ml-64 p-4">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">Créer un Thread</h2>
+              
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Nom du Thread *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#7bc297] dark:focus:ring-blue-500 focus:border-[#7bc297] dark:focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    placeholder="Entrez le nom du Thread"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Description (3 min) *
+                  </label>
+                  <textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                    className="w-full px-4 py-2 h-32 resize-none border border-gray-300 rounded-md shadow-sm focus:ring-[#7bc297] dark:focus:ring-blue-500 focus:border-[#7bc297] dark:focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    placeholder="Décrivez votre Thread en quelques mots..."
+                  />
+                </div>
 
             <div>
               <label htmlFor="banner" className="block font-medium text-[#242424] mb-1">Bannière *</label>
@@ -153,20 +180,27 @@ function AddSubscriptionPage() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-[#86C7C3] hover:bg-[#A8DBD9] text-[#242424] font-semibold py-2 px-4 rounded-lg transition-colors"
-            >
-              Ajouter le Thread
-            </button>
+                <button
+                  type="submit"
+                  className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#7bc297] dark:bg-blue-600 hover:bg-[#5eaa7d] dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7bc297] dark:focus:ring-blue-500 transition-colors duration-200"
+                >
+                  Ajouter le Thread
+                </button>
 
-            <Link to="/subs" className="block text-center text-sm text-[#242424] hover:underline mt-2">
-              Retour aux Threads
-            </Link>
-          </form>
+                <div className="flex justify-center mt-4">
+                  <Link 
+                    to="/subs" 
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+                  >
+                    ← Retour aux Threads
+                  </Link>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer position="top-center" theme="colored" />
     </div>
   );
 }

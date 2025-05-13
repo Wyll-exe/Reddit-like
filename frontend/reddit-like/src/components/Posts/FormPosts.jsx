@@ -30,7 +30,6 @@ export default function FormPost({ addPost, documentId }) {
       setError(formError);
       return;
     }
-
     try {
       let fileIds = [];
       const token = localStorage.getItem("token");

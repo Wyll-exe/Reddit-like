@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
 
-export default function ModifierPost () {
+export default function ModifierPost() {
     const { id } = useParams();
     const [modifier, setModifier] = useState('')
     const [image, setImage] = useState([])
@@ -22,8 +22,8 @@ export default function ModifierPost () {
 
 
             const response = await fetch(url, {
-            headers: {
-              Authorization: `Bearer ${token}`,
+                headers: {
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
@@ -31,9 +31,9 @@ export default function ModifierPost () {
             const data = await response.json()
             setModifier(data.data)
             if (data.data.media == null) {
-              setImage(null)
+                setImage(null)
             } else {
-              setImage(data.data.media[0].url)
+                setImage(data.data.media[0].url)
             }
         } catch (error) {
             setError(error)
@@ -43,7 +43,7 @@ export default function ModifierPost () {
         }
     }
 
-    const [error2, setError2] = useState({}); 
+    const [error2, setError2] = useState({});
 
 
     const handleChange = (event) => {
@@ -92,86 +92,93 @@ export default function ModifierPost () {
                 description: modifier.description,
                 ...(fileIds.length > 0 && { media: fileIds })
             }
-            const {status} = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
+            const { status } = await axios.put(`http://localhost:1337/api/posts/${id}`, user, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
             });
             setUpdated(!updated)
             alert("Votre post à été modifier avec succès !");
-            if(status === 200) navigate("/homepage")
+            if (status === 200) navigate("/homepage")
         } catch (error2) {
             console.error("Erreur", error2);
         }
     };
-    
+
 
     useEffect(() => {
         fetchModifier()
 
     }, [updated])
 
-    return(
-         <div className="min-h-screen bg-[#e8f4e8]">
-            <div className ="flex">
+    return (
+        <div className="min-h-screen bg-[#e8f4e8] dark:bg-[#111827]">
+            <div className="flex">
                 <Sidebar />
                 <div className="flex-1 ml-64 min-h-screen">
-                    <div className="max-w-xl mx-auto mt-10 p-8 bg-[#778379] shadow-lg rounded-2xl">
-        <div>
-            <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center">Modifications :</h2>
-             
-             {loading && <p>Loading...</p>}
-            {error && <p>{error.message}</p>}
-            {modifier && (
-                <div>
-                <div className="space-y-6">
-                    <div className="bg-[#919fd4f5] p-4 rounded-lg border border-gray-200 text-center">
-                        <p className="text-lg font-semibold text-[#4a4a4a]">
-                            Titre  <span className="block font-normal">{modifier.title}</span>
-                        </p>
-                        <p className="text-lg font-semibold text-[#4a4a4a]">
-                            Description  <span className="block font-normal">{modifier.description}</span>
-                        </p>
-                        {image && (
-                        <img
-                        src={`http://localhost:1337${image}`}
-                        alt="Illustration"
-                        className="w-full h-auto"
-                        />
-                    )}
+                    <div className="max-w-xl mx-auto my-10 p-8 bg-white shadow-lg rounded-2xl dark:bg-[#334155]">
+                        <div>
+                            <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center dark:text-white">Modifications :</h2>
+
+                            {loading && <p>Loading...</p>}
+                            {error && <p>{error.message}</p>}
+                            {modifier && (
+                                <div>
+                                    <div className="space-y-6">
+                                        <div className="bg-[#c8d3ff] dark:bg-[#646e94] p-4 rounded-lg text-center">
+                                            <p className="text-lg font-semibold text-[#4a4a4a] dark:text-white">
+                                                Titre  <span className="block font-normal dark:text-white">{modifier.title}</span>
+                                            </p>
+                                            <p className="text-lg font-semibold text-[#4a4a4a] dark:text-white">
+                                                Description  <span className="block font-normal dark:text-white break-all">{modifier.description}</span>
+                                            </p>
+                                            {image && (
+                                                <img
+                                                    src={`http://localhost:1337${image}`}
+                                                    alt="Illustration"
+                                                    className="w-full h-auto mt-4"
+                                                />
+                                            )}
+                                        </div>
+                                        <form onSubmit={handleSubmit}>
+                                            <input
+                                                className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                                rows="2"
+                                                name="title"
+                                                value={modifier.title}
+                                                onChange={handleChange} />
+                                            <textarea
+                                                className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                                rows="2"
+                                                name="description"
+                                                value={modifier.description}
+                                                onChange={handleChange} />
+                                            <input
+                                                type="file"
+                                                name="files"
+                                                className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                                onChange={handleImage}
+                                            />
+                                            <div className='flex justify-between'>
+                                                <button
+                                                    type='submit'
+                                                    className="bg-[#86C7C3] hover:bg-[#A8DBD9] text-white font-semibold py-3 mt-4 px-4 rounded-lg transition-colors dark:text-white"
+                                                >
+                                                    Modifier</button>
+                                                <div
+                                                    onClick={() => navigate("/homepage")}
+                                                    className="focus:outline-none bg-red-600 text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-semibold rounded-lg py-3 mt-4 px-4 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                                >
+                                                    Annuler</div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
-                    <form onSubmit={handleSubmit}>
-                        <input 
-                        className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mb-3 mt-3"
-                        rows="2"
-                        name="title"
-                        value={modifier.title}
-                        onChange={handleChange} />
-                    <textarea 
-                        className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none"
-                        rows="2"
-                        name="description"
-                        value={modifier.description}
-                        onChange={handleChange} />
-                        <input 
-                    type="file" 
-                    name="files"
-                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
-                    onChange={handleImage}
-                />
-                    <button 
-                    type='submit' 
-                    className=" bg-[#86C7C3] hover:bg-[#A8DBD9] text-[#242424] font-semibold py-3 mt-4 px-4 rounded-lg transition-colors"
-                    >
-                        Modifier</button>
-                    </form>
-                </div>
-                </div>
-            )}
             </div>
-            </div>
-        </div>
-        </div>
         </div>
     )
 }

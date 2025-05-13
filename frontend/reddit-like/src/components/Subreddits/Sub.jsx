@@ -3,7 +3,7 @@ import { SyncLoader } from "react-spinners";
 import Sidebar from "../Sidebar/Sidebar";
 import { Link } from "react-router-dom";
 
-function Sub( user, setUser) {
+function Sub(user, setUser) {
   const [subs, setSubs] = useState([]);
   const token = localStorage.getItem("token");
 
@@ -14,6 +14,12 @@ function Sub( user, setUser) {
     const fetchData = async () => {
       try {
         const response = await fetch(
+          "http://localhost:1337/api/subs?populate=author&populate=Banner",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
           "http://localhost:1337/api/subs?populate=author&populate=Banner",
           {
             headers: {
@@ -32,15 +38,16 @@ function Sub( user, setUser) {
   }, []);
 
   const handleDelete = async (documentId) => {
+  const handleDelete = async (documentId) => {
     const confirm = window.confirm("Voulez-vous supprimer ce Thread ?");
     if (!confirm) return;
 
     try {
-      const token = localStorage.getItem("token");
       if (!token) {
         alert("Vous devez être connecté pour supprimer un Thread.");
       }
 
+      const res = await fetch(`http://localhost:1337/api/subs/${documentId}`, {
       const res = await fetch(`http://localhost:1337/api/subs/${documentId}`, {
         method: "DELETE",
         headers: {
@@ -50,6 +57,7 @@ function Sub( user, setUser) {
       });
 
       if (res.ok) {
+        setSubs((prev) => prev.filter((item) => item.documentId !== documentId));
         setSubs((prev) => prev.filter((item) => item.documentId !== documentId));
         alert("Supprimé à jamais !");
       } else {
@@ -62,17 +70,14 @@ function Sub( user, setUser) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-  <div className="flex">
-    <Sidebar setUser={setUser} />
-    <div className="w-full md:ml-64">
-      <main className="w-full h-screen overflow-y-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Threads'</h1>
-          <Link to="/add" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-            ➕ Ajouter un Sub
-          </Link>
-        </div>
+    <div className="min-h-screen h-[auto] bg-[#e8f4e8] dark:bg-[#111827]">
+      <div className="flex">
+        <Sidebar setUser={setUser} />
+        <div className="w-full md:ml-64">
+          <main className="w-full min-h-screen h-[auto] overflow-y-auto p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Threads</h1>
+            </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {subs?.map((item) => (
