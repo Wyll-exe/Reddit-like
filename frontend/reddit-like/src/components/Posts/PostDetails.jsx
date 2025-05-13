@@ -194,14 +194,14 @@ export default function PostDetails() {
                         <div className="flex justify-between gap-2">
                           <button
                             type="submit"
-                            className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg"
+                            className="bg-green-600 hover:bg-[#86C7C3] text-white font-semibold py-3 mt-4 px-4 rounded-lg transition-colors"
                           >
                             Enregistrer
                           </button>
                           <button
                             type="button"
                             onClick={() => setEditCommentId(null)}
-                            className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-semibold rounded-lg py-3 mt-4 px-4 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                           >
                             Annuler
                           </button>
@@ -215,7 +215,7 @@ export default function PostDetails() {
                       {(UserId === post.author?.id || comment.author?.id === UserId) && (
                         <button
                           onClick={() => handleDeleteComment(comment.documentId)}
-                          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-semibold rounded-lg py-3 mt-4 px-4 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                         >
                           Supprimer
                         </button>
@@ -226,7 +226,7 @@ export default function PostDetails() {
                             setEditCommentId(comment.documentId);
                             setEditCommentText(comment.Description);
                           }}
-                          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                          className="bg-blue-500 text-white hover:bg-blue-700 text-white font-semibold py-3 mt-4 px-4 rounded-lg transition-colors"
                         >
                           Modifier
                         </button>

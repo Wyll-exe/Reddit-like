@@ -105,7 +105,7 @@ export default function FormPost({ addPost }) {
                 <input 
                     type="file" 
                     name="files"
-                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
+                    className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3 dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                     onChange={handleImage}
                 />
                 <div className="flex justify-between mt-3">
