@@ -15,6 +15,7 @@ export default function Profile() {
     const token = localStorage.getItem('token');
     const userid = token ? jwtDecode(token).id : null
     const url = `http://localhost:1337/api/users?filters[id][$eqi]=${userid}`
+    const url2 = `http://localhost:1337/api/users/${userid}`
 
     async function fetchUser() {
         setLoading(true)
@@ -47,7 +48,7 @@ export default function Profile() {
             const name = {
                 username: user.username
             }
-            const {status} = await axios.put(url, name, {
+            const {status} = await axios.put(url2, name, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
@@ -65,9 +66,9 @@ export default function Profile() {
 
         try {
             const mail = {
-                username: user.username
+                email: user.email
             }
-            const {status} = await axios.put(url, mail, {
+            const {status} = await axios.put(url2, mail, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
