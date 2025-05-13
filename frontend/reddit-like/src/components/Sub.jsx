@@ -36,7 +36,6 @@ function Sub( user, setUser) {
     if (!confirm) return;
 
     try {
-      const token = localStorage.getItem("token");
       if (!token) {
         alert("Vous devez être connecté pour supprimer un Thread.");
       }

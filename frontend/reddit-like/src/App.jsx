@@ -1,9 +1,9 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 import RegisterPage from "./pages/RegisterPage";
 import AuthPage from "./pages/AuthPage";
 import Homepage from "./pages/Homepage";
+import Profile from "./pages/Profile"; // Import de la page Profile
 import Sub from "./components/Sub.jsx";
 import Paint from "./components/Painting/Paint.jsx";
 import SubAdd from "./components/SubAdd.jsx";
@@ -22,7 +22,7 @@ function App() {
   return (
     
     <Router>
-      <div className="App bg-gray-500 h-[100%] w-[100%]">
+      <div>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path='*' element={<NotFound />} />
@@ -34,6 +34,7 @@ function App() {
           <Route path="/place" element={<Place />} />
           <Route path="/login" element={<AuthPage setUser={setUser} />} />
           <Route path="/homepage" element={<Homepage user={user} setUser={setUser} />} />
+          <Route path="/profile" element={<Profile user={user} setUser={setUser} />} /> {/* Nouvelle route pour le profil */}
           <Route path="/homepage/:id" element={<ModifierPost />} />
           <Route path="/homepage/supp/:documentId" element={<DeletePost />} />
           <Route path="/post/:documentId" element={<PostDetails />} />
