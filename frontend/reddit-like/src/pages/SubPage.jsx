@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -65,6 +65,9 @@ function SubPage({ user, setUser }) {
               ))}
           </div>
         </div>
+        <Link to="/subs" className="fixed bottom-6 right-6 bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-800 transition">
+              Retour aux Threads
+        </Link>
       </div>
       <MobileNavigation />
     </div>

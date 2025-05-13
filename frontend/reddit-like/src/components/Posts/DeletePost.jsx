@@ -123,13 +123,13 @@ export default function ModifierPost() {
                 <div className="flex justify-between">
                   <button
                     onClick={deletePost}
-                    className=" bg-[#86C7C3] hover:bg-[#A8DBD9] text-[#242424] font-semibold py-3 mt-4 px-4 rounded-lg transition-colors dark:text-white  "
+                    className="bg-[#86C7C3] hover:bg-[#A8DBD9] text-white font-semibold py-3 mt-4 px-4 rounded-lg transition-colors dark:text-white  "
                   >
                     Supprimer définitivement
                   </button>
                   <button
                     onClick={() => navigate("/homepage")}
-                    className="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-semibold rounded-lg py-3 mt-4 px-4 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                    className="focus:outline-none bg-red-600 text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-semibold rounded-lg py-3 mt-4 px-4 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                   >
                     Annuler</button>
                 </div>

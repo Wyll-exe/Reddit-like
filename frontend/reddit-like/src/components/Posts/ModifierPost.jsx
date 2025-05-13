@@ -116,7 +116,7 @@ export default function ModifierPost() {
             <div className="flex">
                 <Sidebar />
                 <div className="flex-1 ml-64 min-h-screen">
-                    <div className="max-w-xl mx-auto my-10 p-8 bg-[#778379] shadow-lg rounded-2xl dark:bg-[#334155]">
+                    <div className="max-w-xl mx-auto my-10 p-8 bg-white shadow-lg rounded-2xl dark:bg-[#334155]">
                         <div>
                             <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center dark:text-white">Modifications :</h2>
 
@@ -125,7 +125,7 @@ export default function ModifierPost() {
                             {modifier && (
                                 <div>
                                     <div className="space-y-6">
-                                        <div className="bg-[#919fd4] p-4 rounded-lg text-center">
+                                        <div className="bg-[#c8d3ff] dark:bg-[#646e94] p-4 rounded-lg text-center">
                                             <p className="text-lg font-semibold text-[#4a4a4a] dark:text-white">
                                                 Titre  <span className="block font-normal dark:text-white">{modifier.title}</span>
                                             </p>
@@ -162,12 +162,12 @@ export default function ModifierPost() {
                                             <div className='flex justify-between'>
                                                 <button
                                                     type='submit'
-                                                    className=" bg-[#86C7C3] hover:bg-[#A8DBD9] text-[#242424] font-semibold py-3 mt-4 px-4 dark:text-white rounded-lg transition-colors cursor-pointer"
+                                                    className="bg-[#86C7C3] hover:bg-[#A8DBD9] text-white font-semibold py-3 mt-4 px-4 rounded-lg transition-colors dark:text-white"
                                                 >
                                                     Modifier</button>
                                                 <div
                                                     onClick={() => navigate("/homepage")}
-                                                    className="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 transition-colors dark:text-white focus:ring-red-300 font-semibold rounded-lg py-3 mt-4 px-4 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer"
+                                                    className="focus:outline-none bg-red-600 text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-semibold rounded-lg py-3 mt-4 px-4 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                                                 >
                                                     Annuler</div>
                                             </div>

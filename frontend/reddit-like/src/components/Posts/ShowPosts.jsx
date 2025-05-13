@@ -30,8 +30,8 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
           <button
             onClick={() => toggleFollow(post.id)}
             className={`px-3 py-1 rounded-full text-sm font-medium dark:bg-[#10B981]	 ${followedPosts[post.id]
-                ? "bg-gray-200 text-gray-800"
-                : "bg-[#e8f4e8] text-gray-700"
+              ? "bg-gray-200 text-gray-800"
+              : "bg-[#e8f4e8] text-gray-700"
               }`}
           >
             {followedPosts[post.id] ? "Unfollow" : "Follow"}
@@ -60,14 +60,14 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
                 onClick={() => setShowLinks(!showLinks)}
                 className="text-gray-500 flex "
               >
-                {showLinks ? "👌" : "🚽"}
+                {showLinks ? "❌​" : "🔧​"}
               </button>
               {showLinks && (
-                <div className="flex gap-[1rem]">
-                  <Link to={`/homepage/${post.documentId}`} className="text-green-500">
+                <div className="flex items-center gap-[1rem]">
+                  <Link to={`/homepage/${post.documentId}`} className="flex justify-center items-center h-[35px] focus:outline-none bg-green-500 hover:bg-green-700 focus:ring-4 transition-colors text-white focus:ring-green-300 font-semibold rounded-lg px-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900 cursor-pointer">
                     Modifier
                   </Link>
-                  <Link to={`/homepage/supp/${post.documentId}`} className="text-red-500">
+                  <Link to={`/homepage/supp/${post.documentId}`} className="flex h-[35px] justify-center items-center focus:outline-none bg-red-500 hover:bg-red-700 focus:ring- transition-colors text-white focus:ring-red-300 font-semibold rounded-lg px-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer">
                     Supprimer
                   </Link>
                 </div>
@@ -75,7 +75,7 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
             </>
           )}
         </div>
-        <div className="text-xs text-gray-500">
+        <div className="text-xs mt-2 text-gray-500 dark:text-white">
           {new Date(post.createdAt).toLocaleDateString("fr-FR", {
             year: "numeric",
             month: "long",

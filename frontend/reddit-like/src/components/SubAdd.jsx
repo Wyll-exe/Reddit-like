@@ -109,37 +109,37 @@ function AddSubscriptionPage() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex ">
       <Sidebar />
-      <div className="flex-1 ml-64 min-h-screen bg-[#F8F9FA]">
-        <div className="max-w-xl mx-auto mt-10 p-8 bg-[#cceed3] shadow-lg rounded-2xl">
-          <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center">Créer un Thread</h2>
+      <div className="flex-1 ml-64 min-h-screen bg-[#e8f4e8] dark:bg-[#111827]">
+        <div className="max-w-xl mx-auto mt-10 p-8 bg-white dark:bg-[#334155] shadow-lg rounded-2xl">
+          <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center dark:text-white">Créer un Thread</h2>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="name" className="block font-medium text-[#242424] mb-1">Nom du Thread *</label>
+              <label htmlFor="name" className="block font-medium text-[#242424] mb-1 dark:text-white">Nom du Thread *</label>
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-[#B0B0B0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#86C7C3]"
+                className="w-full px-4 py-2 border border-[#B0B0B0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#86C7C3] dark:text-white"
               />
             </div>
 
             <div>
-              <label htmlFor="description" className="block font-medium text-[#242424] mb-1">Description (3 min) *</label>
+              <label htmlFor="description" className="block font-medium text-[#242424] mb-1 dark:text-white">Description (3 min) *</label>
               <textarea
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
-                className="w-full px-4 py-2 h-32 resize-none border border-[#B0B0B0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#86C7C3]"
+                className="w-full px-4 py-2 h-32 resize-none border border-[#B0B0B0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#86C7C3] dark:text-white"
               />
             </div>
 
             <div>
-              <label htmlFor="banner" className="block font-medium text-[#242424] mb-1">Bannière *</label>
+              <label htmlFor="banner" className="block font-medium text-[#242424] mb-1 dark:text-white">Bannière *</label>
               <input
                 type="file"
                 id="banner"
@@ -149,18 +149,18 @@ function AddSubscriptionPage() {
                   file:rounded-lg file:border-0
                   file:font-semibold
                   file:bg-[#86C7C3] file:text-white
-                  hover:file:bg-[#A8DBD9]"
+                  hover:file:bg-[#A8DBD9] dark:text-white"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-[#86C7C3] hover:bg-[#A8DBD9] text-[#242424] font-semibold py-2 px-4 rounded-lg transition-colors"
+              className="w-full dark:text-white bg-[#86C7C3] hover:bg-[#A8DBD9] text-[#242424] font-semibold py-2 px-4 rounded-lg transition-colors"
             >
               Ajouter le Thread
             </button>
 
-            <Link to="/subs" className="block text-center text-sm text-[#242424] hover:underline mt-2">
+            <Link to="/subs" className="block dark:text-white text-center text-sm text-[#242424] hover:underline mt-2">
               Retour aux Threads
             </Link>
           </form>
