@@ -50,7 +50,6 @@ export default function ModifierPost () {
 
             const data = await response.json()
             setSupprimer(data.data)
-            console.log(data.data)
             if (data.data.media == null) {
               setImage(null)
             } else {
