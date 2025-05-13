@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "react-router";
-import Avatar from '../User/Avatar.jsx';
 
 function Post({ post, toggleFollow, followedPosts }) {
     return (

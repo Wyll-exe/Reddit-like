@@ -172,7 +172,7 @@ export default function Profile() {
                     </form>
                 </div>
             )}
-            <Sidebar />
+            {/* <Sidebar /> */}
         </div>
     )
 }
