@@ -89,11 +89,11 @@ function Homepage({ user, setUser }) {
       <div className="flex">
         <Sidebar setUser={setUser} />
         <div className="w-full md:ml-64">
-            <div className="max-w-2xl mx-auto mt-10 p-8 bg-[#7c8b7f] shadow-lg rounded-2xl">
-                <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center">
-                🔥 Top tendances 🔥
+            <div className="max-w-2xl mx-auto mt-10 px-8 py-5 dark:bg-[#e8f4e8] bg-[#111827] shadow-lg rounded-2xl dark:text-white">
+                <h2 className="text-3xl font-bold dark:text-[#242424] text-white mb-3 text-center">
+                Top tendances 
                 </h2>
-                <p className="text-center text-gray-700">
+                <p className="text-center dark:text-gray-700 text-white">
                   Découvrez les posts les plus populaires de la semaine !
                 </p>
             </div>

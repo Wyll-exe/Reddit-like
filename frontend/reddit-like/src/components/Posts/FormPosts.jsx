@@ -40,7 +40,7 @@ export default function FormPost({ addPost, documentId }) {
         image.forEach((file) => formData.append("files", file));
 
         const img = await axios.post(
-          "http://localhost:1337/api/upload",
+          "http://localhost:1338/api/upload",
           formData,
           {
             headers: {
@@ -60,7 +60,7 @@ export default function FormPost({ addPost, documentId }) {
       };
 
       const { data, status } = await axios.post(
-        "http://localhost:1337/api/posts?populate[0]=author&populate[1]=media&populate[2]=comments&populate[3]=sub",
+        "http://localhost:1338/api/posts?populate[0]=author&populate[1]=media&populate[2]=comments&populate[3]=sub",
         user,
         {
           headers: {
@@ -81,6 +81,15 @@ export default function FormPost({ addPost, documentId }) {
         error.response?.data || error.message
       );
     }
+    useEffect(() => {
+      const interval = setInterval(() => {
+        axios.get(`/SubsPage/${documentId}`)
+          .then(res => setData(res.data))
+          .catch(err => console.error(err));
+      }, 5000); //set your time here. repeat every 5 seconds
+
+      return () => clearInterval(interval);
+    }, []);
   };
 
   return (
@@ -109,7 +118,7 @@ export default function FormPost({ addPost, documentId }) {
         <input
           type="file"
           name="files"
-          className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3"
+          className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3 dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
           onChange={handleImage}
         />
         <div className="flex justify-between mt-3">
