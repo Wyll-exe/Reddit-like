@@ -83,7 +83,7 @@ function AddSubscriptionPage() {
       const res = await fetch('http://localhost:1337/api/subs?populate=author', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -94,7 +94,7 @@ function AddSubscriptionPage() {
         }),
       });
 
-      const responseData = await res.json();
+      console.log(res);
 
       if (res.status == 200) {
         toast.success('Thread ajouté avec succès !');
