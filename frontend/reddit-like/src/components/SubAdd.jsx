@@ -12,7 +12,11 @@ function AddSubscriptionPage() {
 
   const checkNameExists = async (name) => {
     const response = await fetch(
-      `http://localhost:1337/api/subs?filters[Name][$eqi]=${name}`
+      `http://localhost:1338/api/subs?filters[Name][$eqi]=${name}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+  });
     );
     const data = await response.json();
     return data.data.length > 0;
@@ -94,6 +98,7 @@ function AddSubscriptionPage() {
       const responseData = await res.json();
 
       if (!res.ok) {
+        console.error('Erreur lors de l\'ajout :', responseData);
         throw new Error(responseData?.error?.message || 'Erreur inconnue');
       }
 
@@ -102,6 +107,7 @@ function AddSubscriptionPage() {
         setTimeout(() => navigate('/subs'), 1500);
       } else {
         toast.error('Erreur lors de l\'ajout');
+        console.error('Erreur lors de l\'ajout :', responseData);
       }
     } catch (error) {
       toast.error(error.message || 'Une erreur est survenue');
