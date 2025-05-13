@@ -14,8 +14,7 @@ export default function Profile() {
     let navigate = useNavigate();
     const token = localStorage.getItem('token');
     const userid = token ? jwtDecode(token).id : null
-    const url = `http://localhost:1337/api/users?filters[id][$eqi]=${userid}`
-    const url2 = `http://localhost:1337/api/users/${userid}`
+    const url = `http://localhost:1337/api/users/${userid}?populate=avatar`
 
     async function fetchUser() {
         setLoading(true)
@@ -27,7 +26,12 @@ export default function Profile() {
             });
 
             const data = await response.json()
-            SetUser(data[0])
+            SetUser(data)
+            if (data.avatar == null) {
+                setImage(null)
+            } else {
+                setImage(data.avatar.url)
+            }
         } catch (error) {
             setError(error)
             return
@@ -48,7 +52,7 @@ export default function Profile() {
             const name = {
                 username: user.username
             }
-            const {status} = await axios.put(url2, name, {
+            const {status} = await axios.put(url, name, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
@@ -68,7 +72,7 @@ export default function Profile() {
             const mail = {
                 email: user.email
             }
-            const {status} = await axios.put(url2, mail, {
+            const {status} = await axios.put(url, mail, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
@@ -107,6 +111,14 @@ export default function Profile() {
                 fileIds = uploaded.map(f => f.id)
             }
 
+            const userimage = {
+                ...(fileIds.lenght > 0 && { media: fileIds })
+            }
+            const {status} = await axios.put(url, userimage, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            })
             setUpdated(!updated)
             alert("Votre avatar à été modifier avec succès !");
             if(status === 200) navigate("/profile")
@@ -125,7 +137,23 @@ export default function Profile() {
             {error && <p>{error.message}</p>}
             {user && (
                 <div className='min-h-screen bg-[#e8f4e8]'>
-                    <div>Avatar {user.avatar}</div>
+                    <div>Avatar 
+                        {image && (
+                        <img
+                        src={`http://localhost:1337${image}`}
+                        alt="Illustration"
+                        className="w-full h-auto"
+                        />
+                        )}
+                    </div>
+                    <form onSubmit={handleSubmitImage}>
+                        <input
+                        type='file'
+                        name='files'
+                        onChange={handleImage}
+                        />
+                        <button type='submit'>Changer d'avatar</button>
+                    </form>
                     <div>Name {user.username}</div>
                     <form onSubmit={handleSubmiteName}>
                         <input
