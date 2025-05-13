@@ -15,6 +15,7 @@ import "./style.css";
 import ModifierPost from "./components/Posts/ModifierPost.jsx";
 import DeletePost from "./components/Posts/DeletePost.jsx";
 import PostDetails from "./components/Posts/PostDetails.jsx";
+import Profile from "./components/User/Profile.jsx";
 
 function App() {
   const [user, setUser] = useState(null); // État pour l'utilisateur connecté
@@ -36,6 +37,7 @@ function App() {
           <Route path="/homepage/:id" element={<ModifierPost />} />
           <Route path="/homepage/supp/:documentId" element={<DeletePost />} />
           <Route path="/post/:documentId" element={<PostDetails />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </Router>
