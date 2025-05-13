@@ -1,8 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
+import { fetchSubAuthor } from "../../utils/Fetchapi";
 
-function Post({ post, toggleFollow, followedPosts, userId }) {
+function Post({ post, toggleFollow, followedPosts, userDocumentId, userId }) {
   const [showLinks, setShowLinks] = useState(false);
+  const subDocumentId = post.sub?.documentId || null;
+  useEffect(() => {
+    async function subAuthors() {
+      try {
+        const res = await fetchSubAuthor(subDocumentId);
+        if (res) {
+          post.sub.author = res.data[0].author.documentId;
+          console.log("Auteur du sous-forum :", post.sub.author);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des auteurs de sous-forums :", error);
+      }
+    }
+    subAuthors();
+  }, []);
   return (
     <div className="bg-white m-3 rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
       <div className="p-4 border-b border-gray-100 flex items-center justify-between">
@@ -44,7 +60,7 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
         {post.media && (
           <div className="rounded-lg overflow-hidden mb-4">
             <img
-              src={"http://localhost:1338" + post.media[0].url}
+              src={"http://localhost:1337" + post.media[0].url}
               alt="Illustration"
               className="w-full h-auto"
             />
@@ -54,7 +70,7 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
           <Link to={`/post/${post.documentId}`} className="text-gray-500">
             💬 <span>{post.commentCount || 0}</span>
           </Link>
-          {post.author.id === userId && (
+          {post.author.id === userId || post.sub.author === userDocumentId && (
             <>
               <button
                 onClick={() => setShowLinks(!showLinks)}

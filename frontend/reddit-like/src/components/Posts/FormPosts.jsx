@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
 
 export default function FormPost({ addPost, documentId }) {
   const [Form, setForm] = useState({
@@ -10,8 +9,6 @@ export default function FormPost({ addPost, documentId }) {
   });
   const [error, setError] = useState({});
   const [image, setImage] = useState([]);
-
-  const navigate = useNavigate();
 
   const handleImage = (event) => {
     setImage(Array.from(event.target.files));
@@ -42,7 +39,7 @@ export default function FormPost({ addPost, documentId }) {
         const formData = new FormData();
         image.forEach((file) => formData.append("files", file));
 
-        const img = await axios.post("http://localhost:1338/api/upload", formData, {
+        const img = await axios.post("http://localhost:1337/api/upload", formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -61,7 +58,7 @@ export default function FormPost({ addPost, documentId }) {
       };
 
       const { data, status } = await axios.post(
-        "http://localhost:1338/api/posts?populate[0]=author&populate[1]=media&populate[2]=comments&populate[3]=sub",
+        "http://localhost:1337/api/posts?populate[0]=author&populate[1]=media&populate[2]=comments&populate[3]=sub",
         user,
         {
           headers: {

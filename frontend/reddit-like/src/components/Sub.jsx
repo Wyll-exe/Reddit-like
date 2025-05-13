@@ -14,7 +14,7 @@ function Sub(user, setUser) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1338/api/subs?populate=author&populate=Banner",
+          "http://localhost:1337/api/subs?populate=author&populate=Banner",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ function Sub(user, setUser) {
         alert("Vous devez être connecté pour supprimer un Thread.");
       }
 
-      const res = await fetch(`http://localhost:1338/api/subs/${documentId}`, {
+      const res = await fetch(`http://localhost:1337/api/subs/${documentId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -75,7 +75,7 @@ function Sub(user, setUser) {
                 <div key={item.id} className="bg-white rounded-2xl shadow hover:shadow-lg transition p-4 dark:bg-[#334155] ">
                   {item.Banner?.url && (
                     <img
-                      src={`http://localhost:1338${item.Banner.url}`}
+                      src={`http://localhost:1337${item.Banner.url}`}
                       alt="banner"
                       className="w-full h-40 object-cover rounded-xl mb-4"
                     />
