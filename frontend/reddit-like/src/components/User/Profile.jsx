@@ -107,12 +107,13 @@ export default function Profile() {
                         }
                     }
                 )
-                const uploaded = img.data
-                fileIds = uploaded.map(f => f.id)
+                const uploaded = img.data[0]
+                fileIds = [ uploaded.id ]
             }
 
             const userimage = {
-                ...(fileIds.lenght > 0 && { media: fileIds })
+                username: user.username,
+                ...(fileIds.length > 0 && { avatar: fileIds })
             }
             const {status} = await axios.put(url, userimage, {
                 headers: {
