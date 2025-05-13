@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
-function Post({ post, toggleFollow, followedPosts }) {
+function Post({ post, toggleFollow, followedPosts, userId }) {
     const [showLinks, setShowLinks] = useState(false);
   return (
     <div className="bg-white m-3 rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
@@ -55,21 +55,25 @@ function Post({ post, toggleFollow, followedPosts }) {
           <Link to={`/post/${post.documentId}`} className="text-gray-500">
             💬 <span>{post.commentCount || 0}</span>
           </Link>
-          <button
-            onClick={() => setShowLinks(!showLinks)}
-            className="text-gray-500"
+        {post.author.id === userId && (
+          <>
+            <button
+              onClick={() => setShowLinks(!showLinks)}
+              className="text-gray-500"
             >
-            {showLinks ? "👌" : "🚽"}
-          </button>
-          {showLinks && (
-          <div className="flex gap-[1rem] mt-2">
-            <Link to={`/homepage/${post.documentId}`} className="text-green-500">
-              Modifier
-            </Link>
-            <Link to={`/homepage/supp/${post.documentId}`} className="text-red-500">
-              Supprimer
-            </Link>
-          </div>
+              {showLinks ? "👌" : "🚽"}
+            </button>
+            {showLinks && (
+              <div className="flex gap-[1rem] mt-2">
+                <Link to={`/homepage/${post.documentId}`} className="text-green-500">
+                  Modifier
+                </Link>
+                <Link to={`/homepage/supp/${post.documentId}`} className="text-red-500">
+                  Supprimer
+                </Link>
+              </div>
+            )}
+          </>
         )}
         </div>
         <div className="text-xs text-gray-500">

@@ -4,6 +4,7 @@ import Post from "../components/Posts/ShowPosts";
 import FormPost from "../components/Posts/FormPosts";
 import MobileNavigation from "../components/Mobile/MobileNav";
 import { fetchPosts } from "../utils/Fetchapi";
+import { jwtDecode } from "jwt-decode";
 import SyncLoader from "react-spinners/SyncLoader";
 
 function Homepage({ user, setUser }) {
@@ -11,6 +12,8 @@ function Homepage({ user, setUser }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [followedPosts, setFollowedPosts] = useState({});
+  const token = localStorage.getItem("token");
+  const userId = token ? jwtDecode(token).id : null;
 
   const [loadingScreen, setLoadingScreen] = useState(true);
   const [citation, setCitation] = useState("");
@@ -102,6 +105,7 @@ function Homepage({ user, setUser }) {
                 <Post
                   key={post.id}
                   post={post}
+                  userId={userId}
                   toggleFollow={toggleFollow}
                   followedPosts={followedPosts}
                 />
