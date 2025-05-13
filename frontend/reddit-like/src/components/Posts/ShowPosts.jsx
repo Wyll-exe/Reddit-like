@@ -8,14 +8,15 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
       <div className="p-4 border-b border-gray-100 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
-            <img
-              src={
-                post.user?.profilePic ||
-                "https://randomuser.me/api/portraits/men/1.jpg"
-              }
-              alt="Profil"
-              className="w-full h-full object-cover"
-            />
+            {post.author.avatar && (
+                    <div className="rounded-lg overflow-hidden mb-4">
+                        <img 
+                            src={"http://localhost:1337" + post.author.avatar.url}
+                            alt="Illustration" 
+                            className="w-full h-auto"
+                        />
+                    </div>
+                )}
           </div>
           <div>
             <div className="font-medium text-sm">
