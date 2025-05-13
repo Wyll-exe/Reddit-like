@@ -64,10 +64,10 @@ function Homepage({ user, setUser }) {
 
   if (loadingScreen) {
     return (
-      <div className="w-full h-screen bg-gray-500 fixed top-0 left-0 transition-transform duration-700">
+      <div className="w-full h-screen bg-[#111827] fixed top-0 left-0 transition-transform duration-700">
         <div className="w-full h-full flex flex-col justify-center items-center gap-8">
           <img
-            src="./assets/images/threadly.png"
+            src="./assets/images/threadly-light.png"
             alt="Logo"
             className="w-75 h-auto"
           />

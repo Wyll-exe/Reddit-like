@@ -1,6 +1,6 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function FormPost({ addPost, documentId }) {
   const [Form, setForm] = useState({
@@ -11,11 +11,13 @@ export default function FormPost({ addPost, documentId }) {
   const [error, setError] = useState({});
   const [image, setImage] = useState([]);
 
+  const navigate = useNavigate();
+
   const handleImage = (event) => {
     setImage(Array.from(event.target.files));
   };
 
-  const handleChangePost = async (event) => {
+  const handleChangePost = (event) => {
     const { name, value } = event.target;
     setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
@@ -35,23 +37,22 @@ export default function FormPost({ addPost, documentId }) {
       let fileIds = [];
       const token = localStorage.getItem("token");
 
+      // Upload d'images
       if (image.length > 0) {
         const formData = new FormData();
         image.forEach((file) => formData.append("files", file));
 
-        const img = await axios.post(
-          "http://localhost:1338/api/upload",
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const img = await axios.post("http://localhost:1338/api/upload", formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         const uploaded = img.data;
         fileIds = uploaded.map((f) => f.id);
       }
 
+      // Création du post
       const user = {
         title: Form.title,
         description: Form.description,
@@ -68,28 +69,15 @@ export default function FormPost({ addPost, documentId }) {
           },
         }
       );
+
       if (status === 200) {
         addPost(data.data);
-        setForm({
-          title: "",
-          description: "",
-        });
+        setForm({ title: "", description: "" });
+        window.location.reload(); // ✅ Rafraîchissement de la page
       }
     } catch (error) {
-      console.error(
-        "Erreur lors de la requête :",
-        error.response?.data || error.message
-      );
+      console.error("Erreur lors de la requête :", error.response?.data || error.message);
     }
-    useEffect(() => {
-      const interval = setInterval(() => {
-        axios.get(`/SubsPage/${documentId}`)
-          .then(res => setData(res.data))
-          .catch(err => console.error(err));
-      }, 5000); //set your time here. repeat every 5 seconds
-
-      return () => clearInterval(interval);
-    }, []);
   };
 
   return (
@@ -100,28 +88,33 @@ export default function FormPost({ addPost, documentId }) {
       </div>
       <form onSubmit={handlePostSubmit}>
         <input
-          className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white  dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-          rows="2"
+          className="w-full p-3 mb-2 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
           name="title"
           placeholder="Un titre ?"
           value={Form.title}
           onChange={handleChangePost}
         />
+        {error.title && <p className="text-red-500 text-sm mb-2">{error.title}</p>}
+
         <textarea
-          className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-          rows="2"
+          className="w-full p-3 mb-2 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+          rows="3"
           name="description"
           placeholder="Partagez vos pensées..."
           value={Form.description}
           onChange={handleChangePost}
         ></textarea>
+        {error.description && <p className="text-red-500 text-sm mb-2">{error.description}</p>}
+
         <input
           type="file"
           name="files"
-          className="w-full p-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none mt-3 dark:bg-gray-700 dark:text-white dark:placeholder-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+          multiple
+          className="w-full p-3 mb-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
           onChange={handleImage}
         />
-        <div className="flex justify-between mt-3">
+
+        <div className="flex justify-end">
           <button
             type="submit"
             className="px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium dark:bg-[#4F46E5]"

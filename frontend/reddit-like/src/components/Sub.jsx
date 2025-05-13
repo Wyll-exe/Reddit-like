@@ -102,14 +102,12 @@ function Sub(user, setUser) {
                 </div>
               ))}
             </div>
-            <div className="flex justify-end mt-6">
-              <Link
-                to="/add"
-                className="fixed bottom-6 right-6 bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-800 transition"
-              >
-                ➕ Ajouter un Sub
-              </Link>
-            </div>
+            <Link
+              to="/add"
+              className="fixed bottom-6 right-6 bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-800 transition"
+            >
+              ➕ Ajouter un Sub
+            </Link>
           </main>
         </div>
       </div>
