@@ -1,5 +1,5 @@
 export async function fetchPosts() {
-    const url = "http://localhost:1337/api/posts?populate[0]=author&populate[1]=media&populate[2]=comments";
+    const url = "http://localhost:1337/api/posts?populate[0]=author&populate[1]=media&populate[2]=comments&populate[3]=sub";
     const token = localStorage.getItem("token");
 
     const response = await fetch(url, {

@@ -13,7 +13,7 @@ export default function PostDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
-const UserId = token ? jwtDecode(token).id : null;
+  const UserId = token ? jwtDecode(token).id : null;
 
   async function fetchPostDetails() {
     setLoading(true);
@@ -81,46 +81,50 @@ const UserId = token ? jwtDecode(token).id : null;
     }
   }
 
-
   useEffect(() => {
     fetchPostDetails();
   }, [documentId]);
 
   async function handleDeleteComment(documentId) {
     try {
-      const res = await axios.delete(`http://localhost:1337/api/comments/${documentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      const res = await axios.delete(
+        `http://localhost:1337/api/comments/${documentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (res.status === 200) {
-        setComments((prevComments) => prevComments.filter((comment) => comment.documentId !== documentId));
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.documentId !== documentId)
+        );
         alert("Commentaire supprimé avec succès !");
         setNewComment("");
-      } 
+      }
     } catch (err) {
       alert("Vous ne pouvez pas supprimer ce commentaire !");
     }
   }
 
-    async function handleUpdateComment(commentId, updatedText) {
+  async function handleUpdateComment(commentId, updatedText) {
     try {
       const res = await axios.put(
         `http://localhost:1337/api/comments/${commentId}`,
         {
-          "data": {
-            "Description": updatedText,
+          data: {
+            Description: updatedText,
           },
         },
         {
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
       );
-  
+
       if (res.status === 200) {
         setComments((prevComments) =>
           prevComments.map((comment) =>

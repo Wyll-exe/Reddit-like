@@ -10,15 +10,13 @@ import SubAdd from "./components/SubAdd.jsx";
 import SubPage from "./pages/SubPage";
 
 import Place from "./components/Painting/Place.jsx";
-import ProtectedRoute from "./components/Auth/ProtectedRoute";
-
 import "./style.css";
 import ModifierPost from "./components/Posts/ModifierPost.jsx";
 import DeletePost from "./components/Posts/DeletePost.jsx";
 import PostDetails from "./components/Posts/PostDetails.jsx";
 
 function App() {
-  const [user, setUser] = useState(null); // État pour l'utilisateur connecté
+  const [user, setUser] = useState(null);
 
   return (
     
