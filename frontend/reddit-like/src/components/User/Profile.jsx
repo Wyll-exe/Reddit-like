@@ -15,6 +15,9 @@ export default function Profile() {
     const token = localStorage.getItem('token');
     const userid = token ? jwtDecode(token).id : null
     const url = `http://localhost:1337/api/users/${userid}?populate=avatar`
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     async function fetchUser() {
         setLoading(true)
@@ -61,7 +64,7 @@ export default function Profile() {
             alert("Votre nom à été modifier avec succès !");
             if(status === 200) navigate("/profile")
         } catch (error2) {
-            console.error("Erreur", error2);
+            return error2
         }
     }
 
@@ -81,7 +84,7 @@ export default function Profile() {
             alert("Votre mail à été modifier avec succès !");
             if(status === 200) navigate("/profile")
         } catch (error2) {
-            console.error("Erreur", error2);
+            return error2
         }
     }
 
@@ -123,9 +126,36 @@ export default function Profile() {
             alert("Votre avatar à été modifier avec succès !");
             if(status === 200) navigate("/profile")
         } catch (error2) {
-            console.error("Erreur", error2);
+            return error2
         }
     };
+
+    const handleSubmitPassword = async (event) => {
+        event.preventDefault()
+
+        try {
+            if (newPassword !== confirmPassword) {
+            return alert('Le mot de passe et la confirmation ne correspondent pas');
+            }
+            if (!window.confirm('Confirmer le changement de mot de passe ?')) return;
+            const {status} = await axios.post('http://localhost:1337/api/auth/change-password',
+                {
+                currentPassword: currentPassword,
+                password: newPassword,
+                passwordConfirmation: confirmPassword,
+            },
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            }
+            )
+            alert("Votre mot de passe à été modifier avec succès !");
+            if(status === 200) navigate("/profile")
+        } catch (error2) {
+            return error2
+        }
+    }
 
     useEffect(() => {
         fetchUser()
@@ -161,6 +191,7 @@ export default function Profile() {
                         value={user.username}
                         onChange={handleChange}
                         />
+                        <button type='submit'>Modifier</button>
                     </form>
                     <div>Mail {user.email}</div>
                     <form onSubmit={handleSubmiteMail}>
@@ -169,6 +200,28 @@ export default function Profile() {
                         value={user.email}
                         onChange={handleChange}
                         />
+                        <button type='submit'>Modifier</button>
+                    </form>
+                    <form onSubmit={handleSubmitPassword}>
+                        <div>Changer de mot de passe</div>
+                        <input type="password"
+                        placeholder='Mot de passe actuel'
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        />
+                        <input
+                        type='password'
+                        placeholder='Nouveau mot de passe'
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <input
+                        type="password"
+                        placeholder="Confirmer mot de passe"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                        <button type='submit'>Confirmer</button>
                     </form>
                 </div>
             )}
