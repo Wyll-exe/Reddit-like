@@ -102,7 +102,6 @@ function AddSubscriptionPage() {
       } else {
         toast.error('Erreur lors de l\'ajout du Thread 1');
       }
-
     } catch (error) {
       console.error('Erreur lors de l\'ajout du Thread:', error);
       toast.error(error.message || 'Une erreur est survenue');
