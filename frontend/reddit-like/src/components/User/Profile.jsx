@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
 import { useNavigate } from 'react-router';
@@ -170,10 +170,9 @@ export default function Profile() {
                         onChange={handleChange}
                         />
                     </form>
-                    <div>Password {user.password}</div>
                 </div>
             )}
-            {/* <Sidebar /> */}
+            <Sidebar />
         </div>
     )
 }

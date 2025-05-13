@@ -56,6 +56,11 @@
       "relation": "oneToMany",
       "target": "api::comment.comment",
       "mappedBy": "comments"
+    },
+    "avatar": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }
