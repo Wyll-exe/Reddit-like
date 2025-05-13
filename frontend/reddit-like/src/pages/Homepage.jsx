@@ -86,6 +86,14 @@ function Homepage({ user, setUser }) {
       <div className="flex">
         <Sidebar setUser={setUser} />
         <div className="w-full md:ml-64">
+            <div className="max-w-2xl mx-auto mt-10 p-8 bg-[#7c8b7f] shadow-lg rounded-2xl">
+                <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center">
+                🔥 Top tendances 🔥
+                </h2>
+                <p className="text-center text-gray-700">
+                  Découvrez les posts les plus populaires de la semaine !
+                </p>
+            </div>
           <div className="max-w-2xl mx-auto">
             {loading && <div>Chargement...</div>}
             {error && <div>Erreur : {error.message}</div>}

@@ -1,7 +1,8 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 
 function Post({ post, toggleFollow, followedPosts }) {
+    const [showLinks, setShowLinks] = useState(false);
   return (
     <div className="bg-white m-3 rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
       <div className="p-4 border-b border-gray-100 flex items-center justify-between">
@@ -51,11 +52,25 @@ function Post({ post, toggleFollow, followedPosts }) {
           </div>
         )}
         <div className="flex gap-[1rem]">
-          <Link to={`/post/${post.documentId}`} className="text-blue-500">
-            Voir les détails
+          <Link to={`/post/${post.documentId}`} className="text-gray-500">
+            💬 <span>{post.commentCount || 0}</span>
           </Link>
-          <Link to={`/homepage/${post.documentId}`}>Modifier</Link>
-          <Link to={`/homepage/supp/${post.documentId}`}>Supprimer</Link>
+          <button
+            onClick={() => setShowLinks(!showLinks)}
+            className="text-gray-500"
+            >
+            {showLinks ? "👌" : "🚽"}
+          </button>
+          {showLinks && (
+          <div className="flex gap-[1rem] mt-2">
+            <Link to={`/homepage/${post.documentId}`} className="text-green-500">
+              Modifier
+            </Link>
+            <Link to={`/homepage/supp/${post.documentId}`} className="text-red-500">
+              Supprimer
+            </Link>
+          </div>
+        )}
         </div>
         <div className="text-xs text-gray-500">
           {new Date(post.createdAt).toLocaleDateString("fr-FR", {
