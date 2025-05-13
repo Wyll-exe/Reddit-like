@@ -16,7 +16,7 @@ function AddSubscriptionPage() {
 
   const checkNameExists = async (name) => {
     const response = await fetch(
-      `http://localhost:1337/api/subs?filters[Name][$eq]=${name}`,
+      `http://localhost:1337/api/subs?filters[Name][$eqi]=${name}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -24,16 +24,12 @@ function AddSubscriptionPage() {
       }
     );
     const data = await response.json();
-    console.log(data)
     return data.data.length > 0;
   };
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
-
 
     if (!token) {
       toast.error('Vous devez être connecté pour ajouter un Thread.');
@@ -84,37 +80,40 @@ function AddSubscriptionPage() {
         }
       }
 
-      const payload = {
-        "data": {
-          "Name": name,
-          "Description": description,
-          "Banner": imageId ? [imageId] : [],
-          "author": userId,
-        },
-      };
-
-      const res = await fetch('http://localhost:1337/api/subs', {
+      const res = await fetch('http://localhost:1337/api/subs?populate=author', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: payload,  
+        body: JSON.stringify({
+          Name: name,
+          Description: description,
+          Banner: imageId,
+          posts: [],
+        }),
+      });
+
+      console.log({
+        Name: name,
+        Description: description,
+        Banner: imageId,
+        author: userId,
+        posts: [],
       });
 
       const responseData = await res.json();
-      console.log(responseData);
+      console.log('Response:', responseData);
 
-      if (!res.ok) {
-        throw new Error(responseData?.error?.message || 'Erreur inconnue');
-      }
-
-      if (responseData == 200) {
+      if (res.status == 200) {
         toast.success('Thread ajouté avec succès !');
         setTimeout(() => navigate('/subs'), 1500);
       } else {
-        toast.error('Erreur lors de l\'ajout');
+        toast.error('Erreur lors de l\'ajout du Thread 1');
       }
+
     } catch (error) {
+      console.error('Erreur lors de l\'ajout du Thread:', error);
       toast.error(error.message || 'Une erreur est survenue');
     }
   };
@@ -155,7 +154,6 @@ function AddSubscriptionPage() {
                 type="file"
                 id="banner"
                 onChange={(e) => setBanner(e.target.files[0])}
-                required
                 className="block w-full text-sm text-gray-600
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-lg file:border-0

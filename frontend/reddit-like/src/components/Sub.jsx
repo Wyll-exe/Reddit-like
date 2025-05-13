@@ -7,6 +7,7 @@ function Sub( user, setUser) {
   const [subs, setSubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [citation, setCitation] = useState('');
+  const token = localStorage.getItem("token");
 
 
   // Choisir une citation
@@ -24,14 +25,20 @@ function Sub( user, setUser) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/subs?populate=*"
+          "http://localhost:1337/api/subs?populate=author&populate=Banner",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const json = await response.json();
         setSubs(json.data);
+        console.log(json.data);
       } catch (error) {
         console.error("Erreur de chargement :", error);
       } finally {
-        setTimeout(() => setLoading(false), 574); // Timer
+        setTimeout(() => setLoading(false), 574);
       }
     };
 
@@ -42,7 +49,7 @@ function Sub( user, setUser) {
     fetchData();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (documentId) => {
     const confirm = window.confirm("Voulez-vous supprimer ce Thread ?");
     if (!confirm) return;
 
@@ -52,7 +59,7 @@ function Sub( user, setUser) {
         alert("Vous devez être connecté pour supprimer un Thread.");
       }
 
-      const res = await fetch(`http://localhost:1337/api/subs/${id}`, {
+      const res = await fetch(`http://localhost:1337/api/subs/${documentId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -61,7 +68,7 @@ function Sub( user, setUser) {
       });
 
       if (res.ok) {
-        setSubs((prev) => prev.filter((item) => item.id !== id));
+        setSubs((prev) => prev.filter((item) => item.documentId !== documentId));
         alert("Supprimé à jamais !");
       } else {
         alert("Erreur lors de la suppression.");
@@ -124,7 +131,7 @@ function Sub( user, setUser) {
 
               <div className="flex gap-2">
                 <button
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item.documentId)}
                   className="flex-1 bg-amber-200 text-white px-4 py-2 rounded hover:bg-red-600 transition"
                   > Supprimer
                 </button>
