@@ -17,10 +17,9 @@ export default function PostDetails() {
   const UserId = token ? jwtDecode(token).id : null;
 
   async function fetchPostDetails() {
-    setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:1338/api/posts/${documentId}?populate=author`,
+        `http://localhost:1337/api/posts/${documentId}?populate=author,media`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -30,6 +29,8 @@ export default function PostDetails() {
 
       if (res.status === 200) {
         setPost(res.data.data);
+        console.log(res.data.data)
+        console.log(res.data.data.media.url)
         const commentsRes = await axios.get(
           `http://localhost:1338/api/comments?filters[comments][documentId][$eq]=${documentId}&populate=author`,
           {
@@ -40,12 +41,7 @@ export default function PostDetails() {
         );
         if (commentsRes.status === 200) {
           setComments(commentsRes.data.data);
-          console.log(commentsRes.data.data);
-        } else {
-          throw new Error("Erreur lors de la récupération des commentaires");
         }
-      } else {
-        throw new Error("Post introuvable");
       }
     } catch (err) {
       setError(err);
@@ -56,7 +52,6 @@ export default function PostDetails() {
 
   async function handleAddComment(e) {
     e.preventDefault();
-
     try {
       const res = await axios.post(
         `http://localhost:1338/api/comments`,
@@ -82,7 +77,6 @@ export default function PostDetails() {
       console.error("Erreur lors de l'ajout du commentaire :", err);
     }
   }
-
 
   useEffect(() => {
     fetchPostDetails();
@@ -129,7 +123,6 @@ export default function PostDetails() {
             comment.documentId === commentId ? res.data.data : comment
           )
         );
-        alert("Commentaire modifié avec succès !");
         setEditCommentId(null);
       }
     } catch (err) {
@@ -137,8 +130,8 @@ export default function PostDetails() {
     }
   }
 
-  if (loading) return <p>Chargement...</p>;
-  if (error) return <p className="text-red-600">{error.message}</p>;
+  if (loading) return <div className="min-h-screen bg-[#e8f4e8] dark:bg-[#111827] flex justify-center items-center"><p className="dark:text-white">Chargement...</p></div>;
+  if (error) return <div className="min-h-screen bg-[#e8f4e8] dark:bg-[#111827] flex justify-center items-center"><p className="text-red-600">{error.message}</p></div>;
 
   return (
     <div className="bg-[#e8f4e8] dark:bg-[#111827] h-auto min-h-screen">
