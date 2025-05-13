@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { SyncLoader } from "react-spinners";
-import Sidebar from "./Sidebar/Sidebar";
+import Sidebar from "../Sidebar/Sidebar";
 import { Link } from "react-router-dom";
 
 function Sub( user, setUser) {
