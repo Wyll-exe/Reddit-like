@@ -63,7 +63,7 @@ function Sub(user, setUser) {
   return (
     <div className="min-h-screen h-[auto] bg-[#e8f4e8] dark:bg-[#111827]">
       <div className="flex">
-      <Sidebar user={user} setUser={setUser} />
+      <Sidebar setUser={setUser} />
       <div className="w-full md:ml-64">
           <main className="w-full min-h-screen h-[auto] overflow-y-auto p-6">
             <div className="flex justify-between items-center mb-6">
