@@ -18,7 +18,6 @@ export default function ProfilePic() {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    
     const token = localStorage.getItem('token');
     const userid = token ? jwtDecode(token).id : null;
     const url = `http://localhost:1337/api/users/${userid}?populate=avatar`;
