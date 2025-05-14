@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import Sidebar from "../Sidebar/Sidebar";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function PostDetails() {
   const { documentId } = useParams();
@@ -135,15 +135,21 @@ export default function PostDetails() {
       </div>
     );
 
+
   return (
-    <div className="p-4 max-w-3xl mx-auto ml-64">
+    <div className=" flex flex-col items-center p-4 ml-64 dark:bg-[#111827]">
+      <Sidebar />
       {post && (
-        <div className="mb-6">
-          <h3 className="text-sm mb-1 text-gray-500">
+        <div className="mb-6 w-[50%] dark:bg-[#e8f4e8] bg-[#111827] rounded-lg p-4 flex flex-col justify-center items-center">
+          <h3 className="text-sm mb-1 dark:text-[#242424] text-white">
             @{post.author?.username || "Anonyme"}
           </h3>
-          <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
-          <p className="mb-4">{post.description}</p>
+          <h1 className="text-2xl font-bold mb-2 dark:text-[#242424] text-white">
+            {post.title}
+          </h1>
+          <p className="mb-4 dark:text-[#242424] text-white">
+            {post.description}
+          </p>
           {post.media?.[0]?.url && (
             <img
               src={`http://localhost:1337${post.media[0].url}`}
@@ -154,15 +160,19 @@ export default function PostDetails() {
         </div>
       )}
 
-      <div className="mb-6">
-        <h2 className="text-xl font-bold mb-4">Commentaires</h2>
+      <div className="mb-6 w-[100%] flex flex-col items-center">
+        <h2 className="text-xl w-[75%] font-bold mb-4 dark:text-white">Commentaires</h2>
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <div key={comment.documentId} className="mb-4 p-3 bg-gray-100 rounded-lg">
-              <h4 className="text-sm font-semibold text-violet-600">
+            <div
+              key={comment.documentId}
+              className="mb-4 p-3 w-[75%] bg-gray-100 rounded-lg dark:bg-[#334155] dark:text-white items-center justify-between flex flex-row"
+            >
+              <div className="w-20% flex flex-col items-start">
+              <h4 className="text-sm font-semibold text-violet-600 dark:text-white">
                 @{comment.author?.username || "Anonyme"}
               </h4>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-white">
                 {new Date(comment.createdAt).toLocaleString("fr-FR", {
                   day: "2-digit",
                   month: "short",
@@ -172,7 +182,7 @@ export default function PostDetails() {
                   hour12: false,
                 })}
               </p>
-
+              
               {editCommentId === comment.documentId ? (
                 <form
                   onSubmit={(e) => {
@@ -183,10 +193,13 @@ export default function PostDetails() {
                   <textarea
                     value={editCommentText}
                     onChange={(e) => setEditCommentText(e.target.value)}
-                    className="w-full mt-2 p-2 border rounded"
+                    className="w-full mt-2 p-2 border rounded "
                   />
                   <div className="flex gap-2 mt-2">
-                    <button type="submit" className="bg-green-600 text-white px-3 py-1 rounded">
+                    <button
+                      type="submit"
+                      className="bg-green-600 text-white px-3 py-1 rounded"
+                    >
                       Enregistrer
                     </button>
                     <button
@@ -201,28 +214,30 @@ export default function PostDetails() {
               ) : (
                 <p className="mt-1">{comment.Description}</p>
               )}
-
-              {(UserId === comment.author?.id || UserId === post.author?.id) && editCommentId !== comment.documentId && (
-                <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={() => handleDeleteComment(comment.documentId)}
-                    className="bg-red-600 text-white px-3 py-1 rounded"
-                  >
-                    Supprimer
-                  </button>
-                  {UserId === comment.author?.id && (
+              </div>
+              {(UserId === comment.author?.id || UserId === post.author?.id) &&
+                editCommentId !== comment.documentId && (
+                  <div className="flex flex-col items-end gap-2 mt-2 w-[20%]">
+                    {UserId === comment.author?.id && (
+                      <button
+                        onClick={() => {
+                          setEditCommentId(comment.documentId);
+                          setEditCommentText(comment.Description);
+                        }}
+                        className="bg-blue-600 text-white px-3 py-1 rounded w-[100px]"
+                      >
+                        Modifier
+                      </button>
+                    )}
                     <button
-                      onClick={() => {
-                        setEditCommentId(comment.documentId);
-                        setEditCommentText(comment.Description);
-                      }}
-                      className="bg-blue-600 text-white px-3 py-1 rounded"
+                      onClick={() => handleDeleteComment(comment.documentId)}
+                      className="bg-red-600 text-white px-3 py-1 rounded w-[100px]"
                     >
-                      Modifier
+                      Supprimer
                     </button>
-                  )}
-                </div>
-              )}
+                    
+                  </div>
+                )}
             </div>
           ))
         ) : (
@@ -230,21 +245,22 @@ export default function PostDetails() {
         )}
       </div>
 
-      <form onSubmit={handleAddComment} className="space-y-4">
+      <form onSubmit={handleAddComment} className="space-y-4 w-[100%] flex flex-col items-center">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Ajouter un commentaire..."
-          className="w-full p-3 border rounded"
+          className="p-3 border rounded dark:bg-[#334155] dark:text-white w-[75%]"
           rows="3"
         />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded dark:text-white"
+        >
           Ajouter un commentaire
         </button>
       </form>
-      <Sidebar />
       <ToastContainer />
     </div>
   );
 }
-

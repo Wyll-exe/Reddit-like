@@ -7,7 +7,6 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
   // const [AvatarAuthor, setAvatarAuthor] = useState(null);
   // const [AvatarUrls, setAvatarUrls] = useState(null);
   const menuRef = useRef(null);
-  console.log(post);
 
   // useEffect(() => {
   //   async function fetchAvatar() {

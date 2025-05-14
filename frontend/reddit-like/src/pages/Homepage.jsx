@@ -17,7 +17,6 @@ function Homepage({ user, setUser }) {
   const userId = token ? jwtDecode(token).id : null;
   const username = token ? jwtDecode(token).username : null;
 
-  console.log(username)
 
   // Citations
   const Mearde = {
