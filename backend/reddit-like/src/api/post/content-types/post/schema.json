@@ -62,6 +62,11 @@
       "relation": "manyToOne",
       "target": "api::sub.sub",
       "inversedBy": "posts"
+    },
+    "avatar": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

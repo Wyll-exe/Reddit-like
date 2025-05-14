@@ -83,7 +83,7 @@
       "target": "api::comment.comment",
       "mappedBy": "author"
     },
-    "Profilpic": {
+    "avatar": {
       "allowedTypes": [
         "images",
         "files"
