@@ -6,25 +6,25 @@ import { jwtDecode } from "jwt-decode";
 function Post({ post, toggleFollow, followedPosts }) {
   const [showLinks, setShowLinks] = useState(false);
   const [SubAuthor, setSubAuthor] = useState(null);
-  const subDocumentId = post.sub?.documentId || null;
+  // const subDocumentId = post.sub?.documentId || null;
   const token = localStorage.getItem("token");
   const userId = token ? jwtDecode(token).id : null;
 
 
-  async function subAuthors() {
-    try {
-      const res = await fetchSubAuthor(subDocumentId);
-      if (res) {
-        const SubAuthor = res.data[0].author.id;
-        setSubAuthor(SubAuthor);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la récupération des auteurs de sous-forums :", error);
-    }
-  }
-  useEffect(() => {
-    subAuthors();
-  }, [subDocumentId]);
+  // async function subAuthors() {
+  //   try {
+  //     const res = await fetchSubAuthor(subDocumentId);
+  //     if (res) {
+  //       const SubAuthor = res.data[0].author.id;
+  //       setSubAuthor(SubAuthor);
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur lors de la récupération des auteurs de sous-forums :", error);
+  //   }
+  // }
+  // useEffect(() => {
+  //   subAuthors();
+  // }, [subDocumentId]);
 
 
   return (
@@ -78,7 +78,7 @@ function Post({ post, toggleFollow, followedPosts }) {
           <Link to={`/post/${post.documentId}`} className="text-gray-500">
             💬 <span>{post.commentCount || 0}</span>
           </Link>
-          {(post.author.id === userId || SubAuthor === userId) && (
+          {post.author.id === userId && (
             <>
               <button
                 onClick={() => setShowLinks(!showLinks)}

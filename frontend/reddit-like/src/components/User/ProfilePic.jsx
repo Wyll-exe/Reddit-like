@@ -4,7 +4,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import { useNavigate } from 'react-router';
 import { jwtDecode } from 'jwt-decode';
 
-export default function profile() {
+export default function ProfilePic() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [user, SetUser] = useState('')

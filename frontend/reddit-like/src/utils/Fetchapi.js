@@ -23,6 +23,7 @@ export async function fetchPosts() {
     }));
 
     postsWithCommentCount.sort((a, b) => b.commentCount - a.commentCount);
+    console.log(postsWithCommentCount);
     return postsWithCommentCount;
 }
 

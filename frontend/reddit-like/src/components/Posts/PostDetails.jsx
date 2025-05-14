@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import Sidebar from "../Sidebar/Sidebar";
 
 export default function PostDetails() {
   const { documentId } = useParams();
@@ -31,7 +32,7 @@ export default function PostDetails() {
         setPost(res.data.data);
 
         const commentsRes = await axios.get(
-          `http://localhost:1337/api/comments?filters[post][id][$eq]=${documentId}&populate=author`,
+          `http://localhost:1337/api/comments?filters[comments][documentId][$eq]=${documentId}&populate=author`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -130,7 +131,7 @@ export default function PostDetails() {
     );
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
+    <div className="p-4 max-w-3xl mx-auto ml-64">
       {post && (
         <div className="mb-6">
           <h3 className="text-sm mb-1 text-gray-500">
@@ -199,7 +200,7 @@ export default function PostDetails() {
               {(UserId === comment.author?.id || UserId === post.author?.id) && editCommentId !== comment.id && (
                 <div className="flex gap-2 mt-2">
                   <button
-                    onClick={() => handleDeleteComment(comment.id)}
+                    onClick={() => handleDeleteComment(comment.documentId)}
                     className="bg-red-600 text-white px-3 py-1 rounded"
                   >
                     Supprimer
@@ -207,7 +208,7 @@ export default function PostDetails() {
                   {UserId === comment.author?.id && (
                     <button
                       onClick={() => {
-                        setEditCommentId(comment.id);
+                        setEditCommentId(comment.documentId);
                         setEditCommentText(comment.Description);
                       }}
                       className="bg-blue-600 text-white px-3 py-1 rounded"
@@ -236,6 +237,7 @@ export default function PostDetails() {
           Ajouter un commentaire
         </button>
       </form>
+      <Sidebar />
     </div>
   );
 }
