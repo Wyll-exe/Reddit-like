@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { SyncLoader } from "react-spinners";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from "./Sidebar/Sidebar";
 import { Link } from "react-router-dom";
 
@@ -37,7 +39,7 @@ function Sub(user, setUser) {
 
     try {
       if (!token) {
-        alert("Vous devez être connecté pour supprimer un Thread.");
+        toast.warning("Vous devez être connecté pour supprimer un Thread.");
       }
 
       const res = await fetch(`http://localhost:1337/api/subs/${documentId}`, {
@@ -50,13 +52,13 @@ function Sub(user, setUser) {
 
       if (res.ok) {
         setSubs((prev) => prev.filter((item) => item.documentId !== documentId));
-        alert("Supprimé à jamais !");
+        toast.success("Supprimé à jamais !");
       } else {
-        alert("Erreur lors de la suppression.");
+        toast.error("Erreur lors de la suppression.");
       }
     } catch (error) {
       console.error("Erreur suppression :", error);
-      alert("Une erreur est survenue.");
+      toast.error("Une erreur est survenue.");
     }
   };
 

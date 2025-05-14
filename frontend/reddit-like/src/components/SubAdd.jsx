@@ -49,7 +49,7 @@ function AddSubscriptionPage() {
     try {
       const nameExists = await checkNameExists(name);
       if (nameExists) {
-        toast.error('Ce nom existe déjà. Veuillez en choisir un autre.');
+        toast.warning('Ce nom existe déjà. Veuillez en choisir un autre.');
         return;
       }
 

@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import Sidebar from "../Sidebar/Sidebar";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function PostDetails() {
   const { documentId } = useParams();
@@ -85,7 +87,7 @@ export default function PostDetails() {
 
       setComments((prev) => prev.filter((c) => c.id !== commentId));
     } catch (err) {
-      alert("Vous ne pouvez pas supprimer ce commentaire !");
+      toast.warning("Vous ne pouvez pas supprimer ce commentaire !");
     }
   }
 
@@ -115,7 +117,7 @@ export default function PostDetails() {
         setEditCommentId(null);
       }
     } catch (err) {
-      alert("Vous ne pouvez pas modifier ce commentaire !");
+      toast.warning("Vous ne pouvez pas modifier ce commentaire !");
     }
   }
 
@@ -240,6 +242,7 @@ export default function PostDetails() {
         </button>
       </form>
       <Sidebar />
+      <ToastContainer />
     </div>
   );
 }

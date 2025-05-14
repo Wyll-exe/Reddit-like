@@ -162,13 +162,13 @@ export default function Profile({ user, setUser }) {
             setUserProfile(response.data);
             setEditMode(false);
             setNewAvatar(null);
-            alert("Profil mis à jour avec succès !");
+            toast.success("Profil mis à jour avec succès !");
             
             // Rafraîchir les données du profil
             fetchUserData();
         } catch (error) {
             console.error("Erreur lors de la mise à jour du profil:", error);
-            alert("Erreur lors de la mise à jour du profil. Veuillez réessayer.");
+            toast.error("Erreur lors de la mise à jour du profil. Veuillez réessayer.");
         }
     };
 
@@ -348,6 +348,7 @@ export default function Profile({ user, setUser }) {
                     )}
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }
