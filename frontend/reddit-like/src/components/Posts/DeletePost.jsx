@@ -66,8 +66,8 @@ export default function ModifierPost() {
   }
 
   useEffect(() => {
-    fetchSupprimer()
-  }, []);
+    fetchSupprimer();
+  }, [documentId]);
 
   const deletePost = async () => {
     if (!window.confirm('Voulez-vous vraiment supprimer ce post ?')) return;

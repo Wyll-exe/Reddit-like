@@ -73,6 +73,7 @@ export default function PostDetails() {
         setNewComment("");
       }
     } catch (err) {
+      setError(err);
       console.error("Erreur lors de l'ajout du commentaire :", err);
     }
   }
@@ -85,6 +86,7 @@ export default function PostDetails() {
 
       setComments((prev) => prev.filter((c) => c.id !== commentId));
     } catch (err) {
+      setError(err);
       alert("Vous ne pouvez pas supprimer ce commentaire !");
     }
   }
@@ -115,6 +117,7 @@ export default function PostDetails() {
         setEditCommentId(null);
       }
     } catch (err) {
+      setError(err);
       alert("Vous ne pouvez pas modifier ce commentaire !");
     }
   }

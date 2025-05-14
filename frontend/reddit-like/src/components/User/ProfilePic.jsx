@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
-import { useNavigate } from 'react-router';
 import { jwtDecode } from 'jwt-decode';
 import SyncLoader from 'react-spinners/SyncLoader';
 
@@ -18,7 +17,6 @@ export default function ProfilePic() {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     
-    const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const userid = token ? jwtDecode(token).id : null;
     const url = `http://localhost:1337/api/users/${userid}?populate=avatar`;

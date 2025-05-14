@@ -1,21 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { toast, ToastContainer } from "react-toastify";
 import Sidebar from "../components/Sidebar/Sidebar";
-import { SyncLoader } from "react-spinners";
 import { fetchSubsPosts } from "../utils/Fetchapi";
 import FormPost from "../components/Posts/FormPosts";
 import Post from "../components/Posts/ShowPosts";
 import MobileNavigation from "../components/Mobile/MobileNav";
 
-function SubPage({ user, setUser }) {
+function SubPage({ setUser }) {
   const { documentId } = useParams();
-  const [sub, setSub] = useState(null);
   const [posts, setPosts] = useState([]);
   const [followedPosts, setFollowedPosts] = useState({});
   const [error, setError] = useState(null);
-  const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(true);
 
   const addPost = (newPost) => {
@@ -48,8 +43,8 @@ function SubPage({ user, setUser }) {
   return (
     <div className="min-h-screen bg-[#e8f4e8] dark:bg-[#111827]">
       <div className="flex">
-        <Sidebar setUser={setUser} />
-        <div className="w-full md:ml-64">
+      <Sidebar user={user} setUser={setUser} />
+      <div className="w-full md:ml-64">
           <div className="max-w-2xl mx-auto">
             <FormPost addPost={addPost} documentId={documentId} />
             {loading && <div>Chargement...</div>}
