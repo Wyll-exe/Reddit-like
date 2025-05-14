@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
 import { jwtDecode } from 'jwt-decode';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 import SyncLoader from 'react-spinners/SyncLoader';
 
 export default function ProfilePic() {
@@ -70,7 +72,7 @@ export default function ProfilePic() {
             await axios.put(url, { username: user.username }, {
                 headers: { "Authorization": `Bearer ${token}` },
             });
-            alert("Votre nom a été modifié avec succès !");
+            toast.success("Votre nom a été modifié avec succès !");
             fetchUser();
         } catch (error) {
             console.error(error);
@@ -83,7 +85,7 @@ export default function ProfilePic() {
             await axios.put(url, { email: user.email }, {
                 headers: { "Authorization": `Bearer ${token}` },
             });
-            alert("Votre mail a été modifié avec succès !");
+            toast.success("Votre mail a été modifié avec succès !");
             fetchUser();
         } catch (error) {
             console.error(error);
@@ -114,7 +116,7 @@ export default function ProfilePic() {
                 await axios.put(url, { avatar: fileIds }, {
                     headers: { "Authorization": `Bearer ${token}` },
                 });
-                alert("Votre avatar a été modifié avec succès !");
+                toast.success("Votre avatar a été modifié avec succès !");
                 fetchUser();
             }
         } catch (error) {
@@ -126,7 +128,7 @@ export default function ProfilePic() {
         event.preventDefault();
 
         if (newPassword !== confirmPassword) {
-            return alert('Le mot de passe et la confirmation ne correspondent pas');
+            return toast.warning('Le mot de passe et celui de la confirmation ne correspondent pas');
         }
         
         if (!window.confirm('Confirmer le changement de mot de passe ?')) return;
@@ -140,7 +142,7 @@ export default function ProfilePic() {
                 },
                 { headers: { "Authorization": `Bearer ${token}` } }
             );
-            alert("Votre mot de passe a été modifié avec succès !");
+            toast.success("Votre mot de passe a été modifié avec succès !");
             setCurrentPassword('');
             setNewPassword('');
             setConfirmPassword('');
@@ -391,6 +393,7 @@ export default function ProfilePic() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

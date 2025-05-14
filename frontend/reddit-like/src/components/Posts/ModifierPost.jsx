@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -95,8 +97,10 @@ export default function ModifierPost() {
                 },
             });
             setUpdated(!updated)
-            alert("Votre post à été modifier avec succès !");
-            if (status === 200) navigate("/homepage")
+            if (status === 200) {
+                toast.success("Post modifié avec succès !")
+                navigate("/homepage")
+            }
         } catch (error2) {
             console.error("Erreur", error2);
         }
@@ -175,6 +179,7 @@ export default function ModifierPost() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     )
 }
