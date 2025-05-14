@@ -22,9 +22,9 @@ function Homepage({ user, setUser }) {
   const Mearde = {
     Cyril: "Cyril : ''Commit to the bitbucket'' ",
     Laurent: "Laurent : ''Pull request M.A.S.T.E.R'' ",
-    Arthur: "Arthur : ''Push it to the limit'' ",
-    Océane: "Océnane : ''Merge like a boss'' ",
-    William: "William : ''Fetch like a pro'' ",
+    Arthur: "Arthur : ''Git commit -m '🍻' '' ",
+    Océane: "Océnae : ''Destructive Design'' ",
+    William: "William : ''Revert the PC'' ",
   };
 
   useEffect(() => {
