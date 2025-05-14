@@ -75,6 +75,7 @@ export default function PostDetails() {
         setNewComment("");
       }
     } catch (err) {
+      setError(err);
       console.error("Erreur lors de l'ajout du commentaire :", err);
     }
   }

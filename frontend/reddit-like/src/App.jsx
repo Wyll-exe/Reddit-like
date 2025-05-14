@@ -6,7 +6,7 @@ import Homepage from "./pages/Homepage";
 import Sub from "./components/Sub.jsx";
 import SubAdd from "./components/SubAdd.jsx";
 import SubPage from "./pages/SubPage";
-
+import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import "./style.css";
 import ModifierPost from "./components/Posts/ModifierPost.jsx";
 import DeletePost from "./components/Posts/DeletePost.jsx";
@@ -17,7 +17,6 @@ import ProfilePic from "./components/User/ProfilePic.jsx";
 function App() {
   const [user, setUser] = useState(null);
   return (
-    
     <Router>
       <div>
         <Routes>
@@ -37,7 +36,6 @@ function App() {
       </div>
     </Router>
   );
-
 }
 
 export default App;

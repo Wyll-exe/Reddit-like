@@ -45,9 +45,6 @@ export default function ModifierPost() {
         }
     }
 
-    const [error2, setError2] = useState({});
-
-
     const handleChange = (event) => {
         const { name, value } = event.target;
         setModifier(prevModifier => ({ ...prevModifier, [name]: value }));
@@ -65,7 +62,7 @@ export default function ModifierPost() {
         if (!modifier.description) formError.description = 'Description est requise';
 
         if (Object.keys(formError).length > 0) {
-            setError2(formError);
+            setError(formError);
             return;
         }
 
@@ -112,7 +109,6 @@ export default function ModifierPost() {
 
     useEffect(() => {
         fetchModifier()
-
     }, [updated])
 
     return (

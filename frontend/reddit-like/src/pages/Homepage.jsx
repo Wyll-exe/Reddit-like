@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Post from "../components/Posts/ShowPosts";
-import FormPost from "../components/Posts/FormPosts";
 import MobileNavigation from "../components/Mobile/MobileNav";
-import { fetchPosts, fetchSubAuthor } from "../utils/Fetchapi";
-import { jwtDecode } from "jwt-decode";
+import { fetchPosts } from "../utils/Fetchapi";
 import SyncLoader from "react-spinners/SyncLoader";
+import { jwtDecode } from "jwt-decode";
 
 function Homepage({ user, setUser }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [followedPosts, setFollowedPosts] = useState({});
-  const token = localStorage.getItem("token");
-
   const [loadingScreen, setLoadingScreen] = useState(true);
   const [citation, setCitation] = useState("");
+  const token = localStorage.getItem("token");
+  const userId = token ? jwtDecode(token).id : null;
+  const username = token ? jwtDecode(token).username : null;
+
+  console.log(username)
 
   // Citations
   const Mearde = {
     Cyril: "Cyril : ''Commit to the bitbucket'' ",
     Laurent: "Laurent : ''Pull request M.A.S.T.E.R'' ",
     Arthur: "Arthur : ''Push it to the limit'' ",
-    Océane: "Océnae : ''Merge like a boss'' ",
+    Océane: "Océnane : ''Merge like a boss'' ",
     William: "William : ''Fetch like a pro'' ",
   };
 
@@ -104,6 +106,7 @@ function Homepage({ user, setUser }) {
                 <Post
                   key={post.id}
                   post={post}
+                  userId={userId}
                   toggleFollow={toggleFollow}
                   followedPosts={followedPosts}
                 />

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Logout from '../Auth/Logout';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../../style.css';
-import axios from 'axios';
 
 function Sidebar({ setUser }) {
-    const navigate = useNavigate();
+
 
     // État pour suivre le mode actuel
     const [isDarkMode, setIsDarkMode] = useState(
@@ -36,15 +35,7 @@ function Sidebar({ setUser }) {
             document.documentElement.classList.remove('dark');
             localStorage.theme = 'light';
         }
-    }, []);
-
-    const handleLogout = () => {
-        console.log("Déconnexion déclenchée");
-        localStorage.removeItem("token");
-        delete axios.defaults.headers.common["Authorization"];
-        setUser(null);
-        navigate("/login");
-    };
+    }, );
 
     return (
         <div className="hidden md:block w-64 bg-white h-screen fixed left-0 top-0 p-5 dark:bg-[#1A1C23]">

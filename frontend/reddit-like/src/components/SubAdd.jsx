@@ -94,7 +94,6 @@ function AddSubscriptionPage() {
         }),
       });
 
-      console.log(res);
 
       if (res.status == 200) {
         toast.success('Thread ajouté avec succès !');
@@ -110,8 +109,8 @@ function AddSubscriptionPage() {
 
   return (
     <div className="flex ">
-      <Sidebar />
-      <div className="flex-1 ml-64 min-h-screen bg-[#e8f4e8] dark:bg-[#111827]">
+        <Sidebar setUser={setUser} />
+        <div className="flex-1 ml-64 min-h-screen bg-[#e8f4e8] dark:bg-[#111827]">
         <div className="max-w-xl mx-auto mt-10 p-8 bg-white dark:bg-[#334155] shadow-lg rounded-2xl">
           <h2 className="text-3xl font-bold text-[#242424] mb-6 text-center dark:text-white">Créer un Thread</h2>
           <form onSubmit={handleSubmit} className="space-y-5">
