@@ -12,34 +12,39 @@ export default function PostDetails() {
   const [editCommentText, setEditCommentText] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const token = localStorage.getItem("token");
-  const UserId = token ? jwtDecode(token).id : null;
-
-  useEffect(() => {
-    fetchPostDetails();
-  }, [documentId]);
+const UserId = token ? jwtDecode(token).id : null;
 
   async function fetchPostDetails() {
+    setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:1337/api/posts/${documentId}?populate=author,media`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `http://localhost:1337/api/posts/${documentId}?populate=author`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (res.status === 200) {
         setPost(res.data.data);
-
         const commentsRes = await axios.get(
-          `http://localhost:1337/api/comments?filters[post][id][$eq]=${documentId}&populate=author`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `http://localhost:1337/api/comments?filters[comments][documentId][$eq]=${documentId}&populate=author`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-
         if (commentsRes.status === 200) {
           setComments(commentsRes.data.data);
+          console.log(commentsRes.data.data);
         } else {
           throw new Error("Erreur lors de la récupération des commentaires");
         }
+      } else {
+        throw new Error("Post introuvable");
       }
     } catch (err) {
       setError(err);
@@ -50,6 +55,7 @@ export default function PostDetails() {
 
   async function handleAddComment(e) {
     e.preventDefault();
+
     try {
       const res = await axios.post(
         `http://localhost:1337/api/comments`,
@@ -68,7 +74,7 @@ export default function PostDetails() {
       );
 
       if (res.status === 200) {
-        setComments((prev) => [...prev, res.data.data]);
+        setComments((prevComments) => [...prevComments, res.data.data]);
         setNewComment("");
       }
     } catch (err) {
@@ -76,39 +82,53 @@ export default function PostDetails() {
     }
   }
 
-  async function handleDeleteComment(commentId) {
-    try {
-      await axios.delete(`http://localhost:1337/api/comments/${commentId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
 
-      setComments((prev) => prev.filter((c) => c.id !== commentId));
+  useEffect(() => {
+    fetchPostDetails();
+  }, [documentId]);
+
+  async function handleDeleteComment(documentId) {
+    try {
+      const res = await axios.delete(`http://localhost:1337/api/comments/${documentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (res.status === 200) {
+        setComments((prevComments) => prevComments.filter((comment) => comment.documentId !== documentId));
+        alert("Commentaire supprimé avec succès !");
+        setNewComment("");
+      } 
     } catch (err) {
       alert("Vous ne pouvez pas supprimer ce commentaire !");
     }
   }
 
-  async function handleUpdateComment(commentId, updatedText) {
+    async function handleUpdateComment(commentId, updatedText) {
     try {
       const res = await axios.put(
         `http://localhost:1337/api/comments/${commentId}`,
         {
-          data: {
-            Description: updatedText,
+          "data": {
+            "Description": updatedText,
           },
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
       );
-
+  
       if (res.status === 200) {
-        setComments((prev) =>
-          prev.map((c) => (c.id === commentId ? res.data.data : c))
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment.documentId === commentId ? res.data.data : comment
+          )
         );
+        alert("Commentaire modifié avec succès !");
         setEditCommentId(null);
       }
     } catch (err) {
@@ -116,107 +136,89 @@ export default function PostDetails() {
     }
   }
 
-  if (loading)
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <p>Chargement...</p>
-      </div>
-    );
-  if (error)
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <p className="text-red-600">{error.message}</p>
-      </div>
-    );
+  if (loading) return <p>Chargement...</p>;
+  if (error) return <p className="text-red-600">{error.message}</p>;
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
+    <div className="p-4 flex flex-col items-center">
       {post && (
-        <div className="mb-6">
-          <h3 className="text-sm mb-1 text-gray-500">
+        <div className="mb-6 text-center">
+          <h3 className="text-sm mb-2">
             @{post.author?.username || "Anonyme"}
           </h3>
           <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
-          <p className="mb-4">{post.description}</p>
-          {post.media?.[0]?.url && (
-            <img
-              src={`http://localhost:1337${post.media[0].url}`}
-              alt="Illustration"
-              className="w-full rounded-lg"
-            />
-          )}
+          <p className="text-violet-700">{post.description}</p>
         </div>
       )}
 
-      <div className="mb-6">
+      <div className="mb-6 w-full max-w-2xl">
         <h2 className="text-xl font-bold mb-4">Commentaires</h2>
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <div key={comment.id} className="mb-4 p-3 bg-gray-100 rounded-lg">
-              <h4 className="text-sm font-semibold text-violet-600">
+            <div
+              key={comment.id}
+              className="p-3 border-b border-violet-200 flex flex-col"
+            >
+              <h3 className="text-sm font-semibold text-violet-600">
                 @{comment.author?.username || "Anonyme"}
-              </h4>
-              <p className="text-xs text-gray-500">
-                {new Date(comment.createdAt).toLocaleString("fr-FR", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })}
-              </p>
-
-              {editCommentId === comment.id ? (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleUpdateComment(comment.id, editCommentText);
-                  }}
-                >
-                  <textarea
-                    value={editCommentText}
-                    onChange={(e) => setEditCommentText(e.target.value)}
-                    className="w-full mt-2 p-2 border rounded"
-                  />
-                  <div className="flex gap-2 mt-2">
-                    <button type="submit" className="bg-green-600 text-white px-3 py-1 rounded">
+              </h3>
+              <div>
+                {editCommentId === comment.documentId ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleUpdateComment(comment.documentId, editCommentText);
+                    }}
+                  >
+                    <textarea
+                      value={editCommentText}
+                      onChange={(e) => setEditCommentText(e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg"
+                    ></textarea>
+                    <button
+                      type="submit"
+                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
                       Enregistrer
                     </button>
                     <button
                       type="button"
+                      onClick={() => handleDeleteComment(comment.documentId)}
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+                    >
+                      Supprimer
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => setEditCommentId(null)}
-                      className="bg-gray-400 text-white px-3 py-1 rounded"
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
                     >
                       Annuler
                     </button>
-                  </div>
-                </form>
-              ) : (
-                <p className="mt-1">{comment.Description}</p>
-              )}
-
-              {(UserId === comment.author?.id || UserId === post.author?.id) && editCommentId !== comment.id && (
-                <div className="flex gap-2 mt-2">
+                  </form>
+                ) : (
+                  <p className="text-gray-700">{comment.Description}</p>
+                )}
+                {UserId === post.author?.id && (
                   <button
-                    onClick={() => handleDeleteComment(comment.id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded"
+                    onClick={() => handleDeleteComment(comment.documentId)}
+                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
                   >
                     Supprimer
                   </button>
-                  {UserId === comment.author?.id && (
-                    <button
-                      onClick={() => {
-                        setEditCommentId(comment.id);
-                        setEditCommentText(comment.Description);
-                      }}
-                      className="bg-blue-600 text-white px-3 py-1 rounded"
-                    >
-                      Modifier
-                    </button>
-                  )}
-                </div>
-              )}
+                )}
+                {comment.author?.id === UserId && (
+                  <button
+                    onClick={() => {
+                      setEditCommentId(comment.documentId);
+                      setEditCommentText(comment.Description);
+                    }}
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                  >
+                    Modifier
+                  </button>
+                )}
+              </div>
             </div>
           ))
         ) : (
@@ -229,10 +231,13 @@ export default function PostDetails() {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Ajouter un commentaire..."
-          className="w-full p-3 border rounded"
-          rows="3"
-        />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
+          rows="4"
+        ></textarea>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+        >
           Ajouter un commentaire
         </button>
       </form>
