@@ -1,24 +1,32 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { fetchSubAuthor } from "../../utils/Fetchapi";
+import { jwtDecode } from "jwt-decode";
 
-function Post({ post, toggleFollow, followedPosts, userDocumentId, userId }) {
+function Post({ post, toggleFollow, followedPosts }) {
   const [showLinks, setShowLinks] = useState(false);
+  const [SubAuthor, setSubAuthor] = useState(null);
   const subDocumentId = post.sub?.documentId || null;
-  useEffect(() => {
-    async function subAuthors() {
-      try {
-        const res = await fetchSubAuthor(subDocumentId);
-        if (res) {
-          post.sub.author = res.data[0].author.documentId;
-          console.log("Auteur du sous-forum :", post.sub.author);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération des auteurs de sous-forums :", error);
+  const token = localStorage.getItem("token");
+  const userId = token ? jwtDecode(token).id : null;
+
+
+  async function subAuthors() {
+    try {
+      const res = await fetchSubAuthor(subDocumentId);
+      if (res) {
+        const SubAuthor = res.data[0].author.id;
+        setSubAuthor(SubAuthor);
       }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des auteurs de sous-forums :", error);
     }
+  }
+  useEffect(() => {
     subAuthors();
-  }, []);
+  }, [subDocumentId]);
+
+
   return (
     <div className="bg-white m-3 rounded-xl shadow-sm overflow-hidden dark:bg-[#334155] dark:text-white">
       <div className="p-4 border-b border-gray-100 flex items-center justify-between">
@@ -70,7 +78,7 @@ function Post({ post, toggleFollow, followedPosts, userDocumentId, userId }) {
           <Link to={`/post/${post.documentId}`} className="text-gray-500">
             💬 <span>{post.commentCount || 0}</span>
           </Link>
-          {post.author.id === userId || post.sub.author === userDocumentId && (
+          {(post.author.id === userId || SubAuthor === userId) && (
             <>
               <button
                 onClick={() => setShowLinks(!showLinks)}

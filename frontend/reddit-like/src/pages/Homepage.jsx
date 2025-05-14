@@ -13,8 +13,6 @@ function Homepage({ user, setUser }) {
   const [error, setError] = useState(null);
   const [followedPosts, setFollowedPosts] = useState({});
   const token = localStorage.getItem("token");
-  const userId = token ? jwtDecode(token).id : null;
-  const userDocumentId = token ? jwtDecode(token).documentId : null;
 
   const [loadingScreen, setLoadingScreen] = useState(true);
   const [citation, setCitation] = useState("");
@@ -106,8 +104,6 @@ function Homepage({ user, setUser }) {
                 <Post
                   key={post.id}
                   post={post}
-                  subId={SubId}
-                  userDocumentId={userDocumentId}
                   toggleFollow={toggleFollow}
                   followedPosts={followedPosts}
                 />
