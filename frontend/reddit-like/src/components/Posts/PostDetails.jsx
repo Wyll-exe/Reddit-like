@@ -95,6 +95,8 @@ export default function PostDetails() {
         `http://localhost:1337/api/comments/${commentId}`,
         {
           data: {
+            author: UserId,
+            post: post.id,
             Description: updatedText,
           },
         },
@@ -108,7 +110,7 @@ export default function PostDetails() {
 
       if (res.status === 200) {
         setComments((prev) =>
-          prev.map((c) => (c.id === commentId ? res.data.data : c))
+          prev.map((c) => (c.documentId === commentId ? res.data.data : c))
         );
         setEditCommentId(null);
       }
@@ -153,7 +155,7 @@ export default function PostDetails() {
         <h2 className="text-xl font-bold mb-4">Commentaires</h2>
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <div key={comment.id} className="mb-4 p-3 bg-gray-100 rounded-lg">
+            <div key={comment.documentId} className="mb-4 p-3 bg-gray-100 rounded-lg">
               <h4 className="text-sm font-semibold text-violet-600">
                 @{comment.author?.username || "Anonyme"}
               </h4>
@@ -168,11 +170,11 @@ export default function PostDetails() {
                 })}
               </p>
 
-              {editCommentId === comment.id ? (
+              {editCommentId === comment.documentId ? (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    handleUpdateComment(comment.id, editCommentText);
+                    handleUpdateComment(comment.documentId, editCommentText);
                   }}
                 >
                   <textarea
@@ -197,7 +199,7 @@ export default function PostDetails() {
                 <p className="mt-1">{comment.Description}</p>
               )}
 
-              {(UserId === comment.author?.id || UserId === post.author?.id) && editCommentId !== comment.id && (
+              {(UserId === comment.author?.id || UserId === post.author?.id) && editCommentId !== comment.documentId && (
                 <div className="flex gap-2 mt-2">
                   <button
                     onClick={() => handleDeleteComment(comment.documentId)}
