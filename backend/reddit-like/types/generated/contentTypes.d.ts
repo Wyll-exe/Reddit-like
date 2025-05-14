@@ -529,6 +529,7 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
       'oneToOne',
       'plugin::review-workflows.workflow-stage'
     >;
+    sub: Schema.Attribute.Relation<'manyToOne', 'api::sub.sub'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -568,6 +569,7 @@ export interface ApiSubSub extends Struct.CollectionTypeSchema {
     Name: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    posts: Schema.Attribute.Relation<'oneToMany', 'api::post.post'>;
     publishedAt: Schema.Attribute.DateTime;
     strapi_assignee: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
     strapi_stage: Schema.Attribute.Relation<
@@ -1062,6 +1064,7 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     posts: Schema.Attribute.Relation<'oneToMany', 'api::post.post'>;
+    Profilpic: Schema.Attribute.Media<'images' | 'files'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;

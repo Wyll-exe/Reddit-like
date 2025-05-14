@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 
 function Auth({ setUser }) {
   const navigate = useNavigate();
@@ -7,9 +7,40 @@ function Auth({ setUser }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  // État pour suivre le mode actuel
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.theme === 'dark' ||
+    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  );
+
+  // Fonction pour basculer le mode sombre
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.theme = 'dark';
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.theme = 'light';
+    }
+  };
+
+  // Initialiser le mode au chargement du composant
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.theme = 'dark';
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.theme = 'light';
+    }
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
- 
+
     try {
       const response = await fetch("http://localhost:1337/api/auth/local", {
         method: "POST",
@@ -31,23 +62,33 @@ function Auth({ setUser }) {
       localStorage.setItem("userId", data.user.id);
       setUser(data.user);
       navigate("/homepage");
-    
+
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-[#e8f4e8]">
+    <div className="flex flex-col justify-center items-center h-screen bg-[#e8f4e8] dark:bg-[#1A1C23]">
       {/* Logo en haut */}
       <div className="mb-6">
-        <div className="text-2xl font-bold text-gray-800">Threadly</div>
+        <div
+          className="flex justify-center h-12 cursor-pointer transition-transform duration-300 hover:scale-105 "
+          onClick={toggleDarkMode}
+          title={isDarkMode ? "Passer en mode clair" : "Passer en mode sombre"}
+        >
+          {isDarkMode ? (
+            <img src="/assets/images/threadly-light.png" alt="Logo (mode sombre)" className="h-full" />
+          ) : (
+            <img src="/assets/images/threadly.png" alt="Logo" className="h-full" />
+          )}
+        </div>
       </div>
-     
+
       {/* Formulaire */}
       <div className="w-full max-w-md">
         <form
-          className="flex flex-col justify-center items-center gap-4 bg-white p-6 rounded-xl shadow-sm"
+          className="flex flex-col justify-center items-center gap-4 bg-white p-6 rounded-xl shadow-sm dark:bg-[#334155]"
           onSubmit={handleLogin}
         >
           <input
@@ -66,12 +107,12 @@ function Auth({ setUser }) {
           />
           <button
             type="submit"
-            className="w-full p-3 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition-colors duration-200 shadow-sm"
+            className="w-full p-3 bg-gray-800 text-white dark:text-gray-700 rounded-full hover:bg-gray-700 transition-colors duration-200 shadow-sm dark:bg-[#e8f4e8] dark:hover:bg-[#c7dec7]"
           >
             Se connecter
           </button>
-          <p className="text-sm text-gray-600 mt-2">
-            Pas encore de compte ? <Link to="/register" className="text-gray-800 font-medium">S'inscrire</Link>
+          <p className="text-sm text-gray-600 mt-2 dark:text-white">
+            Pas encore de compte ? <Link to="/register" className="text-gray-800 font-medium dark:text-[#e8f4e8] dark:hover:text-[#c7dec7]">S'inscrire</Link>
           </p>
           {error && <p className="text-sm text-red-500 p-2 bg-red-50 rounded-lg w-full text-center">{error}</p>}
         </form>

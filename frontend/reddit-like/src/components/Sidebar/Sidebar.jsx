@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Logout from '../Auth/Logout';
 import { Link, useNavigate } from "react-router-dom";
 import '../../style.css';
-import DarkModeToggle from '../Boutton/DarkModeToggle';
 import axios from 'axios';
 
 function Sidebar({ setUser }) {
     const navigate = useNavigate();
+
+    // État pour suivre le mode actuel
+    const [isDarkMode, setIsDarkMode] = useState(
+        localStorage.theme === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    );
+
+    // Fonction pour basculer le mode sombre
+    const toggleDarkMode = () => {
+        const newDarkMode = !isDarkMode;
+        setIsDarkMode(newDarkMode);
+
+        if (newDarkMode) {
+            document.documentElement.classList.add('dark');
+            localStorage.theme = 'dark';
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.theme = 'light';
+        }
+    };
+
+    // Initialiser le mode au chargement du composant
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.classList.add('dark');
+            localStorage.theme = 'dark';
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.theme = 'light';
+        }
+    }, []);
 
     const handleLogout = () => {
         console.log("Déconnexion déclenchée");
@@ -17,10 +47,18 @@ function Sidebar({ setUser }) {
     };
 
     return (
-        <div className="hidden md:block w-64 bg-white h-screen fixed left-0 top-0 p-5 border-r border-[#374151] dark:bg-[#1A1C23] dark:border-gray-700">
+        <div className="hidden md:block w-64 bg-white h-screen fixed left-0 top-0 p-5 dark:bg-[#1A1C23]">
             <div className="mb-6">
-                <div className="h-8">
-                    <img src="https://raw.githubusercontent.com/Cyril-Mathe/Reddit-like/refs/heads/feature/subreddits/frontend/reddit-like/src/pages/logo.png" alt="Logo" className="h-full dark:text-white" />
+                <div
+                    className="flex justify-center h-12 cursor-pointer transition-transform duration-300 hover:scale-105"
+                    onClick={toggleDarkMode}
+                    title={isDarkMode ? "Passer en mode clair" : "Passer en mode sombre"}
+                >
+                    {isDarkMode ? (
+                        <img src="/assets/images/threadly-light.png" alt="Logo (mode sombre)" className="h-full" />
+                    ) : (
+                        <img src="/assets/images/threadly.png" alt="Logo" className="h-full" />
+                    )}
                 </div>
             </div>
             <div className="space-y-6 mt-8">
@@ -43,10 +81,16 @@ function Sidebar({ setUser }) {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
-                    <span><Logout setUser={setUser} /></span>
+                        <span>Profil</span>
+                    </Link>
+                    <div className="flex items-center space-x-3 text-gray-600 cursor-pointer hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white hover:shadow-sm p-2 rounded-lg transition-all duration-200">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span><Logout setUser={setUser} /></span>
+                    </div>
                 </div>
             </div>
-            <DarkModeToggle />
         </div>
     );
 }
