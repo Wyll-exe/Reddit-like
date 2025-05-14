@@ -28,7 +28,7 @@ export async function fetchPosts() {
 }
 
 export async function fetchSubsPosts(documentId) {
-    const url = `http://localhost:1337/api/posts?filters[sub][documentId][$eqi]=${documentId}&populate[0]=author&populate[1]=media&populate[2]=comments&populate[3]=sub&`;
+    const url = `http://localhost:1337/api/posts?filters[sub][documentId][$eqi]=${documentId}&populate[0]=author.avatar&populate[1]=media&populate[2]=comments&populate[3]=sub`;
     const token = localStorage.getItem("token");
 
     const response = await fetch(url, {
