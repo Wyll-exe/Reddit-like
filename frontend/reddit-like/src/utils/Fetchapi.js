@@ -1,5 +1,5 @@
 export async function fetchPosts() {
-    const url = "http://localhost:1337/api/posts?populate[author][populate]=avatar&populate=sub";
+    const url = "http://localhost:1337/api/posts?populate=author.avatar&populate=media&populate=sub&populate=comments";
 
     const token = localStorage.getItem("token");
 
@@ -23,6 +23,7 @@ export async function fetchPosts() {
     }));
 
     postsWithCommentCount.sort((a, b) => b.commentCount - a.commentCount);
+    console.log(postsWithCommentCount);
     return postsWithCommentCount;
 }
 

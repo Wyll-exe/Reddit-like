@@ -75,7 +75,7 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
             sub: sub,
             publishedAt: new Date().toISOString(),
           },
-          populate: ['author', 'comments', 'sub'],
+          populate: ['author', 'comments', 'sub', 'media'],
         });
     
         if (!created) {
@@ -99,7 +99,7 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
     .query('api::post.post')
     .findOne({
       where: { documentId },
-      populate: ['author', 'media'],
+      populate: ['author', 'media', 'comments', 'sub'],
     })
         if (!post) {
           return ctx.notFound('Post non trouvé');

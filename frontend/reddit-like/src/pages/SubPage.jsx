@@ -5,6 +5,7 @@ import { fetchSubsPosts } from "../utils/Fetchapi";
 import FormPost from "../components/Posts/FormPosts";
 import Post from "../components/Posts/ShowPosts";
 import MobileNavigation from "../components/Mobile/MobileNav";
+import { jwtDecode } from "jwt-decode";
 
 function SubPage({ setUser }) {
   const { documentId } = useParams();
@@ -12,6 +13,8 @@ function SubPage({ setUser }) {
   const [followedPosts, setFollowedPosts] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("token");
+  const userId = token ? jwtDecode(token).id : null;
 
   const addPost = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
@@ -54,6 +57,7 @@ function SubPage({ setUser }) {
                 <Post
                   key={post.id}
                   post={post}
+                  userId={userId}
                   toggleFollow={toggleFollow}
                   followedPosts={followedPosts}
                 />

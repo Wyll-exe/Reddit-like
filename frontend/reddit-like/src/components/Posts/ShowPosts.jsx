@@ -7,6 +7,7 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
   // const [AvatarAuthor, setAvatarAuthor] = useState(null);
   // const [AvatarUrls, setAvatarUrls] = useState(null);
   const menuRef = useRef(null);
+  console.log(post);
 
   // useEffect(() => {
   //   async function fetchAvatar() {
@@ -111,7 +112,7 @@ function Post({ post, toggleFollow, followedPosts, userId }) {
         {post.media && (
           <div className="rounded-lg overflow-hidden mb-4">
             <img
-              src={"http://localhost:1338" + post.media[0].url}
+              src={"http://localhost:1337" + post.media[0].url}
               alt="Illustration"
               className="w-full h-auto"
             />
