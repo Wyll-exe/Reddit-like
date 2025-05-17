@@ -13,7 +13,6 @@ export default function Profile({ user, setUser }) {
     const [newAvatar, setNewAvatar] = useState(null);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef(null);
-    
     const [formData, setFormData] = useState({
         username: '',
         email: '',
