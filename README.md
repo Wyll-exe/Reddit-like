@@ -30,7 +30,7 @@ Créez votre communauté, partagez des devoirs, des mèmes et amusez-vous !
 
 [@Maquette](https://www.figma.com/design/qBVfc4XzM0jQ0E7emBbntF/Untitled?node-id=0-1&t=im1z4rfO0QDHiHTW-1)
 
-## Lancer le projet 🚀 ::
+## Lancer le projet 🚀 :
 
 1. Clonez le dépôt :
 
@@ -66,7 +66,7 @@ Vous pourrez accéder à Strapi via : localhost://1337
 ```
 
  ```bash
-Threadly sera accessible via : localhost://3000
+Threadly sera accessible via : localhost://3030
 ```
 
 5.
