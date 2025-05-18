@@ -53,7 +53,7 @@ Créez votre communauté, partagez des devoirs, des mèmes et amusez-vous !
     - npm run develop
     ```
  ```bash
-Vous pourrez accéder à Strapi via : <a> localhost://1337 </a>
+Vous pourrez accéder à Strapi via : localhost://1337 
 ```
 ### Frontend
 
