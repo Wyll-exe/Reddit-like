@@ -1,6 +1,6 @@
 
 
-![Threadly Logo](https://raw.githubusercontent.com/Cyril-Mathe/Reddit-like/main/frontend/public/assets/images/threadly.png)
+# <p align="center">![Threadly Logo](https://raw.githubusercontent.com/Cyril-Mathe/Reddit-like/main/frontend/public/assets/images/threadly.png)</p>
 
 ## Description 📝 :
 
