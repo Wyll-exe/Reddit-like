@@ -13,7 +13,8 @@ Créez votre communauté, partagez des devoirs, des mèmes et amusez-vous !
 ### Back-End : 
 - Strapi
 - TypeScript
-- PostgreSQL (Neon)  
+- PostgreSQL (Neon)
+  
 ### Front-End : 
 - React 
 - Tailwind
@@ -28,7 +29,7 @@ Créez votre communauté, partagez des devoirs, des mèmes et amusez-vous !
 
 ## Figma 🎨 :
 
-[@Maquette](https://www.figma.com/design/qBVfc4XzM0jQ0E7emBbntF/Untitled?node-id=0-1&t=im1z4rfO0QDHiHTW-1)
+[Maquette](https://www.figma.com/design/qBVfc4XzM0jQ0E7emBbntF/Untitled?node-id=0-1&t=im1z4rfO0QDHiHTW-1)
 
 ## Lancer le projet 🚀 :
 
@@ -72,7 +73,7 @@ Threadly sera accessible via : localhost://3030
 5.
 
    ```bash
-   Faîtes vivre la communauté !
+   Faites vivre la communauté !
    ```
 
 
